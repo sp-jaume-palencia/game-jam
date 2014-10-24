@@ -8,8 +8,7 @@ import com.test.utils.StepVariations;
 import com.test.utils.TimeVariations;
 import com.test.utils.Update;
 
-public class TimeBase {
-	StepVariations isAlive;
+public class TimeBase extends TimeActor{
 	StepVariations upgrade;
 	InterpolatedVariations resourceProduction;
 	InterpolatedVariations unitsProduction;
@@ -18,7 +17,7 @@ public class TimeBase {
 	public TimeBase() {};
 	
 	public void update(Map<String,Update> map) {
-		isAlive.update(map.get("isAlive"));
+		super.update(map);
 		upgrade.update(map.get("upgrade"));
 		resourceProduction.update(map.get("resourceProduction"));
 		unitsProduction.update(map.get("unitsProduction"));

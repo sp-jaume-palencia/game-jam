@@ -8,8 +8,7 @@ import com.test.utils.StepVariations;
 import com.test.utils.TimeVariations;
 import com.test.utils.Update;
 
-public class TimeSquad {
-	StepVariations isAlive;
+public class TimeSquad extends TimeActor {
 	StepVariations upgrade;
 	InterpolatedVariations attack;
 	InterpolatedVariations life;
@@ -20,7 +19,7 @@ public class TimeSquad {
 	public TimeSquad() {};
 	
 	public void update(Map<String,Update> map) {
-		isAlive.update(map.get("isAlive"));
+		super.update(map);
 		upgrade.update(map.get("upgrade"));
 		attack.update(map.get("attack"));
 		life.update(map.get("life"));
