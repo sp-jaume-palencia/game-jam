@@ -7,12 +7,13 @@ public class AssetsSystem
 {
 	public Texture caca;
 	public Texture gameplayBackground1;
+	public Texture planet1;
 	
 	public void load()
 	{
-		caca = new Texture(Gdx.files.internal("assets/jjinyar.png"));
-		gameplayBackground1 = new Texture(Gdx.files.internal("assets/bg-mockup.png"));
-		
+		caca = new Texture(Gdx.files.internal("textures/jjinyar.png"));
+		gameplayBackground1 = new Texture(Gdx.files.internal("textures/bg-gameplayBackground1.png"));
+		planet1 = new Texture(Gdx.files.internal("textures/planet1.png"));
 	}
 
 }
