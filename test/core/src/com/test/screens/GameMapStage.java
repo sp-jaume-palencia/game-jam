@@ -31,6 +31,9 @@ public class GameMapStage extends Stage implements GestureListener {
 	OrthographicCamera _camera;
     Viewport _viewport;    
     
+    // GameStatus
+    int _playerId;
+    
     // Actors
     Image _background;
     Array<Planet> _planets;
@@ -45,6 +48,9 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	GameMapStage()
 	{		
+		// Status
+		_playerId = 1;
+		
 		// Camera
 		float centerX = RootSystem.coords.width/2;
         float centerY = RootSystem.coords.height/2;        
@@ -85,8 +91,8 @@ public class GameMapStage extends Stage implements GestureListener {
 	private void createPlanets()
 	{
 		_planets = new Array<Planet>();
-		_planets.add(new Planet(RootSystem.assets.planet1, 100.0f, 100.0f));
-		_planets.add(new Planet(RootSystem.assets.planet1, 500.0f, 100.0f));
+		_planets.add(new Planet(RootSystem.assets.planet1, 100.0f, 100.0f, _playerId));
+		_planets.add(new Planet(RootSystem.assets.planet1, 500.0f, 100.0f, _playerId + 1));
 		
 		for(Planet planet : _planets)
 		{
@@ -121,9 +127,27 @@ public class GameMapStage extends Stage implements GestureListener {
         
         for(Planet planet : _planets)
         {
-    		if(planet.tap(touchPos.x, touchPos.y))
+    		if(planet.isInside(touchPos.x, touchPos.y))
 			{
-    			_selectedPlanet = planet;
+				if(_selectedPlanet != planet && planet.getPlayerOwnerId() == _playerId)
+				{
+					// Select another owned planet
+					if(_selectedPlanet != null)
+					{
+						_selectedPlanet.unselect();
+					}
+					
+					_selectedPlanet = planet;
+					_selectedPlanet.onSelect();
+				}
+				else
+				{
+					// Enemy planet
+					if(_selectedPlanet != null)
+					{
+						_selectedPlanet.attackTo(planet);
+					}
+				}
 			}
         }
         

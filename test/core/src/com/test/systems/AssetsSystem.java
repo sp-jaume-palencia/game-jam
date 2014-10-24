@@ -11,6 +11,7 @@ public class AssetsSystem
 	public Texture gameplayBackground1;
 	public Texture planet1;
 	public Texture cursor;
+	public Texture spaceShip;
 	
 	public void load()
 	{
@@ -19,6 +20,7 @@ public class AssetsSystem
 		gameplayBackground1 = new Texture(Gdx.files.internal("textures/bg-gameplayBackground1.png"));
 		planet1 = new Texture(Gdx.files.internal("textures/planet1.png"));
 		cursor = new Texture(Gdx.files.internal("textures/cursor.png"));
+		spaceShip = new Texture(Gdx.files.internal("textures/spaceship.png"));
 	}
 
 }
