@@ -3,28 +3,99 @@ package com.test.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
-// This class is a convenient place to keep things common to both the client and server.
-public class Network {
+public class Network
+{
 	static public final int port = 54555;
 
-	// This registers objects that are going to be sent over the network.
-	static public void register (EndPoint endPoint) {
+	static public void register (EndPoint endPoint)
+	{
 		Kryo kryo = endPoint.getKryo();
-		kryo.register(RegisterName.class);
-		kryo.register(String[].class);
-		kryo.register(UpdateNames.class);
-		kryo.register(ChatMessage.class);
+		kryo.register(GameCommand.class);
+		kryo.register(RoomCommand.class);
+		kryo.register(RoomList.class);
+		kryo.register(RoomInfo.class);
+		kryo.register(RoomInfo[].class);
 	}
 
-	static public class RegisterName {
-		public String name;
+	//CLIENT TO SERVER
+	static public class GameCommand
+	{
+		public int gametime;
+		public int objectID;
+		public int objectType;
+		public int actionID;
+		public int value1;
+		public int value2;
+		public int value3;
+		public int value4;
+		public int value5;
 	}
-
-	static public class UpdateNames {
-		public String[] names;
+	
+	static public class RoomCommand
+	{
+		public int roomID;
+		public int actionID;
 	}
+	
+	//SERVER TO CLIENT
+	static public class RoomList
+	{
+		public RoomInfo[] rooms;
+	}
+	
+	static public class RoomInfo
+	{
+		public int id;
+		public int numPlayer;
+	}
+	
+	//ENUMS
+	public enum RoomActionID
+	{
+		GETROOMS(0),
+		JOINROOM(1),
+		QUITROOM(2),
+		STARTGAME(3);
+		
+		private final int value;
+	    private RoomActionID(int value) {
+	        this.value = value;
+	    }
 
-	static public class ChatMessage {
-		public String text;
+	    public int getValue() {
+	        return value;
+	    }
+	}
+	
+	public enum GameActionID
+	{
+		BASEATACKBASE(0);
+		
+		private final int value;
+	    private GameActionID(int value) {
+	        this.value = value;
+	    }
+
+	    public int getValue() {
+	        return value;
+	    }
+	}
+	
+	public enum ObjectType
+	{
+		GAME(0),
+		PLAYER(1),
+		BASE(2),
+		SQUAD(3),
+		HERO(4);
+		
+		private final int value;
+	    private ObjectType(int value) {
+	        this.value = value;
+	    }
+
+	    public int getValue() {
+	        return value;
+	    }
 	}
 }

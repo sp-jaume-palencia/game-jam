@@ -6,76 +6,89 @@ import java.util.ArrayList;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.test.network.Network.ChatMessage;
-import com.test.network.Network.RegisterName;
-import com.test.network.Network.UpdateNames;
+import com.test.network.Network;
+import com.test.network.Network.GameActionID;
+import com.test.network.Network.GameCommand;
+import com.test.network.Network.RoomActionID;
+import com.test.network.Network.RoomCommand;
+import com.test.network.Network.RoomInfo;
+import com.test.network.model.NetRoom;
+import com.test.network.model.NetWorld;
+import com.test.systems.RootSystem;
 import com.esotericsoftware.minlog.Log;
 
-public class NetServer {
+public class NetServer
+{
 	Server server;
+	NetWorld worldServer;
 
-	public NetServer () throws IOException {
-		server = new Server() {
-			protected Connection newConnection () {
+	public NetServer () throws IOException
+	{
+		server = new Server()
+		{
+			protected Connection newConnection ()
+			{
 				// By providing our own connection implementation, we can store per
 				// connection state without a connection ID to state look up.
-				return new ChatConnection();
+				return new GameConnection();
 			}
 		};
+		
+		worldServer = new NetWorld();
 
 		// For consistency, the classes to be sent over the network are
 		// registered by the same method for both the client and server.
 		Network.register(server);
 
-		server.addListener(new Listener() {
-			public void received (Connection c, Object object) {
-				// We know all connections for this server are actually ChatConnections.
-				ChatConnection connection = (ChatConnection)c;
+		server.addListener(new Listener() 
+		{
+			public void received (Connection c, Object object)
+			{
+				GameConnection connection = (GameConnection)c;
 
-				if (object instanceof RegisterName) {
-					// Ignore the object if a client has already registered a name. This is
-					// impossible with our client, but a hacker could send messages at any time.
-					if (connection.name != null) return;
-					// Ignore the object if the name is invalid.
-					String name = ((RegisterName)object).name;
-					if (name == null) return;
-					name = name.trim();
-					if (name.length() == 0) return;
-					// Store the name on the connection.
-					connection.name = name;
-					// Send a "connected" message to everyone except the new client.
-					ChatMessage chatMessage = new ChatMessage();
-					chatMessage.text = name + " connected.";
-					server.sendToAllExceptTCP(connection.getID(), chatMessage);
-					// Send everyone a new list of connection names.
-					updateNames();
+				if (object instanceof RoomCommand)
+				{
+					RoomCommand rc =((RoomCommand)object);
+					RoomActionID[] a = RoomActionID.values();
+					switch(a[rc.actionID])
+					{
+						case GETROOMS:
+							sendRooms(connection.getID());
+							break;
+						case JOINROOM:
+							joinRoom(connection.getID(), rc.roomID);
+							break;
+						case QUITROOM:
+							quitRoom(connection.getID(), rc.roomID);
+							break;
+						default:
+							break;
+					}
 					return;
 				}
 
-				if (object instanceof ChatMessage) {
-					// Ignore the object if a client tries to chat before registering a name.
-					if (connection.name == null) return;
-					ChatMessage chatMessage = (ChatMessage)object;
-					// Ignore the object if the chat message is invalid.
-					String message = chatMessage.text;
-					if (message == null) return;
-					message = message.trim();
-					if (message.length() == 0) return;
-					// Prepend the connection's name and send to everyone.
-					chatMessage.text = connection.name + ": " + message;
-					server.sendToAllTCP(chatMessage);
+				if (object instanceof GameCommand)
+				{
+					GameCommand rc =((GameCommand)object);
+					GameActionID[] a = GameActionID.values();
+					switch(a[rc.actionID])
+					{
+						case BASEATACKBASE:
+							
+							break;
+						default:
+							break;
+					}
 					return;
 				}
 			}
 
-			public void disconnected (Connection c) {
-				ChatConnection connection = (ChatConnection)c;
-				if (connection.name != null) {
+			public void disconnected (Connection c)
+			{
+				GameConnection connection = (GameConnection)c;
+				if (connection.name != null)
+				{
 					// Announce to everyone that someone (with a registered name) has left.
-					ChatMessage chatMessage = new ChatMessage();
-					chatMessage.text = connection.name + " disconnected.";
-					server.sendToAllTCP(chatMessage);
-					updateNames();
 				}
 			}
 		});
@@ -83,28 +96,39 @@ public class NetServer {
 		server.start();
 	}
 	
+	protected void quitRoom(int id, int roomID)
+	{
+		//TODO
+	}
+
+	protected void joinRoom(int connId, int roomId)
+	{
+		worldServer.playerJoinRoom(roomId, connId);
+		if(worldServer.roomIsReady(roomId))
+		{
+			worldServer.startGame(roomId);
+			RoomCommand rc = new RoomCommand();
+			rc.roomID = roomId;
+			rc.actionID = Network.RoomActionID.STARTGAME.getValue();
+			
+			server.sendToAllTCP(rc);
+		}
+	}
+
+	protected void sendRooms(int connId)
+	{
+		RoomInfo[] rooms = worldServer.getRooms();
+		server.sendToTCP(connId, rooms);
+	}
+
 	void stopServer()
 	{
 		server.stop();
 	}
 
-	void updateNames()
-	{
-		// Collect the names for each connection.
-		Connection[] connections = server.getConnections();
-		ArrayList names = new ArrayList(connections.length);
-		for (int i = connections.length - 1; i >= 0; i--) {
-			ChatConnection connection = (ChatConnection)connections[i];
-			names.add(connection.name);
-		}
-		// Send the names to everyone.
-		UpdateNames updateNames = new UpdateNames();
-		updateNames.names = (String[])names.toArray(new String[names.size()]);
-		server.sendToAllTCP(updateNames);
-	}
-
 	// This holds per connection state.
-	static class ChatConnection extends Connection {
+	static class GameConnection extends Connection
+	{
 		public String name;
 	}
 

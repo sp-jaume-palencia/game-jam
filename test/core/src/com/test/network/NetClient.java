@@ -7,9 +7,10 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import com.test.network.Network.ChatMessage;
-import com.test.network.Network.RegisterName;
-import com.test.network.Network.UpdateNames;
+import com.test.network.Network.GameCommand;
+import com.test.network.Network.RoomCommand;
+import com.test.network.Network.RoomInfo;
+import com.test.systems.RootSystem;
 
 public class NetClient {
 	//ChatFrame chatFrame;
@@ -24,23 +25,25 @@ public class NetClient {
 		// registered by the same method for both the client and server.
 		Network.register(client);
 
-		client.addListener(new Listener() {
-			public void connected (Connection connection) {
-				RegisterName registerName = new RegisterName();
-				registerName.name = name;
-				client.sendTCP(registerName);
+		client.addListener(new Listener()
+		{
+			public void connected (Connection connection)
+			{
 			}
 
-			public void received (Connection connection, Object object) {
-				if (object instanceof UpdateNames) {
-					UpdateNames updateNames = (UpdateNames)object;
-					//chatFrame.setNames(updateNames.names);
+			public void received (Connection connection, Object object)
+			{
+				if (object instanceof RoomCommand)
+				{
+					RoomCommand rc = (RoomCommand)object;
+					//START GAME
 					return;
 				}
 
-				if (object instanceof ChatMessage) {
-					ChatMessage chatMessage = (ChatMessage)object;
-					//chatFrame.addMessage(chatMessage.text);
+				if (object instanceof RoomInfo[])
+				{
+					RoomInfo[] rooms = (RoomInfo[])object;
+					setRoomInfo(rooms);
 					return;
 				}
 			}
@@ -220,6 +223,36 @@ public class NetClient {
 		}
 	}*/
 
+	protected void setRoomInfo(RoomInfo[] rooms)
+	{
+		//RootSystem.screens.roomLobby.setRoomInfo(rooms);
+		
+	}
+
+	public void askRoom()
+	{
+		RoomCommand rc = new RoomCommand();
+		rc.actionID = Network.RoomActionID.GETROOMS.getValue();
+		client.sendTCP(rc);
+	}
+	
+	public void joinRoom(int roomId)
+	{
+		RoomCommand rc = new RoomCommand();
+		rc.roomID = roomId;
+		rc.actionID = Network.RoomActionID.JOINROOM.getValue();
+		client.sendTCP(rc);		
+	}
+
+
+	/*public void sendMessage(String msg)
+	{
+		ChatMessage chatmsg = new ChatMessage();
+		chatmsg.text = msg;
+		client.sendTCP(chatmsg);
+		
+	}*/
+	
 	public static void main (String[] args) {
 		Log.set(Log.LEVEL_DEBUG);
 		new NetClient();

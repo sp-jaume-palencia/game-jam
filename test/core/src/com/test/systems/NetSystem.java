@@ -12,7 +12,6 @@ public class NetSystem
 	
 	public void load()
 	{
-		//setAsClient();
 	}
 	
 	public void setAsServer()
@@ -20,6 +19,7 @@ public class NetSystem
 		try
 		{
 			server = new NetServer();
+			client = null;
 		}
 		catch (IOException e)
 		{
@@ -30,6 +30,7 @@ public class NetSystem
 	public void setAsClient()
 	{
 		client = new NetClient();
+		server = null;
 	}
 	
 }
