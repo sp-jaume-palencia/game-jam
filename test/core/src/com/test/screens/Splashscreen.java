@@ -33,7 +33,7 @@ public class Splashscreen implements Screen
     
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 1f, 0f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         stage.act(delta);
@@ -53,8 +53,10 @@ public class Splashscreen implements Screen
 
         //wait all loaded
         Image splashImage = new Image(RootSystem.assets.caca);
+        splashImage.setPosition((RootSystem.coords.width - splashImage.getWidth())/2, (RootSystem.coords.height - splashImage.getHeight())/2);
         stage.addActor(splashImage);
-//        stage.addAction(Actions.sequence(RootSystem.screens.fadeIn, Actions.delay(1f), RootSystem.screens.showGame));
+        stage.addAction(RootSystem.screens.fadeIn);
+        stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(0.5f), Actions.delay(1f), RootSystem.screens.showGame));
 	}
 
 	@Override
