@@ -2,7 +2,7 @@ package com.test.game;
 
 import java.util.Map;
 
-import com.test.utils.StepVariations;
+import com.test.model.time.StepVariations;
 import com.test.utils.Update;
 
 public class TimeActor {

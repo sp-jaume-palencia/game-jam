@@ -11,6 +11,8 @@ public class RootSystem
 	public static CoordSystem coords;
 	public static NetSystem net;
 	public static ConstantsSystem constants;
+	public static DataSystem data;
+	public static CommandSystem commands;
     
     public void loadSystems(TestGame game)
     {
@@ -29,6 +31,12 @@ public class RootSystem
         net.load();
         constants = new ConstantsSystem();
         constants.load();
+        
+        data = new DataSystem();
+        data.load();
+        
+        commands = new CommandSystem();
+        commands.load();
     }
 
 }

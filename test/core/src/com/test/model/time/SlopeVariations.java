@@ -2,9 +2,6 @@ package com.test.model.time;
 
 import java.util.Map;
 
-import com.test.utils.InterpolatedVariations;
-import com.test.utils.TimeVariations;
-
 public class SlopeVariations extends TimeVariations {
     public InterpolatedVariations getInterpolatedVariations() {
         InterpolatedVariations interpolated = new InterpolatedVariations();
