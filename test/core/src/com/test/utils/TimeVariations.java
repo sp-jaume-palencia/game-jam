@@ -7,7 +7,7 @@ import com.test.systems.RootSystem;
 
 public abstract class TimeVariations
 {
-	TreeMap<Integer,Integer> timeMap;
+	public TreeMap<Integer,Integer> timeMap;
 
 	public TimeVariations() {
 		timeMap = new TreeMap<Integer,Integer>();
