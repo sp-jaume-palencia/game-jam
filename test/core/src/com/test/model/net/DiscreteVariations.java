@@ -1,4 +1,4 @@
-package com.test.model.time;
+package com.test.model.net;
 
 public class DiscreteVariations extends TimeVariations
 {
