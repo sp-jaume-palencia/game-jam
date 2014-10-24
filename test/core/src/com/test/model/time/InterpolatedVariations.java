@@ -1,4 +1,4 @@
-package com.test.utils;
+package com.test.model.time;
 
 import java.util.Map;
 

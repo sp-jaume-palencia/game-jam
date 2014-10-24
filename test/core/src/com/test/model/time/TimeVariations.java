@@ -1,9 +1,10 @@
-package com.test.utils;
+package com.test.model.time;
 
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.test.systems.RootSystem;
+import com.test.utils.Update;
 
 public abstract class TimeVariations
 {
