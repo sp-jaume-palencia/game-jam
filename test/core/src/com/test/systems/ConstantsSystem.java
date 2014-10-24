@@ -1,6 +1,6 @@
-package com.test.game;
+package com.test.systems;
 
-public class GameConstants {
+public class ConstantsSystem {
 	public int beginTime;
 	public int endTime;
 	
