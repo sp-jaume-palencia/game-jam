@@ -9,7 +9,7 @@ public class AssetsSystem
 	
 	public void load()
 	{
-		caca = new Texture(Gdx.files.internal("assets/caca.png"));
+		//caca = new Texture(Gdx.files.internal("assets/caca.png"));
 		
 	}
 
