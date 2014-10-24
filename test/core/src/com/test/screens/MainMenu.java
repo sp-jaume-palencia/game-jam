@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.systems.RootSystem;
 
-public class Splashscreen implements Screen
+public class MainMenu implements Screen
 {
     Camera camera;
     Viewport viewport;
@@ -23,7 +23,7 @@ public class Splashscreen implements Screen
 	SpriteBatch batch;
 	Texture img;
 
-    public Splashscreen()
+    public MainMenu()
     {
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
@@ -33,7 +33,7 @@ public class Splashscreen implements Screen
     
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 1f, 0f, 1);
+		Gdx.gl.glClearColor(1f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         stage.act(delta);
