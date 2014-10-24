@@ -28,6 +28,20 @@ public class Menuscreen implements Screen
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
         viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
+    }
+    
+    @Override
+    public void show()
+    {
+    	stage = new Stage();
+    	
+        camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
+        camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
+        viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
+        
+        stage.setViewport(viewport);
+        
+    	Gdx.input.setInputProcessor(stage);
         
         button1 = new TextButton("Button1", RootSystem.assets.UISkin);
         button1.setSize(RootSystem.coords.button1Size.x, RootSystem.coords.button1Size.y);
@@ -37,12 +51,12 @@ public class Menuscreen implements Screen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                System.out.println("button1");
+            	onExit();
                 return true;
             }
         });
         
-        button2 = new TextButton("Button2", new Skin());
+        button2 = new TextButton("Button2", RootSystem.assets.UISkin);
         button2.setSize(RootSystem.coords.button2Size.x, RootSystem.coords.button2Size.y);
         button2.setPosition(RootSystem.coords.button2Pos.x, RootSystem.coords.button2Pos.y);
         button2.addListener(new InputListener()
@@ -50,28 +64,33 @@ public class Menuscreen implements Screen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                System.out.println("button2!");
+                onExit();
                 return true;
             }
         });
+        
+        stage.addActor(button1);
+        stage.addActor(button2);
+        
+    }
+    
+    public void onExit()
+    {
+        Gdx.app.exit();
     }
     
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
+        camera.update();
+        viewport.update(width, height);
 	}
 
 	@Override
