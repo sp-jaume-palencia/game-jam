@@ -34,16 +34,11 @@ public class MenuScreen implements Screen
     public void show()
     {
     	stage = new Stage();
-    	
-        camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
-        camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
-        viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
-        
         stage.setViewport(viewport);
         
     	Gdx.input.setInputProcessor(stage);
         
-        button1 = new TextButton("Button1", RootSystem.assets.UISkin);
+        button1 = new TextButton("New game", RootSystem.assets.UISkin);
         button1.setSize(RootSystem.coords.button1Size.x, RootSystem.coords.button1Size.y);
         button1.setPosition(RootSystem.coords.button1Pos.x, RootSystem.coords.button1Pos.y);
         button1.addListener(new InputListener()
@@ -51,12 +46,12 @@ public class MenuScreen implements Screen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-            	onExit();
+            	onNewGame();
                 return true;
             }
         });
         
-        button2 = new TextButton("Button2", RootSystem.assets.UISkin);
+        button2 = new TextButton("Server stuff", RootSystem.assets.UISkin);
         button2.setSize(RootSystem.coords.button2Size.x, RootSystem.coords.button2Size.y);
         button2.setPosition(RootSystem.coords.button2Pos.x, RootSystem.coords.button2Pos.y);
         button2.addListener(new InputListener()
@@ -64,7 +59,7 @@ public class MenuScreen implements Screen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                onExit();
+                onServerStuff();
                 return true;
             }
         });
@@ -74,6 +69,16 @@ public class MenuScreen implements Screen
         
     }
     
+    public void onNewGame()
+    {
+    	RootSystem.screens.showScreen(RootSystem.screens.lobby, stage);
+    }
+    
+    public void onServerStuff()
+    {
+    	Gdx.app.exit();
+    }
+    
     public void onExit()
     {
         Gdx.app.exit();
@@ -81,7 +86,9 @@ public class MenuScreen implements Screen
     
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
 		stage.act(delta);
 		stage.draw();
 	}
