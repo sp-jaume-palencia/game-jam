@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.systems.RootSystem;
 
-public class Menuscreen implements Screen
+public class MenuScreen implements Screen
 {
     Camera camera;
     Viewport viewport;
@@ -23,7 +23,7 @@ public class Menuscreen implements Screen
     TextButton button1;
     TextButton button2;
 
-    public Menuscreen()
+    public MenuScreen()
     {
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);

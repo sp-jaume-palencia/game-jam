@@ -2,14 +2,15 @@ package com.test.systems;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.test.screens.Splashscreen;
 //import com.test.screens.Menuscreen;
+import com.test.screens.Splashscreen;
 
 public class ScreenSystem {
 
 	public Splashscreen splash;
-//	public Menuscreen menu;
-	
+	public GameScreen gameplay;
+
+//	public Menuscreen menu;	
 	public Action showGame;
 	public Action fadeIn;
 	
@@ -19,8 +20,7 @@ public class ScreenSystem {
 	public void load()
 	{
 		splash = new Splashscreen();
-		//menu = new Menuscreen();
-		
+		gameplay = new GameScreen();
 		showGame = Actions.sequence(Actions.fadeOut(fadeOutTime), Actions.run(RootSystem.screens.onActionGame));
 		fadeIn = Actions.sequence(Actions.fadeOut(0.0f), Actions.fadeIn(fadeInTime), Actions.run(RootSystem.screens.onFadeIn));
 	}
