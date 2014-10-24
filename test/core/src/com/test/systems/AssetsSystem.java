@@ -9,13 +9,14 @@ public class AssetsSystem
 	public Skin UISkin;
 	public Texture caca;
 	public Texture gameplayBackground1;
+	public Texture planet1;
 	
 	public void load()
 	{
-		UISkin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-		caca = new Texture(Gdx.files.internal("assets/jjinyar.png"));
-		gameplayBackground1 = new Texture(Gdx.files.internal("assets/bg-mockup.png"));
-		
+		UISkin = new Skin(Gdx.files.internal("uiskin.json"));
+		caca = new Texture(Gdx.files.internal("textures/jjinyar.png"));
+		gameplayBackground1 = new Texture(Gdx.files.internal("textures/bg-gameplayBackground1.png"));
+		planet1 = new Texture(Gdx.files.internal("textures/planet1.png"));
 	}
 
 }
