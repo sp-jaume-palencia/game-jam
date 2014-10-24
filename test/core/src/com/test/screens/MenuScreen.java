@@ -34,11 +34,6 @@ public class MenuScreen implements Screen
     public void show()
     {
     	stage = new Stage();
-    	
-        camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
-        camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
-        viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
-        
         stage.setViewport(viewport);
         
     	Gdx.input.setInputProcessor(stage);
@@ -76,7 +71,7 @@ public class MenuScreen implements Screen
     
     public void onNewGame()
     {
-    	RootSystem.screens.showScreen(RootSystem.screens.splash, stage);
+    	RootSystem.screens.showScreen(RootSystem.screens.lobby, stage);
     }
     
     public void onServerStuff()
