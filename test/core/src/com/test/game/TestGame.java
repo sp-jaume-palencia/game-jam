@@ -17,7 +17,7 @@ public class TestGame extends Game
 	{
 		rootSystem = new RootSystem();
 		rootSystem.loadSystems(this);
-		setScreen(RootSystem.screens.splash);
+		setScreen(RootSystem.screens.menu);
 	}
 
 }

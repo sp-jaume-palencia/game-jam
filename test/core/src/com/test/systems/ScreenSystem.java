@@ -18,7 +18,7 @@ public class ScreenSystem {
 	public void load()
 	{
 		splash = new Splashscreen();
-		//menu = new Menuscreen();
+		menu = new Menuscreen();
 		
 		fadeIn = Actions.sequence(Actions.fadeOut(0.001f), Actions.fadeIn(fadeInTime), Actions.run(RootSystem.screens.onFadeIn));
 	}
