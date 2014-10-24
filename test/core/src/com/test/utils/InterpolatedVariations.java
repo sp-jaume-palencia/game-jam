@@ -3,6 +3,7 @@ package com.test.utils;
 import java.util.Map;
 
 public class InterpolatedVariations extends TimeVariations {
+    @Override
     public int getValue(int time)  {
         Map.Entry<Integer,Integer> before = timeMap.ceilingEntry(time);
         Map.Entry<Integer,Integer> after = timeMap.floorEntry(time);
