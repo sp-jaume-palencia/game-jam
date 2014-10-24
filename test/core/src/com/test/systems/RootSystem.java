@@ -9,6 +9,7 @@ public class RootSystem
     public static AssetsSystem assets;
     public static ScreenSystem screens;
 	public static CoordSystem coords;
+	public static ConstantsSystem constants;
     
     public void loadSystems(TestGame game)
     {
@@ -22,6 +23,9 @@ public class RootSystem
         
         screens = new ScreenSystem();
         screens.load();
+        
+        constants = new ConstantsSystem();
+        constants.load();
     }
 
 }
