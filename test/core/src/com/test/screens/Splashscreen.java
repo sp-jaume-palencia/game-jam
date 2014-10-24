@@ -54,7 +54,7 @@ public class Splashscreen implements Screen
         //wait all loaded
         Image splashImage = new Image(RootSystem.assets.caca);
         stage.addActor(splashImage);
-//        stage.addAction(Actions.sequence(RootSystem.screens.fadeIn, Actions.delay(1f), RootSystem.screens.showGame));
+        stage.addAction(Actions.sequence(RootSystem.screens.fadeIn, Actions.delay(1f), RootSystem.screens.showGame));
 	}
 
 	@Override

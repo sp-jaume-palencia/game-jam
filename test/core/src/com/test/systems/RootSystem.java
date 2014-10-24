@@ -1,6 +1,7 @@
 package com.test.systems;
 
 import com.test.game.TestGame;
+import com.test.screens.MenuScreen;
 
 public class RootSystem
 {
@@ -21,8 +22,6 @@ public class RootSystem
         
         screens = new ScreenSystem();
         screens.load();
-        
-
     }
 
 }
