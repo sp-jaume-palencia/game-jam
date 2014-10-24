@@ -2,10 +2,10 @@ package com.test.game;
 
 import java.util.Map;
 
+import com.test.model.time.InterpolatedVariations;
+import com.test.model.time.StepVariations;
+import com.test.model.time.TimeVariations;
 import com.test.systems.RootSystem;
-import com.test.utils.InterpolatedVariations;
-import com.test.utils.StepVariations;
-import com.test.utils.TimeVariations;
 import com.test.utils.Update;
 
 public class TimeBase extends TimeActor{
