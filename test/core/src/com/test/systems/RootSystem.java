@@ -1,5 +1,6 @@
 package com.test.systems;
 
+import com.test.game.GameConstants;
 import com.test.game.TestGame;
 import com.test.screens.MenuScreen;
 
@@ -9,6 +10,7 @@ public class RootSystem
     public static AssetsSystem assets;
     public static ScreenSystem screens;
 	public static CoordSystem coords;
+	public static GameConstants constants;
     
     public void loadSystems(TestGame game)
     {
@@ -22,6 +24,9 @@ public class RootSystem
         
         screens = new ScreenSystem();
         screens.load();
+        
+        constants = new GameConstants();
+        constants.load();
     }
 
 }
