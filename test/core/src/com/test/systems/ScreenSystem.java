@@ -1,8 +1,10 @@
 package com.test.systems;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-//import com.test.screens.Menuscreen;
+import com.test.screens.GameScreen;
+import com.test.screens.MenuScreen;
 import com.test.screens.Splashscreen;
 
 public class ScreenSystem {
@@ -10,39 +12,41 @@ public class ScreenSystem {
 	public Splashscreen splash;
 	public GameScreen gameplay;
 
-//	public Menuscreen menu;	
-	public Action showGame;
-	public Action fadeIn;
+	public MenuScreen menu;	
 	
-	float fadeOutTime = 0.5f;
-    float fadeInTime = 0.5f;
+	public Screen currentScreen;
+	public Screen nextScreen;
+	
+	float fadeOutTime = 0.25f;
+    float fadeInTime = 0.25f;
 
 	public void load()
 	{
 		splash = new Splashscreen();
 		gameplay = new GameScreen();
-		showGame = Actions.sequence(Actions.fadeOut(fadeOutTime), Actions.run(RootSystem.screens.onActionGame));
-		fadeIn = Actions.sequence(Actions.fadeOut(0.0f), Actions.fadeIn(fadeInTime), Actions.run(RootSystem.screens.onFadeIn));
+		menu = new MenuScreen();
 	}
 	
-	public Runnable onFadeIn = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            fadeIn = Actions.sequence(Actions.fadeOut(0.0f), Actions.fadeIn(fadeInTime), Actions.run(RootSystem.screens.onFadeIn));
-        }
-    };
-    
-    public Runnable onActionGame = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-//        	RootSystem.game.setScreen(RootSystem.screens.menu);
-            showGame = Actions.sequence(Actions.fadeOut(fadeOutTime), Actions.run(RootSystem.screens.onActionGame));
-            fadeIn = Actions.sequence(Actions.fadeOut(0.001f), Actions.fadeIn(fadeInTime), Actions.run(RootSystem.screens.onFadeIn));
-        }
-    };
+	public void showScreenInstantly(Screen screen)
+	{
+		currentScreen = screen;
+		RootSystem.game.setScreen(screen);
+	}
+	
+	public void showScreen(Screen screen, Stage stage)
+	{
+		nextScreen = screen;
+		stage.addAction(Actions.sequence(Actions.fadeOut(fadeOutTime), Actions.run(RootSystem.screens.changeScreen), Actions.fadeIn(fadeInTime)));
+	}
+	
+	public Runnable changeScreen = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			showScreenInstantly(nextScreen);
+			nextScreen = null;
+		}
+	};
 
 }

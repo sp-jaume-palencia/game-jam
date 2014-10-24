@@ -54,10 +54,19 @@ public class Splashscreen implements Screen
         //wait all loaded
         Image splashImage = new Image(RootSystem.assets.caca);
         splashImage.setPosition((RootSystem.coords.width - splashImage.getWidth())/2, (RootSystem.coords.height - splashImage.getHeight())/2);
+        stage.addAction(Actions.fadeOut(0f));
         stage.addActor(splashImage);
-        stage.addAction(RootSystem.screens.fadeIn);
-        stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(0.5f), Actions.delay(1f), RootSystem.screens.showGame));
+        stage.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1f), Actions.run(showMain)));
 	}
+	
+	public Runnable showMain = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			RootSystem.screens.showScreen(RootSystem.screens.menu, stage);
+		}
+	};
 
 	@Override
 	public void hide() {
