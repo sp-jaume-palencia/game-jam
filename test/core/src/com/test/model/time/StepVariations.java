@@ -1,4 +1,4 @@
-package com.test.utils;
+package com.test.model.time;
 
 public class StepVariations extends TimeVariations {
     public int getValue(int time)  {

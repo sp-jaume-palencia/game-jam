@@ -11,8 +11,13 @@ public class CoordSystem
     //Menuscreen
     public Coord button1Size;
     public Coord button2Size;
+    public Coord button3Size;
+    public Coord button4Size;
     public Coord button1Pos;
     public Coord button2Pos;
+    public Coord button3Pos;
+    public Coord button4Pos;
+	public Coord label1Pos;
     
     //Lobby
     public Coord lobbyRoomButtonSize;
@@ -36,8 +41,13 @@ public class CoordSystem
         //Menuscreen
         button1Size = new Coord(100, 50);
         button2Size = new Coord(100, 50);
+        button3Size = new Coord(100, 50);
+        button4Size = new Coord(100, 50);
         button1Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2, (height - button1Size.y)/2);
         button2Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2 + button1Size.x + 10, (height - button1Size.y)/2);
+        button3Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2, (height - button1Size.y)/4);
+        button4Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2 + button1Size.x + 10, (height - button1Size.y)/4);
+        label1Pos = new Coord(200,400);
         
         lobbyRoomButtonSize = new Coord(300, 50);
         lobbyRoomButtonOrigPos = new Coord(20, height - 20 - lobbyRoomButtonSize.y);
