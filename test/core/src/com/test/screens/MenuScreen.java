@@ -76,7 +76,7 @@ public class MenuScreen implements Screen
     
     public void onServerStuff()
     {
-    	Gdx.app.exit();
+    	RootSystem.screens.showScreen(RootSystem.screens.server, stage);
     }
     
     public void onExit()
