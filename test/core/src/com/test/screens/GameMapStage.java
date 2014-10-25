@@ -214,9 +214,44 @@ public class GameMapStage extends Stage implements GestureListener {
 	{
 		float moveX = -deltaX*_camera.zoom;
 		float moveY = deltaY*_camera.zoom;
-
+		
+		if(!checkXLimits(moveX))
+		{
+			moveX = 0;
+		}
+		
+		if(!checkYLimits(moveY))
+		{
+			moveY = 0;
+		}
+		
 		_camera.translate(moveX, moveY, 0);
-
+		return true;
+	}
+	
+	public boolean checkXLimits(float moveX)
+	{
+		float limitXright = _background.getWidth() - _camera.zoom * RootSystem.coords.width/2;
+		float limitXleft = _camera.zoom * RootSystem.coords.width/2;
+		float nextX = _camera.position.x + moveX;
+		if(nextX >= limitXright || nextX <= limitXleft)
+		{
+			_camera.position.x = ((limitXright - nextX) > 0f) ? limitXleft : limitXright;
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean checkYLimits(float moveY)
+	{
+		float limitYtop = _background.getHeight() - _camera.zoom * RootSystem.coords.height/2;
+		float limitYbottom = _camera.zoom * RootSystem.coords.height/2;
+		float nextY = _camera.position.y + moveY;
+		if(nextY >= limitYtop || nextY <= limitYbottom)
+		{
+			_camera.position.y = ((limitYtop - nextY) > 0f) ? limitYbottom : limitYtop;
+			return false;
+		}
 		return true;
 	}
 
