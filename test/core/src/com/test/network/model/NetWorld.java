@@ -4,7 +4,7 @@ import com.test.network.Network.RoomInfo;
 
 public class NetWorld
 {
-	NetRoom[] rooms;
+	public NetRoom[] rooms;
 
 	public NetWorld()
 	{
@@ -63,6 +63,6 @@ public class NetWorld
 
 	public void startGame(int roomId)
 	{
-		
+		rooms[roomId].startGame();
 	}
 }
