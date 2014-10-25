@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.network.Network.GameActionID;
 import com.test.hud.HUD;
+import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
 public class GameScreen implements Screen 
@@ -21,6 +20,7 @@ public class GameScreen implements Screen
     Viewport viewport;    
     public GameMapStage mapStage;
     Stage hudLayer;
+    long gameTime;
 	
 	public GameScreen()
 	{
@@ -33,6 +33,7 @@ public class GameScreen implements Screen
 	public void show() 
 	{
 		hudLayer = new Stage();
+		hudLayer.setViewport(viewport);
 		HUD hud = new HUD();
 		hudLayer.addActor(hud);
 		mapStage = new GameMapStage(hud);
@@ -56,8 +57,10 @@ public class GameScreen implements Screen
 	
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+        camera.update();
+        viewport.update(width, height);
+        hudLayer.getViewport().update(width, height);
+        mapStage.getViewport().update(width, height);
 	}
 
 	@Override

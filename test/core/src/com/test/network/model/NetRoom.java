@@ -9,7 +9,9 @@ public class NetRoom
 	int players[];
 	int numPlayers;
 	long initTimestamp;
-	long tics;
+	public int currentTurn;
+	public int currentPlayer;
+
 
 	public NetRoom(int i)
 	{
@@ -20,6 +22,7 @@ public class NetRoom
 		players[2] = 0;
 		players[3] = 0;
 		numPlayers = 0;
+		initTimestamp = 0;
 	}
 	
 	public void addPlayer(int playerId)
@@ -34,13 +37,29 @@ public class NetRoom
 	public void startGame()
 	{
 		initTimestamp = TimeUtils.millis();
-		RootSystem.data.initTimestamp = initTimestamp;
+		RootSystem.data.gameState.initTimestamp = initTimestamp;
 	}
 	
-	public long updateTics()
+	public void update(float delta)
 	{
-		tics = (TimeUtils.millis() - initTimestamp)/RootSystem.constants.serverTic;
-		return tics;
+		if(initTimestamp > 0)
+		{
+			int newTurn = (int) ((TimeUtils.millis() - initTimestamp)/RootSystem.constants.turnTime);
+			int newPlayer = currentTurn%4;
+			
+			if(newTurn > currentTurn)
+			{
+				currentTurn = newTurn;
+				RootSystem.net.server.sendEndTurn(newTurn, newPlayer);
+			}
+	
+			if(newPlayer > currentPlayer)
+			{
+				currentPlayer = newPlayer;
+				RootSystem.net.server.sendNewPlayer(newTurn, newPlayer);
+			}
+		}
+		
 	}
 
 }

@@ -68,6 +68,8 @@ public class ServerScreen implements Screen
 		
 		stage.act(delta);
 		stage.draw();
+		
+		RootSystem.net.server.update(delta);
 	}
 
 	@Override

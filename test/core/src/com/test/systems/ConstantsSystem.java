@@ -7,7 +7,7 @@ public class ConstantsSystem {
 	public int alive;
 	public int dead;
 	
-	public int serverTic;
+	public int turnTime;
 	
 	public void load()
 	{
@@ -19,7 +19,7 @@ public class ConstantsSystem {
 		alive = 1;
 		dead = 0;
 		
-		serverTic = 100;
+		turnTime = 10000;
 		
 		
 	}
