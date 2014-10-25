@@ -33,9 +33,10 @@ public class GameMapStage extends Stage implements GestureListener {
 	
     // Actors
     Image _background;
+    Image _paths;
     Array<Planet> _planets;
     Array<Planet> _attackingPlanets;
-    Planet _selectedPlanet;    
+    Planet _selectedPlanet;
     HUD _hud;
     
 	
@@ -61,6 +62,10 @@ public class GameMapStage extends Stage implements GestureListener {
 		_background.setSize(RootSystem.coords.mapSize.x, RootSystem.coords.mapSize.y);
 		addActor(_background);
 		
+		_paths = new Image(RootSystem.assets.paths);
+		_paths.setSize(RootSystem.coords.mapSize.x, RootSystem.coords.mapSize.y);
+		addActor(_paths);
+		
 		createPlanets();
 		
 		_hud = hud;
@@ -78,7 +83,7 @@ public class GameMapStage extends Stage implements GestureListener {
 		{
 			BaseData baseData = timeBases.get(i);
 			
-	        Planet planet = new Planet(baseData.baseId, baseData.position);
+	        Planet planet = new Planet(baseData.baseId, baseData.position, baseData.texture, baseData.group);
 			_planets.add(planet);
 			addActor(planet);
 		}		

@@ -12,6 +12,7 @@ import com.test.systems.RootSystem;
 public class Planet extends Group {
 	
 	int _id;
+	int _group;
 	boolean _selected;
 	boolean _attacking;
 	Vector2 _targetPos;
@@ -22,13 +23,14 @@ public class Planet extends Group {
 	Image _spaceship;
 	Image _target;
 	Label _troopsLabel;
-	Image _actualPlayer;
+	int _actualPlayerId;
 	Image[] _playerSprites;
 	
 	
-	public Planet(int id, Vector2 position)
+	public Planet(int id, Vector2 position, Texture texture, int group)
 	{
 		_id = id;
+		_group = group;
 		
 		float x = position.x - RootSystem.coords.planetSize.x/2;
 		float y = (RootSystem.coords.mapSize.y - position.y) - RootSystem.coords.planetSize.y/2;
@@ -44,22 +46,25 @@ public class Planet extends Group {
 		_spaceship = new Image(RootSystem.assets.spaceShip);
 		_spaceship.setVisible(false);
 		addActor(_spaceship);
-		
+
 		_troopsLabel = new Label("0", RootSystem.assets.UISkin);
+		_troopsLabel.setFontScale(3.0f);
 		_troopsLabel.setColor(1f, 0f, 1f, 1f);
 		_troopsLabel.setSize(RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
 		_troopsLabel.setPosition(x, y);
 		addActor(_troopsLabel);
-		
+
 		_selected = false;
 
-		_sprite = new Image(RootSystem.assets.neutralPlanet);
+		_sprite = new Image(texture);
+		_sprite.setScale(0.4f);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
-		
+
 		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
 		for (int i=0; i<_playerSprites.length; i++) {
-			_playerSprites[i].setPosition(getX(), getY());
+			_playerSprites[i].setPosition(getX()-getWidth()*0.05f, getY()-getHeight()*0.05f);
+			_playerSprites[i].setScale(0.5f);
 			addActor(_playerSprites[i]);
 			_playerSprites[i].setVisible(false);
 		}
@@ -73,17 +78,21 @@ public class Planet extends Group {
 		addActor(_target);
 	}
 	
-	public void setSprite(int ownerId)
+	public void setPlayerSprite(int ownerId)
 	{
-		if(_actualPlayer != null)
+		if(ownerId > 0)
 		{
-			_actualPlayer.setVisible(false);
+			if(_actualPlayerId != -1)
+			{
+				_playerSprites[_actualPlayerId].setVisible(false);
+			}
+			
+			_actualPlayerId = ownerId-1;
+			_playerSprites[_actualPlayerId].setVisible(true);
 		}
-		
-		if (ownerId > 0 && ownerId <= _playerSprites.length)
+		else
 		{
-			_actualPlayer = _playerSprites[ownerId-1];
-			_actualPlayer.setVisible(true);
+			_actualPlayerId = -1;
 		}
 	}
 		
@@ -154,18 +163,19 @@ public class Planet extends Group {
 		super.act(dt);
 		
 		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);
+		
 		_troopsLabel.setText(String.valueOf(baseData.numTroops));
-		setSprite(baseData.ownerId);
+		setPlayerSprite(baseData.ownerId);
 	}
 	
 	@Override
     public void draw(Batch batch, float alpha)
     {
-		if(_actualPlayer.isVisible())
+		if(_actualPlayerId != -1 && _playerSprites[_actualPlayerId].isVisible())
 		{
-			_actualPlayer.draw(batch, alpha);
+			_playerSprites[_actualPlayerId].draw(batch, alpha);
 		}
-		
+
 		if(_spaceship.isVisible())
 		{
 			_spaceship.draw(batch, alpha);
