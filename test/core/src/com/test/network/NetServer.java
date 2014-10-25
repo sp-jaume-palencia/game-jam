@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.test.model.net.CommandAction;
 import com.test.network.Network;
 import com.test.network.Network.GameActionID;
+import com.test.network.Network.GameAddChangeStat;
 import com.test.network.Network.GameCommand;
+import com.test.network.Network.GameDelChangeStat;
 import com.test.network.Network.RoomActionID;
 import com.test.network.Network.RoomCommand;
 import com.test.network.Network.RoomInfo;
@@ -70,15 +73,7 @@ public class NetServer
 				if (object instanceof GameCommand)
 				{
 					GameCommand rc =((GameCommand)object);
-					GameActionID[] a = GameActionID.values();
-					switch(a[rc.actionID])
-					{
-						case BASEATACKBASE:
-							
-							break;
-						default:
-							break;
-					}
+					addCommand(rc);
 					return;
 				}
 			}
@@ -96,6 +91,20 @@ public class NetServer
 		server.start();
 	}
 	
+	protected void addCommand(GameCommand rc)
+	{
+		GameActionID[] a = GameActionID.values();
+		switch(a[rc.actionID])
+		{
+			case BASEATACKBASE:
+				CommandAction ca = new CommandAction(GameActionID.BASEATACKBASE, rc.objectID, rc.value1);
+				RootSystem.commands.addCommand(ca);
+				break;
+			default:
+				break;
+		}
+	}
+
 	protected void quitRoom(int id, int roomID)
 	{
 		//TODO
@@ -104,7 +113,7 @@ public class NetServer
 	protected void joinRoom(int connId, int roomId)
 	{
 		worldServer.playerJoinRoom(roomId, connId);
-		if(worldServer.roomIsReady(roomId))
+		//if(worldServer.roomIsReady(roomId))
 		{
 			worldServer.startGame(roomId);
 			RoomCommand rc = new RoomCommand();
@@ -120,7 +129,26 @@ public class NetServer
 		RoomInfo[] rooms = worldServer.getRooms();
 		server.sendToTCP(connId, rooms);
 	}
+	
+	public void sendAddChangeStat(int gametime, int objectID, int statID, int value)
+	{
+		GameAddChangeStat gcs = new GameAddChangeStat();
+		gcs.gametime = gametime;
+		gcs.objectID = objectID;
+		gcs.statID = statID;
+		gcs.value = value;
+		server.sendToAllTCP(gcs);
+	}
 
+	public void sendDelChangeStat(int gametime, int objectID, int statID)
+	{
+		GameDelChangeStat gcs = new GameDelChangeStat();
+		gcs.gametime = gametime;
+		gcs.objectID = objectID;
+		gcs.statID = statID;
+		server.sendToAllTCP(gcs);
+	}
+	
 	void stopServer()
 	{
 		server.stop();

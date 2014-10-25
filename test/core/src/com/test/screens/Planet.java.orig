@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -18,16 +20,19 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
+<<<<<<< HEAD
 import com.test.game.TimeBase;
+import com.test.model.net.CommandAction.ActionId;
+=======
+>>>>>>> jaumes
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
-public class Planet extends Group {
+public class Planet extends Group implements GestureListener{
 	
 	Spaceship _spaceship;
 	
 	// Status
-	int _previousOwnerId = -1;
 	BaseData _baseData;
 	
 	int START_HP = 5;	
@@ -38,10 +43,9 @@ public class Planet extends Group {
 	Image _cursor;
 	boolean _selected;
 	
-	public Planet(BaseData baseData)
+	public Planet(BaseData baseData)//int baseId, int playerId, int[] annexedBases, float dataX, float dataY)
 	{
 		_baseData = baseData;
-		
 		float x = _baseData.position.x - RootSystem.coords.planetSize.x/2;
 		float y = (RootSystem.coords.mapSize.y - _baseData.position.y) - RootSystem.coords.planetSize.y/2;
 		
@@ -72,24 +76,16 @@ public class Planet extends Group {
 	{
 		// Update base
 		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
-
+		
 		if(_baseData.target != 0)
 		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target - 1);
+			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target);
 			_spaceship.attack(targetPlanet);
 		}
-		
-		updatePlayerId();
 	}
 	
 	public void updatePlayerId()
 	{
-		if(_baseData.owner == _previousOwnerId)
-		{
-			return;
-		}
-		
-		_previousOwnerId = _baseData.owner;		
 		Texture t = null;
 		
 		switch(_baseData.owner)
@@ -164,14 +160,9 @@ public class Planet extends Group {
 		return _baseData.owner;
 	}
 	
-	public BaseData getBaseData()
-	{
-		return _baseData;
-	}
-	
 	public void attackTo(Planet targetPlanet)
 	{
-		if(isPlanetAnnexed(targetPlanet.getBaseData().baseId))
+		if(isPlanetAnnexed(targetPlanet.getPlayerOwnerId()))
 		{		
 			// Attack!!!!
 			_spaceship.attack(targetPlanet);
@@ -205,4 +196,54 @@ public class Planet extends Group {
 			_cursor.draw(batch, alpha);
 		}
     }
+
+	@Override
+	public boolean touchDown(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean tap(float x, float y, int count, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean longPress(float x, float y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean fling(float velocityX, float velocityY, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean panStop(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean zoom(float initialDistance, float distance) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
+			Vector2 pointer1, Vector2 pointer2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }

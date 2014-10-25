@@ -1,20 +1,18 @@
 package com.test.screens;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
+=======
+>>>>>>> 9a331d349b3c2d131e38592e03f0d4da739b28b8
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -111,16 +109,19 @@ public class GameMapStage extends Stage implements GestureListener {
 		
 	private void createPlanets()
 	{
+
 		_planets = new Array<Planet>();
-		HashMap<Integer, TimeBase> timeBases = RootSystem.data.timeData.timeBases;
+		Iterator<Entry<Integer, TimeBase>> it = RootSystem.data.timeData.timeBases.entrySet().iterator();
 		
-		for(int i = 1; i <= timeBases.size(); ++i)
-		{
-			BaseData baseData = timeBases.get(i).getBaseData(GameScreen.getTick());
+	    while (it.hasNext()) 
+	    {
+	        Map.Entry<Integer, TimeBase> pairs = (Map.Entry<Integer, TimeBase>)it.next();
+	        BaseData baseData = pairs.getValue().getBaseData(GameScreen.getTick());
+	        
 	        Planet planet = new Planet(baseData);	        
 			_planets.add(planet);
 			addActor(planet);
-		}		
+	    }
 		
 		_selectedPlanet = null;
 	}

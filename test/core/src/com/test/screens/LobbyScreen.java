@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.network.Network.RoomInfo;
 import com.test.systems.RootSystem;
 
 public class LobbyScreen implements Screen
@@ -105,6 +106,8 @@ public class LobbyScreen implements Screen
     		stage.addActor(butt);
     		roomButtons.add(butt);
     	}
+    	
+        RootSystem.net.client.askRoom();
     }
     
     public void onJoinRoom(int idx)
@@ -116,6 +119,8 @@ public class LobbyScreen implements Screen
     	roomButtons.get(idx).setColor(0.3f, 1.f, 0.3f, 1.0f);
     	
     	labelWaiting.setText("Waiting for the Room to be filled...");
+    	
+    	RootSystem.net.client.joinRoom(idx);
     }
     
     public void onForcePlay()
@@ -166,6 +171,14 @@ public class LobbyScreen implements Screen
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setRoomInfo(RoomInfo[] rooms)
+	{
+		for(RoomInfo room : rooms)
+		{
+			roomButtons.get(room.id).setText(new Integer(room.numPlayer).toString());
+		}
 	}
 
 }

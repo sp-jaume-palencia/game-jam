@@ -74,7 +74,7 @@ public class TimeBase {
 	}
 	
 	public BaseData getBaseData(int time) {
-		//updateState(time);
+		updateState(time);
 		return updatedData;
 	}
 }
