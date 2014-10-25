@@ -7,9 +7,12 @@ import java.util.Map.Entry;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -20,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
+import com.test.data.PlayerState;
 import com.test.hud.HUD;
 import com.test.systems.RootSystem;
 
@@ -27,14 +31,15 @@ import com.test.systems.RootSystem;
 public class GameMapStage extends Stage implements GestureListener {
 	
 	OrthographicCamera _camera;
-    Viewport _viewport;
+    Viewport _viewport;    
     
     // GameStatus
     int _playerId;
+    PlayerState _playerState;
     
     // Actors
     Image _background;
-    Array<Planet> _planets;
+    public Array<Planet> _planets;
     Planet _selectedPlanet;
     
     HUD _hud;
@@ -42,15 +47,18 @@ public class GameMapStage extends Stage implements GestureListener {
     // Zoom
     float ZOOM_SPEED = 0.0225f;
     float INITIAL_ZOOM = 500.0f;
-    float ZOOM_MAX = 1.3f;
-    float ZOOM_MIN = 0.7f;
+    float ZOOM_MAX = 1.5f;
+    float ZOOM_MIN = 0.5f;
     float lastDistance;
 	
 	GameMapStage(HUD hud)
 	{		
+		RootSystem.mapStage = this;
+		
 		// Status
 		_playerId = 1;
-		
+		_playerState = new PlayerState(_playerId, 0, 0);
+				
 		// Camera
 		float centerX = RootSystem.coords.mapSize.x/2;
         float centerY = RootSystem.coords.mapSize.y/2;        
@@ -82,6 +90,9 @@ public class GameMapStage extends Stage implements GestureListener {
 		super.act();
 		super.draw();
 		
+		// Update player state
+		_playerState = RootSystem.data.mapState.getPlayerState(_playerId);
+		
 		for(Planet planet : _planets)
 		{
 			planet.act(dt);
@@ -98,8 +109,9 @@ public class GameMapStage extends Stage implements GestureListener {
 	        Map.Entry<Integer, BaseData> pairs = (Map.Entry<Integer, BaseData>)it.next();
 	        BaseData baseData = pairs.getValue();
 	        Vector2 basePos = baseData.position;
+	        int[] annexedBases = baseData.annexedBases;
 	        
-	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, RootSystem.assets.planet1, basePos.x, basePos.y);	        
+	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, annexedBases, basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
 			_planets.add(planet);
 			addActor(planet);
 	    }
@@ -163,12 +175,13 @@ public class GameMapStage extends Stage implements GestureListener {
                 
         if(selectedPlanet)
         {
-        	// Has selected a planet
+        	// Has selected a planet        	
         	return true;
         }
         else if(_selectedPlanet != null)
         {
         	_selectedPlanet.unselect();
+        	_selectedPlanet = null;
         }
         
         _hud.setActionsVisible(false);
@@ -195,8 +208,6 @@ public class GameMapStage extends Stage implements GestureListener {
 		float moveY = deltaY*_camera.zoom;
 
 		_camera.translate(moveX, moveY, 0);
-		
-		System.out.println("cameraX= " + _camera.position.x + " cameraY= " + _camera.position.y);
 
 		return true;
 	}

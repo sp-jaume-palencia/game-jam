@@ -34,6 +34,7 @@ public class CoordSystem
     
     // Gameplay
     public Coord mapSize;
+    public Coord planetSize;
     
     //HUD
     public Coord hudScrollSize;
@@ -77,6 +78,7 @@ public class CoordSystem
         
         // Gameplay
         mapSize = new Coord(3000, 3000);
+        planetSize = new Coord(100, 100);
         
         //HUD
         hudScrollSize = new Coord(width, 250);

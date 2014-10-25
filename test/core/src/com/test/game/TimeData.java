@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 import com.test.utils.Update;
 
 public class TimeData {
-	HashMap<Integer, TimeActor> timeData;
+	HashMap<Integer, TimeBase> timeData;
 	
 	public TimeData() {
-		timeData = new HashMap<Integer, TimeActor>();
+		timeData = new HashMap<Integer, TimeBase>();
 	}
 	
 	public void update(Map<Integer,Map<String,Update>> map) {
@@ -19,7 +19,7 @@ public class TimeData {
 		}
 	}
 	
-	public TimeActor get(int id) {
+	public TimeBase get(int id) {
 		return timeData.get(id);
 	}
 }
