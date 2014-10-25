@@ -17,6 +17,7 @@ public class HUD extends Group {
 	
 	Label goldLabel;
 	Label pointsLabel;
+	Label timeLabel;
 	Image goldIcon;
 	Image pointsIcon;
 	
@@ -58,6 +59,12 @@ public class HUD extends Group {
 		pointsLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
 		pointsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 3, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(pointsLabel);
+		
+		timeLabel = new Label("00:00", RootSystem.assets.UISkin);
+		timeLabel.setColor(1f, 0f, 1f, 1f);
+		timeLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		timeLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 4, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(timeLabel);
 		
 		attackButton = new Button(RootSystem.assets.UISkin);
 		attackButton.setColor(1f, 0f, 0f, 1f);
