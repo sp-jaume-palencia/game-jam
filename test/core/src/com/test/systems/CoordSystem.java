@@ -77,7 +77,7 @@ public class CoordSystem
         playButtonPos = new Coord(lobbyWaitingPos.x, lobbyWaitingPos.y - lobbyWaitingSize.y - 50);
         
         // Gameplay
-        mapSize = new Coord(3000, 3000);
+        mapSize = new Coord(1200, 1920); //3000, 3000
         planetSize = new Coord(100, 100);
         
         //HUD

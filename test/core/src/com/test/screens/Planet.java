@@ -13,6 +13,7 @@ import com.test.systems.RootSystem;
 public class Planet extends Group {
 	
 	int _id;
+	int _group;
 	boolean _selected;
 	boolean _attacking;
 	Vector2 _targetPos;
@@ -25,9 +26,10 @@ public class Planet extends Group {
 	Image[] _playerSprites;
 	
 	
-	public Planet(int id, Vector2 position)
+	public Planet(int id, Vector2 position, Texture texture, int group)
 	{
 		_id = id;
+		_group = group;
 		
 		float x = position.x - RootSystem.coords.planetSize.x/2;
 		float y = (RootSystem.coords.mapSize.y - position.y) - RootSystem.coords.planetSize.y/2;
@@ -52,13 +54,15 @@ public class Planet extends Group {
 		
 		_selected = false;
 
-		_sprite = new Image(RootSystem.assets.neutralPlanet);
+		_sprite = new Image(texture);
+		_sprite.setScale(0.4f);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 		
 		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
 		for (int i=0; i<_playerSprites.length; i++) {
-			_playerSprites[i].setPosition(getX(), getY());
+			_playerSprites[i].setPosition(getX()-getWidth()*0.05f, getY()-getHeight()*0.05f);
+			_playerSprites[i].setScale(0.5f);
 			addActor(_playerSprites[i]);
 			_playerSprites[i].setVisible(false);
 		}
