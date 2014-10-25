@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
-import com.test.game.TimeBase;
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
@@ -71,7 +70,7 @@ public class Planet extends Group {
 	private void syncData()
 	{
 		// Update base
-		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
+		_baseData = RootSystem.data.map.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
 
 		if(_baseData.target != 0)
 		{
@@ -114,7 +113,9 @@ public class Planet extends Group {
 		}
 						
 		_sprite = new Image(t);
-		_sprite.setPosition(getX(), getY());
+		
+		float xMargin = _baseData.owner == 0? -20.0f : 0.0f;
+		_sprite.setPosition(getX() + xMargin, getY());
 		addActor(_sprite);
 	}
 	

@@ -21,11 +21,9 @@ public class GameScreen implements Screen
     Viewport viewport;    
     public GameMapStage mapStage;
     Stage hudLayer;
-    public int gameTime;
 	
 	public GameScreen()
 	{
-		gameTime = 0;
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
         viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
@@ -33,8 +31,7 @@ public class GameScreen implements Screen
 
 	@Override
 	public void show() 
-	{			
-		RootSystem.commands.sendAttack(53, 13, 9898, GameActionID.BASEATACKBASE);
+	{
 		hudLayer = new Stage();
 		HUD hud = new HUD();
 		hudLayer.addActor(hud);
@@ -49,8 +46,6 @@ public class GameScreen implements Screen
 	@Override
 	public void render(float delta) 
 	{
-		gameTime += delta;
-		
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mapStage.act(delta);
@@ -87,10 +82,5 @@ public class GameScreen implements Screen
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	static public int getTick()
-	{
-		return RootSystem.screens.gameplay.gameTime + 300; // TODO coger scroll
 	}
 }
