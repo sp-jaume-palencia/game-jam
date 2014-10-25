@@ -107,8 +107,7 @@ public class HUD extends Group {
 	@Override
 	public void act(float delta)
 	{
-		long tics = (TimeUtils.millis() - RootSystem.data.initTimestamp)/RootSystem.constants.serverTic;
-		
-		timeLabel.setText(new Integer((int) tics).toString());
+		String str = new String(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
+		timeLabel.setText(str);
 	}
 }

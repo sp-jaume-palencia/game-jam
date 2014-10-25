@@ -1,40 +1,46 @@
 package com.test.systems;
 
+import java.util.List;
+
 import com.sun.jmx.snmp.Timestamp;
 import com.test.model.net.CommandAction;
 import com.test.model.net.CommandHistory;
 import com.test.network.Network.GameActionID;
-import com.test.network.Network.GameCommand;
+import com.test.network.Network.GameAttack;
 
 public class CommandSystem
 {
 	CommandHistory history;
+	
+	int currentTurn;
+	int playerTurn;
+	
+	List<GameAttack> attacks;
 	
 	public void load()
 	{
 		history = new CommandHistory();
 	}
 	
-	public void addCommand(CommandAction cmd)
+	public void nextTurn()
 	{
-		history.addCommandAction(cmd);
-		RootSystem.net.server.sendAddChangeStat(cmd.time, cmd.actorId, 0, -1);
-		//update();
+		currentTurn++;
 	}
 	
-	public void update()
+	public void nextPlayer()
 	{
-		
-		//RootSystem.net.server.sendAddChangeStat();
-		//RootSystem.net.server.sendDelChangeStat();
+		//update model
+		//RootSystem.data.mapState.process(attacks);
+		//parse mapState
+		RootSystem.net.server.sendNewState();
+		attacks.clear();
+		playerTurn++;
 	}
 	
-	public void sendAttack(int originId, int targetId, int tickTime, GameActionID actionId)
+	public void addAttack(GameAttack ga)
 	{
-		GameCommand cmd = new GameCommand();
-		cmd.actionID = actionId.getValue();
-		cmd.gametime = tickTime;
-		cmd.objectID = originId;
-		cmd.value1 = targetId;
+		attacks.add(ga);
 	}
+	
+	
 }

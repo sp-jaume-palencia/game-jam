@@ -9,9 +9,9 @@ import com.esotericsoftware.kryonet.Server;
 import com.test.model.net.CommandAction;
 import com.test.network.Network;
 import com.test.network.Network.GameActionID;
-import com.test.network.Network.GameAddChangeStat;
-import com.test.network.Network.GameCommand;
-import com.test.network.Network.GameDelChangeStat;
+import com.test.network.Network.GameAttack;
+import com.test.network.Network.GameEndOfTurn;
+import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomActionID;
 import com.test.network.Network.RoomCommand;
 import com.test.network.Network.RoomInfo;
@@ -53,16 +53,16 @@ public class NetServer
 				{
 					RoomCommand rc =((RoomCommand)object);
 					RoomActionID[] a = RoomActionID.values();
-					switch(a[rc.actionID])
+					switch(a[rc.actionId])
 					{
 						case GETROOMS:
 							sendRooms(connection.getID());
 							break;
 						case JOINROOM:
-							joinRoom(connection.getID(), rc.roomID);
+							joinRoom(connection.getID(), rc.roomId);
 							break;
 						case QUITROOM:
-							quitRoom(connection.getID(), rc.roomID);
+							quitRoom(connection.getID(), rc.roomId);
 							break;
 						default:
 							break;
@@ -70,10 +70,11 @@ public class NetServer
 					return;
 				}
 
-				if (object instanceof GameCommand)
+				if (object instanceof GameAttack)
 				{
-					GameCommand rc =((GameCommand)object);
-					addCommand(rc);
+					GameAttack rc =((GameAttack)object);
+					addAttack(rc);
+					server.sendToAllExceptTCP(connection.getID(), rc);
 					return;
 				}
 			}
@@ -91,18 +92,9 @@ public class NetServer
 		server.start();
 	}
 	
-	protected void addCommand(GameCommand rc)
+	protected void addAttack(GameAttack rc)
 	{
-		GameActionID[] a = GameActionID.values();
-		switch(a[rc.actionID])
-		{
-			case BASEATACKBASE:
-				CommandAction ca = new CommandAction(GameActionID.BASEATACKBASE, rc.objectID, rc.value1);
-				RootSystem.commands.addCommand(ca);
-				break;
-			default:
-				break;
-		}
+		RootSystem.commands.addAttack(rc);
 	}
 
 	protected void quitRoom(int id, int roomID)
@@ -117,8 +109,8 @@ public class NetServer
 		{
 			worldServer.startGame(roomId);
 			RoomCommand rc = new RoomCommand();
-			rc.roomID = roomId;
-			rc.actionID = Network.RoomActionID.STARTGAME.getValue();
+			rc.roomId = roomId;
+			rc.actionId = Network.RoomActionID.STARTGAME.getValue();
 			
 			server.sendToAllTCP(rc);
 		}
@@ -130,23 +122,10 @@ public class NetServer
 		server.sendToTCP(connId, rooms);
 	}
 	
-	public void sendAddChangeStat(int gametime, int objectID, int statID, int value)
+	public void sendNewState()
 	{
-		GameAddChangeStat gcs = new GameAddChangeStat();
-		gcs.gametime = gametime;
-		gcs.objectID = objectID;
-		gcs.statID = statID;
-		gcs.value = value;
-		server.sendToAllTCP(gcs);
-	}
-
-	public void sendDelChangeStat(int gametime, int objectID, int statID)
-	{
-		GameDelChangeStat gcs = new GameDelChangeStat();
-		gcs.gametime = gametime;
-		gcs.objectID = objectID;
-		gcs.statID = statID;
-		server.sendToAllTCP(gcs);
+		// TODO Auto-generated method stub
+		
 	}
 	
 	void stopServer()
@@ -164,4 +143,30 @@ public class NetServer
 		Log.set(Log.LEVEL_DEBUG);
 		new NetServer();
 	}
+
+	public void update(float delta)
+	{
+		for(NetRoom room : worldServer.rooms)
+		{
+			room.update(delta);
+		}
+	}
+
+	public void sendEndTurn(int newTurn, int newPlayer)
+	{
+		GameYourTurn turn = new GameYourTurn();
+		turn.turn = newTurn;
+		turn.player = newPlayer;
+		server.sendToAllTCP(turn);
+	}
+
+	public void sendNewPlayer(int newTurn, int newPlayer)
+	{
+		GameEndOfTurn turn = new GameEndOfTurn();
+		turn.turn = newTurn;
+		turn.player = newPlayer;
+		server.sendToAllTCP(turn);
+	}
+
+	
 }

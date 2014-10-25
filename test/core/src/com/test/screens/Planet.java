@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -18,106 +19,52 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
-import com.test.game.TimeBase;
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
 public class Planet extends Group {
 	
-	Spaceship _spaceship;
-	
-	// Status
-	int _previousOwnerId = -1;
-	BaseData _baseData;
-	
-	int START_HP = 5;	
-	int _hitPoints = START_HP;
+	int _id;
+	boolean _selected;
+	boolean _attacking;
+	Vector2 _targetPos;
 	
 	// Textures
 	Image _sprite;
 	Image _cursor;
-	boolean _selected;
+	Image _spaceship;
 	
-	public Planet(BaseData baseData)
+	
+	public Planet(int id, Vector2 position)
 	{
-		_baseData = baseData;
+		_id = id;
 		
-		float x = _baseData.position.x - RootSystem.coords.planetSize.x/2;
-		float y = (RootSystem.coords.mapSize.y - _baseData.position.y) - RootSystem.coords.planetSize.y/2;
+		float x = position.x - RootSystem.coords.planetSize.x/2;
+		float y = (RootSystem.coords.mapSize.y - position.y) - RootSystem.coords.planetSize.y/2;
 		
 		setPosition(x, y);
 		setBounds(getX(),getY(), RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
-					
-		
+							
 		_cursor = new Image(RootSystem.assets.cursor);
 		float marginX = (getWidth() - _cursor.getWidth())/2;
 		_cursor.setPosition(getX() + marginX, getY() - _cursor.getHeight());
 		addActor(_cursor);
 		
-		_spaceship = new Spaceship(RootSystem.assets.spaceShip, this);
+		_spaceship = new Image(RootSystem.assets.spaceShip);
+		_spaceship.setVisible(false);
 		addActor(_spaceship);
 		
 		_selected = false;
-		updatePlayerId();
 	}
 	
-	@Override
-	public void act(float dt)
-	{
-		syncData();
-		super.act(dt);
-	}
-	
-	private void syncData()
-	{
-		// Update base
-		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
-
-		if(_baseData.target != 0)
-		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target - 1);
-			_spaceship.attack(targetPlanet);
-		}
-		
-		updatePlayerId();
-	}
-	
-	public void updatePlayerId()
-	{
-		if(_baseData.owner == _previousOwnerId)
-		{
-			return;
-		}
-		
-		_previousOwnerId = _baseData.owner;		
-		Texture t = null;
-		
-		switch(_baseData.owner)
-		{
-			 case 1:
-				 t = RootSystem.assets.planet1;
-				 break;
-			 case 2:
-				 t = RootSystem.assets.planet2;
-				 break;
-			 case 3:
-				 t = RootSystem.assets.planet3;
-				 break;
-			 case 4:
-				 t = RootSystem.assets.planet4;
-				 break;
-			 default:
-			 {
-				 t = RootSystem.assets.neutralPlanet;
-				 break;
-			 }
-		}
-						
+	public void setSprite(Texture t)
+	{		
 		_sprite = new Image(t);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
+
 	}
-	
+		
 	public boolean isInside(float x, float y)
 	{
 		return x > getX() && x < getX() + getWidth() && y > getY() && y < getY() + getHeight();
@@ -146,58 +93,40 @@ public class Planet extends Group {
 	{
 		_selected = false;
 	}
-	
-	public void receiveDamage(Spaceship enemySpaceship)
+
+	public int getId()
 	{
-		_hitPoints -= enemySpaceship.getDamage();
+		return _id;
+	}
 		
-		if(_hitPoints < 0)
+	public void attackTo(Vector2 attackPos)
+	{
+		if(_attacking)
 		{
-			_hitPoints = START_HP;
-			_baseData.owner = enemySpaceship.getPlayerOwnerId();
-			updatePlayerId();
-		}
-	}
-	
-	public int getPlayerOwnerId()
-	{
-		return _baseData.owner;
-	}
-	
-	public BaseData getBaseData()
-	{
-		return _baseData;
-	}
-	
-	public void attackTo(Planet targetPlanet)
-	{
-		if(isPlanetAnnexed(targetPlanet.getBaseData().baseId))
-		{		
-			// Attack!!!!
-			_spaceship.attack(targetPlanet);
-			RootSystem.commands.sendAttack(_baseData.owner, targetPlanet.getPlayerOwnerId(), GameScreen.getTick(), GameActionID.BASEATACKBASE);
-		}
-	}
-	
-	public boolean isPlanetAnnexed(int id)
-	{
-		System.out.println("Planet actual: " + id + " attackando a: ");
-		for(int annexedId : _baseData.annexedBases)
-		{
-			System.out.println(annexedId);
-			if(annexedId == id)
-			{
-				return true;
-			}
+			return;
 		}
 		
-		return false;
-	}
+		_attacking = true;
+		_targetPos = attackPos;		
+		_spaceship.clearActions();
 		
+		Vector2 actPos = new Vector2(getX(), getY());
+		Vector2 midPos = attackPos.sub(actPos);
+		
+		midPos.set(actPos.x + midPos.x/2, actPos.y + midPos.y/2);
+		_spaceship.addAction(Actions.moveTo(midPos.x, midPos.y, 1.5f));		
+		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 1.5f), Actions.scaleTo(1.0f, 1.0f))));
+		_spaceship.setVisible(true);
+	}
+			
 	@Override
     public void draw(Batch batch, float alpha)
     {
-		_spaceship.draw(batch, alpha);
+		if(_spaceship.isVisible())
+		{
+			_spaceship.draw(batch, alpha);
+		}
+		
 		_sprite.draw(batch, alpha);
 		
 		if(_selected)
