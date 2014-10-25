@@ -9,9 +9,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -47,8 +49,8 @@ public class GameMapStage extends Stage implements GestureListener {
     // Zoom
     float ZOOM_SPEED = 0.0225f;
     float INITIAL_ZOOM = 500.0f;
-    float ZOOM_MAX = 1.3f;
-    float ZOOM_MIN = 0.7f;
+    float ZOOM_MAX = 1.5f;
+    float ZOOM_MIN = 0.5f;
     float lastDistance;
 	
 	GameMapStage()
@@ -103,13 +105,33 @@ public class GameMapStage extends Stage implements GestureListener {
 	        Map.Entry<Integer, BaseData> pairs = (Map.Entry<Integer, BaseData>)it.next();
 	        BaseData baseData = pairs.getValue();
 	        Vector2 basePos = baseData.position;
+	        int[] annexedBases = baseData.annexedBases;
 	        
-	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, RootSystem.assets.planet1, basePos.x, basePos.y);	        
+	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, annexedBases, getRandomPlanet(), basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
 			_planets.add(planet);
 			addActor(planet);
 	    }
 		
 		_selectedPlanet = null;
+	}
+	
+	private Texture getRandomPlanet()
+	{
+		int random = MathUtils.random(1, 4);
+		
+		switch (random)
+		{
+			case 1:
+				return RootSystem.assets.planet1;
+			case 2:
+				return RootSystem.assets.planet2;
+			case 3:
+				return RootSystem.assets.planet3;
+			case 4:
+				return RootSystem.assets.planet4;
+		}
+		
+		return null;
 	}
 	
 	private Vector2 getTouchPos(float x, float y)

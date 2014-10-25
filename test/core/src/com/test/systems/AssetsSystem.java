@@ -9,7 +9,7 @@ public class AssetsSystem
 	public Skin UISkin;
 	public Texture caca;
 	public Texture gameplayBackground1;
-	public Texture planet1;
+	public Texture planet1, planet2, planet3, planet4;
 	public Texture cursor;
 	public Texture spaceShip;
 	
@@ -21,6 +21,9 @@ public class AssetsSystem
 		planet1 = new Texture(Gdx.files.internal("textures/planet1.png"));
 		cursor = new Texture(Gdx.files.internal("textures/cursor.png"));
 		spaceShip = new Texture(Gdx.files.internal("textures/spaceship.png"));
+		planet2 = new Texture(Gdx.files.internal("textures/planet2.png"));
+		planet3 = new Texture(Gdx.files.internal("textures/planet3.png"));
+		planet4 = new Texture(Gdx.files.internal("textures/planet4.png"));
 	}
 
 }

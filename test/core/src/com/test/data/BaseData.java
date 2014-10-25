@@ -7,12 +7,14 @@ public class BaseData
 	public int baseId;
 	public int ownerId;
 	public Vector2 position;
+	public int[] annexedBases;
 	
-	public BaseData(int baseId, int playerId, Vector2 pos)
+	public BaseData(int baseId, int playerId, Vector2 pos, int[] annexedBases)
 	{
 		this.baseId = baseId;
 		this.ownerId = playerId;
 		this.position = pos;
+		this.annexedBases = annexedBases;
 	}
 	
 	public BaseData(int baseId)
