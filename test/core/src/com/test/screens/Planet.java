@@ -33,6 +33,7 @@ public class Planet extends Group {
 	Image _sprite;
 	Image _cursor;
 	Image _spaceship;
+	Image[] _playerSprites;
 	
 	
 	public Planet(int id, Vector2 position)
@@ -55,6 +56,13 @@ public class Planet extends Group {
 		addActor(_spaceship);
 		
 		_selected = false;
+		
+		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
+		for (int i=0; i<_playerSprites.length; i++) {
+			_playerSprites[i].setPosition(getX(), getY());
+			addActor(_playerSprites[i]);
+			_playerSprites[i].setVisible(false);
+		}
 	}
 	
 	public void setSprite(Texture t)

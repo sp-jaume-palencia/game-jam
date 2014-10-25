@@ -90,30 +90,16 @@ public class GameMapStage extends Stage implements GestureListener {
 	public void setPlanetTexture(Planet planet)
 	{
 		int ownerId = RootSystem.data.mapState.getBaseState(planet.getId()).ownerId;
-		Texture t = null;
 		
-		switch(ownerId)
+		for (int i=0; i<planet._playerSprites.length; i++)
 		{
-			 case 1:
-				 t = RootSystem.assets.planet1;
-				 break;
-			 case 2:
-				 t = RootSystem.assets.planet2;
-				 break;
-			 case 3:
-				 t = RootSystem.assets.planet3;
-				 break;
-			 case 4:
-				 t = RootSystem.assets.planet4;
-				 break;
-			 default:
-			 {
-				 t = RootSystem.assets.neutralPlanet;
-				 break;
-			 }
+			planet._playerSprites[i].setVisible(false);
 		}
-						
-		planet.setSprite(t);
+		
+		if (ownerId > 0 && ownerId <= planet._playerSprites.length)
+		{
+			planet._playerSprites[ownerId-1].setVisible(true);
+		}
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
