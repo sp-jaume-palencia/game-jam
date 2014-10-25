@@ -22,6 +22,7 @@ public class Planet extends Group {
 	Image _cursor;
 	Image _spaceship;
 	Label _troopsLabel;
+	Image[] _playerSprites;
 	
 	
 	public Planet(int id, Vector2 position)
@@ -50,42 +51,30 @@ public class Planet extends Group {
 		addActor(_troopsLabel);
 		
 		_selected = false;
+
+		_sprite = new Image(RootSystem.assets.neutralPlanet);
+		_sprite.setPosition(getX(), getY());
+		addActor(_sprite);
+		
+		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
+		for (int i=0; i<_playerSprites.length; i++) {
+			_playerSprites[i].setPosition(getX(), getY());
+			addActor(_playerSprites[i]);
+			_playerSprites[i].setVisible(false);
+		}
 	}
 	
 	public void setSprite(int ownerId)
-	{		
-		if(_sprite != null)
+	{
+		for (int i = 0; i < _playerSprites.length; i++)
 		{
-			return;
+			_playerSprites[i].setVisible(false);
 		}
 		
-		// TODO IÑAKI
-		Texture t = null;
-		
-		switch(ownerId)
+		if (ownerId > 0 && ownerId <= _playerSprites.length)
 		{
-			 case 1:
-				 t = RootSystem.assets.planet1;
-				 break;
-			 case 2:
-				 t = RootSystem.assets.planet2;
-				 break;
-			 case 3:
-				 t = RootSystem.assets.planet3;
-				 break;
-			 case 4:
-				 t = RootSystem.assets.planet4;
-				 break;
-			 default:
-			 {
-				 t = RootSystem.assets.neutralPlanet;
-				 break;
-			 }
-		}		
-		
-		_sprite = new Image(t);
-		_sprite.setPosition(getX(), getY());
-		addActor(_sprite);
+			_playerSprites[ownerId-1].setVisible(true);
+		}
 	}
 		
 	public boolean isInside(float x, float y)
