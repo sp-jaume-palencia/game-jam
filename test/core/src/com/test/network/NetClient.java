@@ -58,38 +58,6 @@ public class NetClient {
 			}
 		});
 
-		// Request the host from the user.
-		/*String input = (String)JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-				null, null, "localhost");
-		if (input == null || input.trim().length() == 0) System.exit(1);
-		final String host = input.trim();
-
-		// Request the user's name.
-		input = (String)JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
-				null, "Test");
-		if (input == null || input.trim().length() == 0) System.exit(1);
-		name = input.trim();
-
-		
-		// All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
-		chatFrame = new ChatFrame(host);
-		// This listener is called when the send button is clicked.
-		chatFrame.setSendListener(new Runnable() {
-			public void run () {
-				ChatMessage chatMessage = new ChatMessage();
-				chatMessage.text = chatFrame.getSendText();
-				client.sendTCP(chatMessage);
-			}
-		});
-		// This listener is called when the chat window is closed.
-		chatFrame.setCloseListener(new Runnable() {
-			public void run () {
-				client.stop();
-			}
-		});
-		chatFrame.setVisible(true);
-		
-		*/
 		final String host = "192.168.0.80";
 
 		// We'll do the connect on a new thread so the ChatFrame can show a progress bar.
@@ -131,16 +99,12 @@ public class NetClient {
 	{
 		RootSystem.screens.lobby.onForcePlay();
 	}
-
-
-	/*public void sendMessage(String msg)
-	{
-		ChatMessage chatmsg = new ChatMessage();
-		chatmsg.text = msg;
-		client.sendTCP(chatmsg);
-		
-	}*/
 	
+	public void sendCommand(GameCommand cmd)
+	{
+		client.sendTCP(cmd);
+	}
+
 	public static void main (String[] args) {
 		Log.set(Log.LEVEL_DEBUG);
 		new NetClient();

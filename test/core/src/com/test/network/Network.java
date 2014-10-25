@@ -11,6 +11,8 @@ public class Network
 	{
 		Kryo kryo = endPoint.getKryo();
 		kryo.register(GameCommand.class);
+		kryo.register(GameAddChangeStat.class);
+		kryo.register(GameDelChangeStat.class);
 		kryo.register(RoomCommand.class);
 		kryo.register(RoomList.class);
 		kryo.register(RoomInfo.class);
@@ -29,6 +31,21 @@ public class Network
 		public int value3;
 		public int value4;
 		public int value5;
+	}
+	
+	static public class GameAddChangeStat
+	{
+		public int gametime;
+		public int objectID;
+		public int statID;
+		public int value;
+	}
+	
+	static public class GameDelChangeStat
+	{
+		public int gametime;
+		public int objectID;
+		public int statID;
 	}
 	
 	static public class RoomCommand
