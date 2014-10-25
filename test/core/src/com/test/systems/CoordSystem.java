@@ -88,6 +88,6 @@ public class CoordSystem
         hudActionButtonOrigPos = new Coord((width - hudActionButtonSize.x * kNumButtons)/2, hudScrollSize.y);
         
         hudResourceSize = new Coord(width/5, 100);
-        hudResourceOrigPos = new Coord(0, height - hudResourceSize.y);
+        hudResourceOrigPos = new Coord(0, height/2);
     }
 }

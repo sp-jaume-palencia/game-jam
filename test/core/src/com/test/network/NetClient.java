@@ -3,6 +3,7 @@ package com.test.network;
 import java.awt.EventQueue;
 import java.io.IOException;
 
+import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -98,6 +99,7 @@ public class NetClient {
 	protected void startGame()
 	{
 		RootSystem.screens.lobby.onForcePlay();
+		RootSystem.data.initTimestamp = TimeUtils.millis();
 	}
 	
 	public void sendCommand(GameCommand cmd)

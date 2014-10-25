@@ -36,5 +36,7 @@ public class CommandSystem
 		cmd.gametime = scrollTime;
 		cmd.objectID = originId;
 		cmd.value1 = targetId;
+		
+		RootSystem.net.client.sendCommand(cmd);
 	}
 }

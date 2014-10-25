@@ -41,7 +41,6 @@ public class GameScreen implements Screen
 		multiplexer.addProcessor(hudLayer);
 		multiplexer.addProcessor(new GestureDetector(mapStage));
 		Gdx.input.setInputProcessor(multiplexer);
-
 	}
 	
 	@Override

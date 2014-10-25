@@ -113,7 +113,7 @@ public class NetServer
 	protected void joinRoom(int connId, int roomId)
 	{
 		worldServer.playerJoinRoom(roomId, connId);
-		if(worldServer.roomIsReady(roomId))
+		//if(worldServer.roomIsReady(roomId))
 		{
 			worldServer.startGame(roomId);
 			RoomCommand rc = new RoomCommand();

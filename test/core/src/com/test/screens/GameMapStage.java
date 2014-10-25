@@ -83,10 +83,6 @@ public class GameMapStage extends Stage implements GestureListener {
 		
 		createPlanets();
 		
-		_selectedPlanet = null;
-		
-		
-		Gdx.input.setInputProcessor(new GestureDetector(this));
 		_hud = hud;
 		_hud.setActionsVisible(false);
 	}

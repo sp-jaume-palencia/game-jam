@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.test.systems.RootSystem;
 
 public class HUD extends Group {
@@ -101,5 +102,13 @@ public class HUD extends Group {
 	{
 		attackButton.setVisible(visible);
 		upgradeButton.setVisible(visible);
+	}
+	
+	@Override
+	public void act(float delta)
+	{
+		long tics = (TimeUtils.millis() - RootSystem.data.initTimestamp)/RootSystem.constants.serverTic;
+		
+		timeLabel.setText(new Integer((int) tics).toString());
 	}
 }
