@@ -22,6 +22,7 @@ public class Planet extends Group {
 	Image _cursor;
 	Image _spaceship;
 	Label _troopsLabel;
+	Image _actualPlayer;
 	Image[] _playerSprites;
 	
 	
@@ -66,14 +67,15 @@ public class Planet extends Group {
 	
 	public void setSprite(int ownerId)
 	{
-		for (int i = 0; i < _playerSprites.length; i++)
+		if(_actualPlayer != null)
 		{
-			_playerSprites[i].setVisible(false);
+			_actualPlayer.setVisible(false);
 		}
 		
 		if (ownerId > 0 && ownerId <= _playerSprites.length)
 		{
-			_playerSprites[ownerId-1].setVisible(true);
+			_actualPlayer = _playerSprites[ownerId-1];
+			_actualPlayer.setVisible(true);
 		}
 	}
 		
@@ -146,12 +148,18 @@ public class Planet extends Group {
 	@Override
     public void draw(Batch batch, float alpha)
     {
+		if(_actualPlayer.isVisible())
+		{
+			_actualPlayer.draw(batch, alpha);
+		}
+		
 		if(_spaceship.isVisible())
 		{
 			_spaceship.draw(batch, alpha);
 		}
 		
 		_sprite.draw(batch, alpha);
+		_troopsLabel.draw(batch, alpha);
 		
 		if(_selected)
 		{
