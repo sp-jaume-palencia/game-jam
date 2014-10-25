@@ -47,7 +47,7 @@ public class MenuScreen implements Screen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
             	onNewGame();
-            	RootSystem.net.setAsClient();
+            	//RootSystem.net.setAsClient();
                 return true;
             }
         });

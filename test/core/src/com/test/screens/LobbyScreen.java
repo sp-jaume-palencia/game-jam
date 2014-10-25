@@ -107,7 +107,7 @@ public class LobbyScreen implements Screen
     		roomButtons.add(butt);
     	}
     	
-        RootSystem.net.client.askRoom();
+        //RootSystem.net.client.askRoom();
     }
     
     public void onJoinRoom(int idx)

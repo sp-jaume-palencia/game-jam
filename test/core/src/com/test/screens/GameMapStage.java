@@ -189,7 +189,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	private void tryToAttackPlanet(Planet planet)
 	{
 		// Enemy planet
-		if(_selectedPlanet == null && !isAttacking(planet.getId()))
+		if(_selectedPlanet == null || isAttacking(_selectedPlanet.getId()))
 		{
 			return;
 		}

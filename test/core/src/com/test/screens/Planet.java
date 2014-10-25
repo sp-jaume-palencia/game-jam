@@ -61,6 +61,7 @@ public class Planet extends Group {
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 
+		_actualPlayerId = -1;
 		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
 		for (int i=0; i<_playerSprites.length; i++) {
 			_playerSprites[i].setPosition(getX()-getWidth()*0.05f, getY()-getHeight()*0.05f);

@@ -52,7 +52,7 @@ public class MapState
 		BaseState planet = baseStates.get(id);
 		PlayerState playerState = RootSystem.data.playerState;
 		
-		return planet.baseId == playerState.id;
+		return planet.ownerId == playerState.id;
 	}
 	
 	public void attackTo(int originId, int targetId)

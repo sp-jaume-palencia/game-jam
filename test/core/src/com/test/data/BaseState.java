@@ -14,7 +14,7 @@ public class BaseState {
 	{
 		this.data = data;
 		this.baseId = data.baseId;
-		this.ownerId = MathUtils.random(1, 4);
+		this.ownerId = MathUtils.random(0, 4);
 		this.numTroops = MathUtils.random(0, 99);
 	}
 }
