@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.badlogic.gdx.math.Vector2;
 import com.test.utils.Update;
 
 public class TimeData {
@@ -11,6 +12,11 @@ public class TimeData {
 	
 	public TimeData() {
 		timeBases = new HashMap<Integer, TimeBase>();
+	}
+	
+	public void addBase(int baseId, Vector2 position, int[] annexedBases) {
+		TimeBase timeBase = new TimeBase(baseId, position, annexedBases);
+		timeBases.put(baseId, timeBase);
 	}
 	
 	public void update(Map<Integer,Map<String,Update>> map) {
