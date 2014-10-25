@@ -36,7 +36,7 @@ public class GameMapStage extends Stage implements GestureListener {
     Image _background;
     Array<Planet> _planets;
     Array<Planet> _attackingPlanets;
-    Planet _selectedPlanet;    
+    Planet _selectedPlanet;
     HUD _hud;
     
 	
