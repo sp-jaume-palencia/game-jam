@@ -47,6 +47,7 @@ public class MenuScreen implements Screen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
             	onNewGame();
+            	RootSystem.net.setAsClient();
                 return true;
             }
         });
@@ -76,6 +77,7 @@ public class MenuScreen implements Screen
     
     public void onServerStuff()
     {
+    	RootSystem.net.setAsServer();
     	RootSystem.screens.showScreen(RootSystem.screens.server, stage);
     }
     

@@ -19,8 +19,11 @@ public class NetRoom
 	
 	public void addPlayer(int playerId)
 	{
-		players[numPlayers] = playerId;
-		numPlayers++;
+		if(numPlayers < players.length)
+		{
+			players[numPlayers] = playerId;
+			numPlayers++;
+		}
 	}
 
 }

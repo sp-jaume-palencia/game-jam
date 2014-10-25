@@ -10,19 +10,30 @@ public class CommandAction
 		CONSTRUCT
 	}
 	
+	public enum statType
+	{
+		HEALTH,
+		POWER,
+		DEFENSE
+	}
+	
 	public int actorId;
-	public List<Integer> affectedIds;	
+	public int targetId;
 	public ActionId actionId;
 	public int time;
 	
-	public CommandAction(int actorId, ActionId actionId)
+	public List<Integer> statsAffected;
+	public List<Integer> statsModifier;
+	
+	public CommandAction(int actorId, int targetId, ActionId actionId)
 	{
 		this.actorId = actorId;
 		this.actionId = actionId;
 	}
 	
-	public void addAffected(int affectedId)
+	public void addAffected(Integer statAffected, Integer statModifier)
 	{
-		affectedIds.add(affectedId);
+		statsAffected.add(statAffected);
+		statsModifier.add(statModifier);
 	}
 }

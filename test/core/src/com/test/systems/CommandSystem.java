@@ -9,7 +9,7 @@ public class CommandSystem
 	
 	public void load()
 	{
-		
+		history = new CommandHistory();
 	}
 	
 	public void addCommand(CommandAction cmd)

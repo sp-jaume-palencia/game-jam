@@ -35,8 +35,8 @@ public class CoordSystem
     public void load()
     {
         //Common
-        width = 1000;
-        height = 500;
+        width = 500;
+        height = 1000;
         
         //Menuscreen
         button1Size = new Coord(100, 50);
@@ -47,7 +47,7 @@ public class CoordSystem
         button2Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2 + button1Size.x + 10, (height - button1Size.y)/2);
         button3Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2, (height - button1Size.y)/4);
         button4Pos = new Coord((width - button1Size.x - button2Size.x - 10)/2 + button1Size.x + 10, (height - button1Size.y)/4);
-        label1Pos = new Coord(200,400);
+        label1Pos = new Coord(100,500);
         
         lobbyRoomButtonSize = new Coord(300, 50);
         lobbyRoomButtonOrigPos = new Coord(20, height - 20 - lobbyRoomButtonSize.y);

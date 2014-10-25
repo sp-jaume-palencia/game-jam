@@ -17,7 +17,6 @@ public class GameScreen implements Screen
     Camera camera;
     Viewport viewport;    
     GameMapStage mapStage;
-    
 	
 	public GameScreen()
 	{
@@ -37,7 +36,9 @@ public class GameScreen implements Screen
 	{
 		Gdx.gl.glClearColor(0f, 1f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		mapStage.logic(delta);
+		//mapStage.logic(delta);
+        mapStage.act(delta);
+        mapStage.draw();
 	}
 	
 	@Override

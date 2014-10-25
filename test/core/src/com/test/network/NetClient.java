@@ -36,7 +36,7 @@ public class NetClient {
 				if (object instanceof RoomCommand)
 				{
 					RoomCommand rc = (RoomCommand)object;
-					//START GAME
+					startGame();
 					return;
 				}
 
@@ -106,6 +106,7 @@ public class NetClient {
 			}
 		}.start();
 	}
+
 
 	/*static private class ChatFrame extends JFrame {
 		CardLayout cardLayout;
@@ -225,8 +226,7 @@ public class NetClient {
 
 	protected void setRoomInfo(RoomInfo[] rooms)
 	{
-		//RootSystem.screens.roomLobby.setRoomInfo(rooms);
-		
+		RootSystem.screens.lobby.setRoomInfo(rooms);
 	}
 
 	public void askRoom()
@@ -242,6 +242,11 @@ public class NetClient {
 		rc.roomID = roomId;
 		rc.actionID = Network.RoomActionID.JOINROOM.getValue();
 		client.sendTCP(rc);		
+	}
+
+	protected void startGame()
+	{
+		RootSystem.screens.lobby.onForcePlay();
 	}
 
 
