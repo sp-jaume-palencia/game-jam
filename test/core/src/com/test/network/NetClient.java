@@ -11,6 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import com.test.network.Network.GameAttack;
 import com.test.network.Network.GameBaseState;
 import com.test.network.Network.GameEndOfTurn;
+import com.test.network.Network.GameFinish;
 import com.test.network.Network.GameStateOfGame;
 import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomCommand;
@@ -53,13 +54,15 @@ public class NetClient {
 				
 				if (object instanceof GameYourTurn)
 				{
-					turnBegin();
+					GameYourTurn yourTurn = (GameYourTurn)object;
+					turnBegin(yourTurn);
 					return;
 				}
 				
 				if (object instanceof GameEndOfTurn)
 				{
-					endOfTurn();
+					GameEndOfTurn endOfTurn = (GameEndOfTurn)object;
+					endOfTurn(endOfTurn);
 					return;
 				}
 				
@@ -77,7 +80,12 @@ public class NetClient {
 					return;
 				}
 				
-				
+				if (object instanceof GameFinish)
+				{
+					GameFinish end = (GameFinish)object;
+					finishGame(end);
+					return;
+				}
 			}
 
 			public void disconnected (Connection connection) {
@@ -107,6 +115,11 @@ public class NetClient {
 		}.start();
 	}
 
+	protected void finishGame(GameFinish end)
+	{
+		RootSystem.data.gameState.finishGame(end.player);
+	}
+
 	protected void updateAttack(GameAttack attack)
 	{
 		RootSystem.data.mapState.addAttack(attack);
@@ -117,14 +130,15 @@ public class NetClient {
 		RootSystem.data.mapState.process(state);
 	}
 
-	protected void endOfTurn()
+	protected void endOfTurn(GameEndOfTurn endOfTurn)
 	{
-		//RootSystem.data.gameState.endOfTurn();
+		
+		RootSystem.data.gameState.endOfTurn(endOfTurn);
 	}
 
-	protected void turnBegin()
+	protected void turnBegin(GameYourTurn yourTurn)
 	{
-		//RootSystem.data.gameState.turnBegin();
+		RootSystem.data.gameState.turnBegin(yourTurn);
 	}
 
 	protected void setRoomInfo(RoomInfo[] rooms)
@@ -150,6 +164,17 @@ public class NetClient {
 	protected void startGame()
 	{
 		RootSystem.data.gameState.startGame(TimeUtils.millis());
+	}
+	
+	public void sendAttack(int originId, int targetId)
+	{
+		GameAttack ga = new GameAttack();
+		ga.gameTurn = RootSystem.data.gameState.currentTurn;
+		ga.player = RootSystem.data.playerState.id;
+		ga.originId = originId;
+		ga.targetId = targetId;
+		client.sendTCP(ga);
+		
 	}
 	
 	public static void main (String[] args) {
