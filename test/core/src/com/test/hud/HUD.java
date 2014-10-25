@@ -24,22 +24,22 @@ public class HUD extends Group {
 	
 	public HUD()
 	{
-		timeScroll = new Slider(0, 100, 1, false, RootSystem.assets.UISkin);
-		timeScroll.setColor(0f, 1f, 0f, 1f);
-		timeScroll.setSize(RootSystem.coords.hudScrollSize.x, RootSystem.coords.hudScrollSize.y);
-		timeScroll.setPosition(RootSystem.coords.hudScrollPos.x, RootSystem.coords.hudScrollPos.y);
-		timeScroll.addListener(new InputListener()
-		{
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-			{
-				System.out.println("time");
-				return true;
-			}
-		});
-		addActor(timeScroll);
+//		timeScroll = new Slider(0, 100, 1, false, RootSystem.assets.UISkin);
+//		timeScroll.setColor(0f, 1f, 0f, 1f);
+//		timeScroll.setSize(RootSystem.coords.hudScrollSize.x, RootSystem.coords.hudScrollSize.y);
+//		timeScroll.setPosition(RootSystem.coords.hudScrollPos.x, RootSystem.coords.hudScrollPos.y);
+//		timeScroll.addListener(new InputListener()
+//		{
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+//			{
+//				System.out.println("time");
+//				return true;
+//			}
+//		});
+//		addActor(timeScroll);
 		
-		goldIcon = new Image(RootSystem.assets.gold);
+		goldIcon = new Image(RootSystem.assets.units);
 		goldIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
 		goldIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(goldIcon);
@@ -50,7 +50,7 @@ public class HUD extends Group {
 		goldLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(goldLabel);
 		
-		pointsIcon = new Image(RootSystem.assets.crono);
+		pointsIcon = new Image(RootSystem.assets.bases);
 		pointsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
 		pointsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(pointsIcon);

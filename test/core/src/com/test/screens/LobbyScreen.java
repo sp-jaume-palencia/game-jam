@@ -11,8 +11,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.network.Network.RoomInfo;
@@ -27,6 +29,7 @@ public class LobbyScreen implements Screen
     TextButton backButton;
     TextButton forcePlayButton;
     Label labelWaiting;
+    Image background;
     
     static final int kNumRooms = 8;
     
@@ -50,8 +53,11 @@ public class LobbyScreen implements Screen
         
     	Gdx.input.setInputProcessor(stage);
     	
+    	background = new Image(RootSystem.assets.lobbyBackground);
+    	stage.addActor(background);
     	
     	labelWaiting = new Label("Please select a room", RootSystem.assets.UISkin);
+    	labelWaiting.setAlignment(Align.center);
     	labelWaiting.setSize(RootSystem.coords.lobbyWaitingSize.x, RootSystem.coords.lobbyWaitingSize.y);
     	labelWaiting.setPosition(RootSystem.coords.lobbyWaitingPos.x, RootSystem.coords.lobbyWaitingPos.y);
     	stage.addActor(labelWaiting);
