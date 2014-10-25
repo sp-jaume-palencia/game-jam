@@ -71,15 +71,15 @@ public class DataSystem
 		timeData.getBase(43).owner.put(1, 3); //player3
 		timeData.getBase(50).owner.put(1, 4); //player4
 		
-		timeData.getBase(30).attack.put(1,11);
-		timeData.getBase(27).attack.put(1,37);
-		timeData.getBase(40).attack.put(1,28);
-		timeData.getBase(44).attack.put(1,45);
-		timeData.getBase(47).attack.put(1,51);
-		timeData.getBase(38).attack.put(1,32);
-		timeData.getBase(50).attack.put(1,42);
-		timeData.getBase(39).attack.put(1,33);
-		timeData.getBase( 9).attack.put(1,10);
-		timeData.getBase( 3).attack.put(1, 4);
+		timeData.getBase(30).target.put(1,11);
+		timeData.getBase(27).target.put(1,37);
+		timeData.getBase(40).target.put(1,28);
+		timeData.getBase(44).target.put(1,45);
+		timeData.getBase(47).target.put(1,51);
+		timeData.getBase(38).target.put(1,32);
+		timeData.getBase(50).target.put(1,42);
+		timeData.getBase(39).target.put(1,33);
+		timeData.getBase( 9).target.put(1,10);
+		timeData.getBase( 3).target.put(1, 4);
 	}
 }

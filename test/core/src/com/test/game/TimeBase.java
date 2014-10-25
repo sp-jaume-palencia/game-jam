@@ -14,6 +14,7 @@ public class TimeBase {
 	public Vector2 position;
 	public StepVariations owner;
 	public StepVariations attack;
+	public StepVariations target;
 	public InterpolatedVariations life;
 	public StepVariations upgrade;
 	public InterpolatedVariations resourceProduction;
@@ -28,6 +29,7 @@ public class TimeBase {
 	public void update(Map<String,Update> map) {
 		owner.update(map.get("update"));
 		attack.update(map.get("attack"));
+		target.update(map.get("target"));
 		life.update(map.get("life"));
 		upgrade.update(map.get("upgrade"));
 		resourceProduction.update(map.get("resourceProduction"));
@@ -41,6 +43,7 @@ public class TimeBase {
 			annexedBases, 
 			owner.getValue(time), 
 			attack.getValue(time), 
+			target.getValue(time),
 			life.getValue(time), 
 			upgrade.getValue(time), 
 			resourceProduction.getValue(time),

@@ -9,6 +9,7 @@ public class BaseData
 	public int[] annexedBases;
 	public int owner;
 	public int attack;
+	public int target;
 	public int life;
 	public int upgrade;
 	public int resourceProduction;
@@ -20,6 +21,7 @@ public class BaseData
 			int[] annexedBases, 
 			int owner,
 			int attack,
+			int target,
 			int life, 
 			int upgrade, 
 			int resourceProduction,
@@ -30,6 +32,7 @@ public class BaseData
 			this.annexedBases = annexedBases;
 			this.owner = owner;
 			this.attack = attack;
+			this.target = target;
 			this.life = life;
 			this.upgrade = upgrade;
 			this.resourceProduction = resourceProduction;
