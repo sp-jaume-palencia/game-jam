@@ -9,7 +9,10 @@ public class RootSystem
     public static AssetsSystem assets;
     public static ScreenSystem screens;
 	public static CoordSystem coords;
+	public static NetSystem net;
 	public static ConstantsSystem constants;
+	public static DataSystem data;
+	public static CommandSystem commands;
     
     public void loadSystems(TestGame game)
     {
@@ -24,8 +27,16 @@ public class RootSystem
         screens = new ScreenSystem();
         screens.load();
         
+        net = new NetSystem();
+        net.load();
         constants = new ConstantsSystem();
         constants.load();
+        
+        data = new DataSystem();
+        data.load();
+        
+        commands = new CommandSystem();
+        commands.load();
     }
 
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.test.screens.GameScreen;
 import com.test.screens.LobbyScreen;
 import com.test.screens.MenuScreen;
+import com.test.screens.ServerScreen;
 import com.test.screens.Splashscreen;
 
 public class ScreenSystem {
@@ -13,6 +14,7 @@ public class ScreenSystem {
 	public Splashscreen splash;
 	public GameScreen gameplay;
 	public LobbyScreen lobby;
+	public ServerScreen server;
 
 	public MenuScreen menu;	
 	
@@ -28,6 +30,7 @@ public class ScreenSystem {
 		gameplay = new GameScreen();
 		menu = new MenuScreen();
 		lobby = new LobbyScreen();
+		server = new ServerScreen();
 	}
 	
 	public void showScreenInstantly(Screen screen)
