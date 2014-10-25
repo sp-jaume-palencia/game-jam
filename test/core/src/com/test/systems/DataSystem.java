@@ -4,14 +4,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.data.BaseData;
 import com.test.data.MapData;
 import com.test.data.MapState;
+import com.test.game.TimeData;
 
 public class DataSystem
 {
 	public MapState mapState;
 	public MapData map;
+	public TimeData timeData;
 
 	public void load()
 	{
+		timeData = new TimeData();
 		
 		map = new MapData();
 		// Top - Left
