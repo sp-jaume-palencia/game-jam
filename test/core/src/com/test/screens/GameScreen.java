@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
 public class GameScreen implements Screen 
@@ -29,6 +30,8 @@ public class GameScreen implements Screen
 	public void show() 
 	{	
 		mapStage = new GameMapStage();
+		
+		RootSystem.commands.sendAttack(53, 13, 9898, GameActionID.BASEATACKBASE);
 	}
 	
 	@Override
