@@ -7,6 +7,7 @@ import com.test.model.time.StepVariations;
 import com.test.utils.Update;
 
 public class TimeBase extends TimeActor {
+	public StepVariations owner;
 	public StepVariations attack;
 	public InterpolatedVariations life;
 	public StepVariations upgrade;
@@ -23,6 +24,10 @@ public class TimeBase extends TimeActor {
 		resourceProduction.update(map.get("resourceProduction"));
 		unitsProduction.update(map.get("unitsProduction"));
 		life.update(map.get("life"));
+	}
+	
+	public int getOwner(int time) {
+		return owner.getValue(time);
 	}
 	
 	public int getIsAlive(int time) {
