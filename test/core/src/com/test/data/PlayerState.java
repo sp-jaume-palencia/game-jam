@@ -6,6 +6,11 @@ public class PlayerState
 	public int gold;
 	public int points;
 	
+	public PlayerState()
+	{
+		
+	}
+	
 	public PlayerState(int id, int gold, int points)
 	{
 		this.id = id;

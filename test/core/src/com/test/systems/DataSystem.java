@@ -8,6 +8,7 @@ import com.test.data.MapState;
 
 public class DataSystem
 {
+	public PlayerState playerState;
 	public MapData map;
 	public MapState mapState;
 	public GameState gameState;
@@ -15,8 +16,8 @@ public class DataSystem
 	public void load()
 	{
 		map = new MapData();
-		mapState = new MapState(map);
-		
+		mapState = new MapState();
+		playerState = new PlayerState();
 		gameState = new GameState();
 	}
 }
