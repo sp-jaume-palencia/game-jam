@@ -58,6 +58,11 @@ public class NetRoom
 				currentPlayer = newPlayer;
 				RootSystem.net.server.sendNewPlayer(newTurn, newPlayer);
 			}
+			
+			if(newTurn >= RootSystem.constants.gameTime/RootSystem.constants.turnTime)
+			{
+				RootSystem.net.server.sendFinishGame();
+			}
 		}
 		
 	}

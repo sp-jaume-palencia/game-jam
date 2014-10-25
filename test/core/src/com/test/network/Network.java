@@ -17,6 +17,7 @@ public class Network
 		kryo.register(RoomInfo[].class);
 		kryo.register(GameYourTurn.class);
 		kryo.register(GameEndOfTurn.class);
+		kryo.register(GameFinish.class);
 		kryo.register(GameStateOfGame.class);
 		kryo.register(GameBaseState.class);
 		kryo.register(GameBaseState[].class);
@@ -25,13 +26,15 @@ public class Network
 	//CLIENT TO SERVER
 	static public class GameAttack
 	{
-		public long gametime;
+		public long player;
+		public long gameTurn;
 		public int originId;
 		public int targetId;
 	}
 	
 	static public class RoomCommand
 	{
+		public long player;
 		public int roomId;
 		public int actionId;
 	}
@@ -57,6 +60,11 @@ public class Network
 	static public class GameEndOfTurn
 	{
 		public int turn;
+		public int player;
+	}
+	
+	static public class GameFinish
+	{
 		public int player;
 	}
 	

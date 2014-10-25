@@ -8,6 +8,7 @@ public class ConstantsSystem {
 	public int dead;
 	
 	public int turnTime;
+	public int gameTime;
 	
 	public void load()
 	{
@@ -19,8 +20,8 @@ public class ConstantsSystem {
 		alive = 1;
 		dead = 0;
 		
-		turnTime = 10000;
-		
+		turnTime = 5000;
+		gameTime = 300000;
 		
 	}
 }
