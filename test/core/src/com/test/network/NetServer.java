@@ -11,6 +11,7 @@ import com.test.network.Network;
 import com.test.network.Network.GameActionID;
 import com.test.network.Network.GameAttack;
 import com.test.network.Network.GameEndOfTurn;
+import com.test.network.Network.GameFinish;
 import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomActionID;
 import com.test.network.Network.RoomCommand;
@@ -94,6 +95,7 @@ public class NetServer
 	
 	protected void addAttack(GameAttack rc)
 	{
+		Log.info("ATTACK player: "+rc.player+" turn: "+rc.gameTurn+" origin: "+rc.originId+" target: "+rc.targetId);
 		RootSystem.commands.addAttack(rc);
 	}
 
@@ -104,6 +106,8 @@ public class NetServer
 
 	protected void joinRoom(int connId, int roomId)
 	{
+		Log.info("JOINROOM room"+roomId+"++");
+		
 		worldServer.playerJoinRoom(roomId, connId);
 		//if(worldServer.roomIsReady(roomId))
 		{
@@ -154,6 +158,8 @@ public class NetServer
 
 	public void sendEndTurn(int newTurn, int newPlayer)
 	{
+		Log.info("ENDTURN newTurn: "+newTurn+" newPlayer: "+newPlayer);
+		
 		GameYourTurn turn = new GameYourTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
@@ -162,10 +168,22 @@ public class NetServer
 
 	public void sendNewPlayer(int newTurn, int newPlayer)
 	{
+		Log.info("NEWPLAYER newTurn: "+newTurn+" newPlayer: "+newPlayer);
+		
 		GameEndOfTurn turn = new GameEndOfTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
 		server.sendToAllTCP(turn);
+	}
+
+	public void sendFinishGame()
+	{
+		Log.info("FINIH GAME winner: 000");
+		
+		GameFinish end = new GameFinish();
+		end.player = 0;
+		server.sendToAllTCP(end);
+		
 	}
 
 	

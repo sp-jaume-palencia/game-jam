@@ -55,9 +55,12 @@ public class MapState
 		return planet.baseId == playerState.id;
 	}
 	
-	public void attackTo(int planetId)
+	public void attackTo(int originId, int targetId)
 	{
-		
+		if(RootSystem.data.gameState.currentPlayer == RootSystem.data.playerState.id)
+		{
+			RootSystem.net.client.sendAttack(originId, targetId);
+		}
 	}
 	
 	public PlayerState getPlayerState(int id)

@@ -213,7 +213,7 @@ public class GameMapStage extends Stage implements GestureListener {
 		
 		if(RootSystem.data.map.areConnected(originPlanetId, targetPlanedId))
 		{
-			RootSystem.data.mapState.attackTo(targetPlanedId);
+			RootSystem.data.mapState.attackTo(originPlanetId, targetPlanedId);
 			_selectedPlanet.attackTo(RootSystem.data.map.getBase(targetPlanedId).position);
 			_attackingPlanets.add(_selectedPlanet);
 		}
