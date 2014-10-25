@@ -22,6 +22,7 @@ public class Planet extends Group {
 	Image _sprite;
 	Image _cursor;
 	Image _spaceship;
+	Image _target;
 	Label _troopsLabel;
 	int _actualPlayerId;
 	Image[] _playerSprites;
@@ -69,6 +70,14 @@ public class Planet extends Group {
 			addActor(_playerSprites[i]);
 			_playerSprites[i].setVisible(false);
 		}
+		
+		_target = new Image(RootSystem.assets.target);
+		marginX = (getWidth() - _target.getWidth())/2;
+		_target.setPosition(getX() + marginX, getY() - (getWidth() - _target.getHeight())/2);
+//		_target.setVisible(false);
+		_target.addAction(Actions.fadeOut(0f));
+//		_target.setPosition(getX(), getY());
+		addActor(_target);
 	}
 	
 	public void setPlayerSprite(int ownerId)
@@ -122,6 +131,11 @@ public class Planet extends Group {
 	{
 		return _id;
 	}
+	
+	public void showTarget()
+	{
+		_target.addAction(Actions.sequence(Actions.fadeIn(0.2f), Actions.scaleTo(2.5f, 2.5f, 2.0f), Actions.scaleTo(1.0f, 1.0f, 2.0f), Actions.fadeOut(0.2f)));
+	}
 		
 	public void attackTo(Vector2 attackPos)
 	{
@@ -167,6 +181,11 @@ public class Planet extends Group {
 		if(_spaceship.isVisible())
 		{
 			_spaceship.draw(batch, alpha);
+		}
+		
+//		if(_target.isVisible())
+		{
+			_target.draw(batch, alpha);
 		}
 		
 		_sprite.draw(batch, alpha);

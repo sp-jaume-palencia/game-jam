@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -22,6 +23,7 @@ public class MenuScreen implements Screen
     Stage stage;
     TextButton button1;
     TextButton button2;
+    Image background;
 
     public MenuScreen()
     {
@@ -65,9 +67,10 @@ public class MenuScreen implements Screen
             }
         });
         
+        background = new Image(RootSystem.assets.menuBackground);
+        stage.addActor(background);
         stage.addActor(button1);
         stage.addActor(button2);
-        
     }
     
     public void onNewGame()

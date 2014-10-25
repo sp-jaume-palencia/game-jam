@@ -62,6 +62,7 @@ public class NetRoom
 			if(newTurn >= RootSystem.constants.gameTime/RootSystem.constants.turnTime)
 			{
 				RootSystem.net.server.sendFinishGame();
+				initTimestamp = 0;
 			}
 		}
 		
