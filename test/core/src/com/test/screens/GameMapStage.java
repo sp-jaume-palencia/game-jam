@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
 import com.test.hud.HUD;
+import com.test.network.Network.GameYourTurn;
 import com.test.systems.RootSystem;
 
 
@@ -91,6 +92,13 @@ public class GameMapStage extends Stage implements GestureListener {
 		_selectedPlanet = null;
 	}
 	
+	void startTurn(int playerId)
+	{
+		_hud.showStartTurn(playerId);
+		
+		// Center camera on random planet of the player
+	}
+	
 	public Vector2 getTouchPos(float x, float y)
 	{
 		final Plane xyPlane = new Plane(new Vector3(0, 0, 1), 0);
@@ -121,6 +129,11 @@ public class GameMapStage extends Stage implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) 
 	{	
+		if(!RootSystem.data.gameState.isPlayerTurn())
+		{
+			return false;
+		}
+		
         Vector2 touchPos = getTouchPos(x, y);
         boolean selectedPlanet = false;
         

@@ -2,13 +2,14 @@ package com.test.data;
 
 import com.test.network.Network.GameEndOfTurn;
 import com.test.network.Network.GameYourTurn;
+import com.test.systems.RootSystem;
 
 public class GameState
 {
 
 	public long initTimestamp;
-	public long currentTurn;
-	public long currentPlayer;
+	public int currentTurn;
+	public int currentPlayer;
 
 	public void startGame(long millis)
 	{
@@ -26,7 +27,9 @@ public class GameState
 	public void turnBegin(GameYourTurn yourTurn)
 	{
 		currentTurn = yourTurn.turn;
-		currentPlayer = yourTurn.player;		
+		currentPlayer = yourTurn.player;
+		
+		RootSystem.screens.gameplay.startTurn(currentPlayer);
 	}
 
 	public void finishGame(int player)
@@ -34,4 +37,8 @@ public class GameState
 		//finish game
 	}
 		
+	public boolean isPlayerTurn()
+	{
+		return currentPlayer == RootSystem.data.playerState.id;
+	}
 }

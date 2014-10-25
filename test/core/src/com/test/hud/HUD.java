@@ -1,8 +1,11 @@
 package com.test.hud;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +19,7 @@ public class HUD extends Group {
 	Button attackButton;
 	Button upgradeButton;
 	
+	Label turnLabel;
 	Label troopsLabel;
 	Label pointsLabel;
 	Label timeLabel;
@@ -96,6 +100,11 @@ public class HUD extends Group {
             }
         });
 	 	addActor(upgradeButton);
+	 	
+		turnLabel = new Label("", RootSystem.assets.UISkin);
+		turnLabel.setFontScale(3.5f);
+		turnLabel.setVisible(false);
+		addActor(turnLabel);
 	}
 	
 	public void setActionsVisible(Boolean visible)
@@ -104,11 +113,27 @@ public class HUD extends Group {
 		upgradeButton.setVisible(visible);
 	}
 	
+	public void showStartTurn(int playerId)
+	{
+		String text = RootSystem.data.gameState.isPlayerTurn()? "YOUR TURN!" : "ENEMY " + playerId + " TURN";
+		Color playerColor = RootSystem.data.playerState.getPlayerColor(playerId);		
+		playerColor.a = 0.0f;
+		
+		turnLabel.setText(text);
+		turnLabel.setVisible(true);
+		TextBounds bound = turnLabel.getTextBounds();
+		turnLabel.setY(RootSystem.coords.height/2);
+		turnLabel.setX((RootSystem.coords.width - bound.width)/2);
+		turnLabel.setColor(playerColor);
+		
+		turnLabel.addAction(Actions.sequence(Actions.fadeIn(0.25f), Actions.delay(0.5f), Actions.fadeOut(1.0f)));
+	}
+	
 	@Override
 	public void act(float delta)
 	{
-		String str = new String(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
-		timeLabel.setText(str);
+		super.act(delta);
+		timeLabel.setText(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
 	}
 	
 	public void setTroops(int troops)

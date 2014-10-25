@@ -2,6 +2,7 @@ package com.test.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -50,9 +51,7 @@ public class Planet extends Group {
 
 		_troopsLabel = new Label("0", RootSystem.assets.UISkin);
 		_troopsLabel.setFontScale(3.0f);
-		_troopsLabel.setColor(1f, 0f, 1f, 1f);
-		_troopsLabel.setSize(RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
-		_troopsLabel.setPosition(x, y);
+		_troopsLabel.setColor(1f, 1f, 1f, 1f);
 		addActor(_troopsLabel);
 
 		_selected = false;
@@ -164,10 +163,12 @@ public class Planet extends Group {
 	{
 		super.act(dt);
 		
-		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);
+		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);		
+		setPlayerSprite(baseData.ownerId);
 		
 		_troopsLabel.setText(String.valueOf(baseData.numTroops));
-		setPlayerSprite(baseData.ownerId);
+		TextBounds bounds = _troopsLabel.getTextBounds();
+		_troopsLabel.setPosition(getX() + getWidth()/2 - bounds.width/2, getY() + getHeight()/3);
 	}
 	
 	@Override
