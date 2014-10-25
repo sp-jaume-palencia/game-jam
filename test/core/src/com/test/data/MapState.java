@@ -1,5 +1,10 @@
 package com.test.data;
 
+import java.util.List;
+
+import com.test.network.Network.GameAttack;
+import com.test.network.Network.GameStateOfGame;
+
 public class MapState
 {
 	public MapData mapData;
@@ -29,6 +34,18 @@ public class MapState
 		}
 		
 		return null;
+	}
+
+	public void process(List<GameAttack> attacks)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void process(GameStateOfGame state)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -73,9 +73,10 @@ public class Planet extends Group {
 		
 		if(_baseData.target != 0)
 		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target);
+			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target-1);
 			_spaceship.attack(targetPlanet);
 		}
+//		updatePlayerId();
 	}
 	
 	public void updatePlayerId()
@@ -160,7 +161,6 @@ public class Planet extends Group {
 		{		
 			// Attack!!!!
 			_spaceship.attack(targetPlanet);
-			RootSystem.commands.sendAttack(_baseData.owner, targetPlanet.getPlayerOwnerId(), GameScreen.getTick(), GameActionID.BASEATACKBASE);
 		}
 	}
 	

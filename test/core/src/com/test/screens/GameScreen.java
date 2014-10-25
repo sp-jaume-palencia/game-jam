@@ -21,7 +21,7 @@ public class GameScreen implements Screen
     Viewport viewport;    
     public GameMapStage mapStage;
     Stage hudLayer;
-    long gameTime;
+    int gameTime;
 	
 	public GameScreen()
 	{
@@ -34,7 +34,6 @@ public class GameScreen implements Screen
 	@Override
 	public void show() 
 	{			
-		RootSystem.commands.sendAttack(53, 13, 9898, GameActionID.BASEATACKBASE);
 		hudLayer = new Stage();
 		HUD hud = new HUD();
 		hudLayer.addActor(hud);
@@ -91,6 +90,6 @@ public class GameScreen implements Screen
 	
 	static public int getTick()
 	{
-		return (int) (RootSystem.screens.gameplay.gameTime + 696969); // TODO coger scroll
+		return RootSystem.screens.gameplay.gameTime + 300; // TODO coger scroll
 	}
 }

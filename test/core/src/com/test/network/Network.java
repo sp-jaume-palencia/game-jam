@@ -10,48 +10,30 @@ public class Network
 	static public void register (EndPoint endPoint)
 	{
 		Kryo kryo = endPoint.getKryo();
-		kryo.register(GameCommand.class);
-		kryo.register(GameAddChangeStat.class);
-		kryo.register(GameDelChangeStat.class);
+		kryo.register(GameAttack.class);
 		kryo.register(RoomCommand.class);
 		kryo.register(RoomList.class);
 		kryo.register(RoomInfo.class);
 		kryo.register(RoomInfo[].class);
+		kryo.register(GameYourTurn.class);
+		kryo.register(GameEndOfTurn.class);
+		kryo.register(GameStateOfGame.class);
+		kryo.register(GameBaseState.class);
+		kryo.register(GameBaseState[].class);
 	}
 
 	//CLIENT TO SERVER
-	static public class GameCommand
+	static public class GameAttack
 	{
 		public long gametime;
-		public int objectID;
-		public int objectType;
-		public int actionID;
-		public int value1;
-		public int value2;
-		public int value3;
-		public int value4;
-		public int value5;
-	}
-	
-	static public class GameAddChangeStat
-	{
-		public int gametime;
-		public int objectID;
-		public int statID;
-		public int value;
-	}
-	
-	static public class GameDelChangeStat
-	{
-		public int gametime;
-		public int objectID;
-		public int statID;
+		public int originId;
+		public int targetId;
 	}
 	
 	static public class RoomCommand
 	{
-		public int roomID;
-		public int actionID;
+		public int roomId;
+		public int actionId;
 	}
 	
 	//SERVER TO CLIENT
@@ -64,6 +46,28 @@ public class Network
 	{
 		public int id;
 		public int numPlayer;
+	}
+	
+	static public class GameYourTurn
+	{
+		public int turn;
+	}
+	
+	static public class GameEndOfTurn
+	{
+		public int turn;
+	}
+	
+	static public class GameStateOfGame
+	{
+		public GameBaseState[] bases;
+	}
+	
+	static public class GameBaseState
+	{
+		public int baseId;
+		public int ownerId;
+		public int numTroops;
 	}
 	
 	//ENUMS

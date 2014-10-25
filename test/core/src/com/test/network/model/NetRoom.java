@@ -34,7 +34,7 @@ public class NetRoom
 	public void startGame()
 	{
 		initTimestamp = TimeUtils.millis();
-		RootSystem.data.initTimestamp = initTimestamp;
+		RootSystem.data.gameState.initTimestamp = initTimestamp;
 	}
 	
 	public long updateTics()

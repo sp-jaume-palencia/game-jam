@@ -2,6 +2,7 @@ package com.test.systems;
 
 import com.badlogic.gdx.math.Vector2;
 import com.test.data.BaseData;
+import com.test.data.GameState;
 import com.test.data.MapData;
 import com.test.data.MapState;
 import com.test.game.TimeData;
@@ -11,6 +12,7 @@ public class DataSystem
 	public MapData map;
 	public MapState mapState;
 	public TimeData timeData;
+	public GameState gameState;
 
 	public long initTimestamp;
 	

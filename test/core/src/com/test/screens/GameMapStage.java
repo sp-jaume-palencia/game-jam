@@ -96,21 +96,12 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	public void logic(float dt)
 	{
-		super.act();
-		super.draw();
-		
 		// Update player state
 		_playerState = RootSystem.data.mapState.getPlayerState(_playerId);
-		
-		for(Planet planet : _planets)
-		{
-			planet.act(dt);
-		}
 	}
 		
 	private void createPlanets()
 	{
-
 		_planets = new Array<Planet>();
 		Iterator<Entry<Integer, TimeBase>> it = RootSystem.data.timeData.timeBases.entrySet().iterator();
 		

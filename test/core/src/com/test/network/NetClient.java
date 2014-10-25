@@ -8,7 +8,11 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import com.test.network.Network.GameCommand;
+import com.test.network.Network.GameAttack;
+import com.test.network.Network.GameBaseState;
+import com.test.network.Network.GameEndOfTurn;
+import com.test.network.Network.GameStateOfGame;
+import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomCommand;
 import com.test.network.Network.RoomInfo;
 import com.test.systems.RootSystem;
@@ -47,6 +51,26 @@ public class NetClient {
 					setRoomInfo(rooms);
 					return;
 				}
+				
+				if (object instanceof GameYourTurn)
+				{
+					turnBegin();
+					return;
+				}
+				
+				if (object instanceof GameEndOfTurn)
+				{
+					endOfTurn();
+					return;
+				}
+				
+				if (object instanceof GameStateOfGame)
+				{
+					GameStateOfGame state = (GameStateOfGame)object;
+					updateState(state);
+					return;
+				}
+				
 			}
 
 			public void disconnected (Connection connection) {
@@ -76,6 +100,21 @@ public class NetClient {
 		}.start();
 	}
 
+	protected void updateState(GameStateOfGame state)
+	{
+		RootSystem.data.mapState.process(state);
+	}
+
+	protected void endOfTurn()
+	{
+		//RootSystem.data.gameState.endOfTurn();
+	}
+
+	protected void turnBegin()
+	{
+		//RootSystem.data.gameState.turnBegin();
+	}
+
 	protected void setRoomInfo(RoomInfo[] rooms)
 	{
 		RootSystem.screens.lobby.setRoomInfo(rooms);
@@ -84,15 +123,15 @@ public class NetClient {
 	public void askRoom()
 	{
 		RoomCommand rc = new RoomCommand();
-		rc.actionID = Network.RoomActionID.GETROOMS.getValue();
+		rc.actionId = Network.RoomActionID.GETROOMS.getValue();
 		client.sendTCP(rc);
 	}
 	
 	public void joinRoom(int roomId)
 	{
 		RoomCommand rc = new RoomCommand();
-		rc.roomID = roomId;
-		rc.actionID = Network.RoomActionID.JOINROOM.getValue();
+		rc.roomId = roomId;
+		rc.actionId = Network.RoomActionID.JOINROOM.getValue();
 		client.sendTCP(rc);		
 	}
 
@@ -102,11 +141,6 @@ public class NetClient {
 		RootSystem.data.initTimestamp = TimeUtils.millis();
 	}
 	
-	public void sendCommand(GameCommand cmd)
-	{
-		client.sendTCP(cmd);
-	}
-
 	public static void main (String[] args) {
 		Log.set(Log.LEVEL_DEBUG);
 		new NetClient();

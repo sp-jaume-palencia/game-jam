@@ -61,18 +61,18 @@ public class TimeBase {
 				baseId, 
 				position,
 				annexedBases, 
-				owner.getValue(time), 
-				attack.getValue(time), 
-				target.getValue(time),
-				0,//life.getValue(time), 
-				upgrade.getValue(time), 
-				0,//resourceProduction.getValue(time),
-				0//unitsProduction.getValue(time)
+0,//				owner.getValue(time), 
+0,//				attack.getValue(time), 
+0,//				target.getValue(time),
+0,//				life.getValue(time), 
+0,//				upgrade.getValue(time), 
+0,//				resourceProduction.getValue(time),
+				unitsProduction.getValue(time)
 			);
 	}
 	
 	public BaseData getBaseData(int time) {
-		//updateState(time);
+		updateState(time);
 		return updatedData;
 	}
 }
