@@ -8,6 +8,8 @@ import com.test.game.TimeData;
 
 public class DataSystem
 {
+	public MapData map;
+	public MapState mapState;
 	public TimeData timeData;
 
 	public void load()
@@ -81,5 +83,9 @@ public class DataSystem
 		timeData.getBase(39).target.put(1,33);
 		timeData.getBase( 9).target.put(1,10);
 		timeData.getBase( 3).target.put(1, 4);
+		
+		map = new MapData();
+		mapState = new MapState(map);
+
 	}
 }

@@ -31,6 +31,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
+import com.test.game.TimeBase;
 import com.test.systems.RootSystem;
 
 
@@ -106,16 +107,14 @@ public class GameMapStage extends Stage implements GestureListener {
 	private void createPlanets()
 	{
 		_planets = new Array<Planet>();
-		Iterator<Entry<Integer, BaseData>> it = RootSystem.data.map.bases.entrySet().iterator();
+		Iterator<Entry<Integer, TimeBase>> it = RootSystem.data.timeData.timeBases.entrySet().iterator();
 		
 	    while (it.hasNext()) 
 	    {
-	        Map.Entry<Integer, BaseData> pairs = (Map.Entry<Integer, BaseData>)it.next();
-	        BaseData baseData = pairs.getValue();
-	        Vector2 basePos = baseData.position;
-	        int[] annexedBases = baseData.annexedBases;
+	        Map.Entry<Integer, TimeBase> pairs = (Map.Entry<Integer, TimeBase>)it.next();
+	        BaseData baseData = pairs.getValue().getBaseData(GameScreen.getTick());
 	        
-	        Planet planet = new Planet(baseData.baseId, baseData.owner, annexedBases, basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
+	        Planet planet = new Planet(baseData);	        
 			_planets.add(planet);
 			addActor(planet);
 	    }
