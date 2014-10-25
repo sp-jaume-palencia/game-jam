@@ -8,17 +8,12 @@ import com.test.game.TimeData;
 
 public class DataSystem
 {
-	public MapState mapState;
-	public MapData map;
 	public TimeData timeData;
 
 	public void load()
 	{
 		timeData = new TimeData();
-	
-		map = new MapData();
 		
-		// Top - Left
 		timeData.addBase(1, new Vector2(320, 381), new int[] { 2,3 });
 		timeData.addBase(2, new Vector2(730, 380), new int[] { 1,4,9 });
 		timeData.addBase(3, new Vector2(323, 681), new int[] { 1,4,5 });
@@ -71,18 +66,20 @@ public class DataSystem
 		timeData.addBase(50, new Vector2(2731, 2580), new int[] { 49,42 });
 		timeData.addBase(51, new Vector2(2449, 1470), new int[] { 35,46,40,47 });
 		
-		mapState = new MapState(map);
-
-		mapState.attackState.addAttack(30, 11);
-		mapState.attackState.addAttack(27, 37);
-		mapState.attackState.addAttack(40, 28);
-		mapState.attackState.addAttack(44, 45);
-		mapState.attackState.addAttack(47, 51);
-		mapState.attackState.addAttack(38, 32);
-		mapState.attackState.addAttack(50, 42);
-		mapState.attackState.addAttack(39, 33);
-		mapState.attackState.addAttack(9, 10);
-		mapState.attackState.addAttack(3, 4);	
+		timeData.getBase( 1).owner.put(1, 1); //player1
+		timeData.getBase(20).owner.put(1, 2); //player2
+		timeData.getBase(43).owner.put(1, 3); //player3
+		timeData.getBase(50).owner.put(1, 4); //player4
+		
+		timeData.getBase(30).attack.put(1,11);
+		timeData.getBase(27).attack.put(1,37);
+		timeData.getBase(40).attack.put(1,28);
+		timeData.getBase(44).attack.put(1,45);
+		timeData.getBase(47).attack.put(1,51);
+		timeData.getBase(38).attack.put(1,32);
+		timeData.getBase(50).attack.put(1,42);
+		timeData.getBase(39).attack.put(1,33);
+		timeData.getBase( 9).attack.put(1,10);
+		timeData.getBase( 3).attack.put(1, 4);
 	}
-
 }
