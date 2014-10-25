@@ -26,5 +26,4 @@ public class AssetsSystem
 		planet4 = new Texture(Gdx.files.internal("textures/planet4.png"));
 		neutralPlanet = new Texture(Gdx.files.internal("textures/neutralPlanet.png"));
 	}
-
 }

@@ -12,5 +12,4 @@ public class PlayerState
 		this.gold = gold;
 		this.points = points;
 	}
-	
 }

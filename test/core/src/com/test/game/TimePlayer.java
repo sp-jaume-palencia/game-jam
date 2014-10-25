@@ -5,7 +5,7 @@ import java.util.Map;
 import com.test.model.time.InterpolatedVariations;
 import com.test.utils.Update;
 
-public class TimePlayer extends TimeActor {
+public class TimePlayer {
 	public InterpolatedVariations resource;
 	public InterpolatedVariations score;
 	
