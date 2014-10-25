@@ -1,5 +1,6 @@
 package com.test.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.test.data.AttackState;
+import com.test.data.BaseData;
 import com.test.systems.RootSystem;
 
 public class Planet extends Group {
@@ -22,7 +25,7 @@ public class Planet extends Group {
 	Spaceship _spaceship;
 	
 	// Status
-	int _playerOwnerId;
+	int _playerOwnerId = -1;
 	int _baseId;
 	int[] _annexedBasesIds;
 	
@@ -34,22 +37,16 @@ public class Planet extends Group {
 	Image _cursor;
 	boolean _selected;
 	
-	public Planet(int baseId, int playerId, int[] annexedBases, Texture planetTexture, float dataX, float dataY)
+	public Planet(int baseId, int playerId, int[] annexedBases, float dataX, float dataY)
 	{
 		_annexedBasesIds = annexedBases;
 		
-		float x = dataX - planetTexture.getWidth()/2;
-		float y = dataY - planetTexture.getHeight()/2;
-		
-		_baseId = baseId;
-		_playerOwnerId = playerId;
+		float x = dataX - RootSystem.coords.planetSize.x/2;
+		float y = dataY - RootSystem.coords.planetSize.y/2;
 		
 		setPosition(x, y);
-		setBounds(getX(),getY(), planetTexture.getWidth(), planetTexture.getHeight());
-		
-		_sprite = new Image(planetTexture);
-		_sprite.setPosition(x, y);
-		addActor(_sprite);				
+		setBounds(getX(),getY(), RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
+					
 		
 		_cursor = new Image(RootSystem.assets.cursor);
 		float marginX = (getWidth() - _cursor.getWidth())/2;
@@ -60,6 +57,64 @@ public class Planet extends Group {
 		addActor(_spaceship);
 		
 		_selected = false;
+		
+		_baseId = baseId;
+		setPlayerId(playerId);
+	}
+	
+	@Override
+	public void act(float dt)
+	{
+		// Update base status
+		BaseData data = RootSystem.data.map.getBase(_baseId);		
+		setPlayerId(data.ownerId);
+		
+		// Update attacks
+		Integer attackId = RootSystem.data.mapState.attackState.getAttackingBaseId(_baseId);
+		
+		if(attackId != null)
+		{
+			Planet targetPlanet = RootSystem.mapStage._planets.get(attackId - 1);
+			_spaceship.attack(targetPlanet);
+		}
+		
+		super.act(dt);
+	}
+	
+	public void setPlayerId(int playerId)
+	{
+		if(_playerOwnerId == playerId)
+		{
+			return;
+		}
+		
+		_playerOwnerId = playerId;
+		Texture t = null;
+		
+		switch(_playerOwnerId)
+		{
+			 case 1:
+				 t = RootSystem.assets.planet1;
+				 break;
+			 case 2:
+				 t = RootSystem.assets.planet2;
+				 break;
+			 case 3:
+				 t = RootSystem.assets.planet3;
+				 break;
+			 case 4:
+				 t = RootSystem.assets.planet4;
+				 break;
+			 default:
+			 {
+				 t = RootSystem.assets.neutralPlanet;
+				 break;
+			 }
+		}
+						
+		_sprite = new Image(t);
+		_sprite.setPosition(getX(), getY());
+		addActor(_sprite);
 	}
 	
 	public boolean isInside(float x, float y)
@@ -97,9 +152,8 @@ public class Planet extends Group {
 		
 		if(_hitPoints < 0)
 		{
-			conquer();
-			_playerOwnerId = enemySpaceship.getPlayerOwnerId();
-			_hitPoints = START_HP;
+			_hitPoints = START_HP;			
+			setPlayerId(enemySpaceship.getPlayerOwnerId());
 		}
 	}
 	
@@ -110,9 +164,25 @@ public class Planet extends Group {
 	
 	public void attackTo(Planet targetPlanet)
 	{
-		_spaceship.attack(targetPlanet);
+		//if(isPlanetAnnexed(targetPlanet.getPlayerOwnerId()))
+		//{		
+			_spaceship.attack(targetPlanet);
+		//}
 	}
 	
+	public boolean isPlanetAnnexed(int id)
+	{
+		for(int annexedId : _annexedBasesIds)
+		{
+			if(annexedId == id)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+		
 	@Override
     public void draw(Batch batch, float alpha)
     {

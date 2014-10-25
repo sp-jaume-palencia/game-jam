@@ -68,7 +68,7 @@ public class DataSystem
 		map.addBase(51, new BaseData(51, 1, new Vector2(2449, 1470), new int[] { 35,46,40,47 }));
 		
 		mapState = new MapState(map);
-		
+
 		mapState.attackState.addAttack(30, 11);
 		mapState.attackState.addAttack(27, 37);
 		mapState.attackState.addAttack(40, 28);
@@ -78,8 +78,7 @@ public class DataSystem
 		mapState.attackState.addAttack(50, 42);
 		mapState.attackState.addAttack(39, 33);
 		mapState.attackState.addAttack(9, 10);
-		mapState.attackState.addAttack(3, 4);
-		
+		mapState.attackState.addAttack(3, 4);	
 	}
 
 }

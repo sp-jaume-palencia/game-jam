@@ -14,7 +14,10 @@ public class AttackState
 	public void addAttack(int originId, int targetId)
 	{
 		attacks.put(originId, targetId);
-	}
+	}	
 	
-
+	public Integer getAttackingBaseId(int id)
+	{
+		return attacks.containsKey(id)? attacks.get(id) : null;
+	}
 }

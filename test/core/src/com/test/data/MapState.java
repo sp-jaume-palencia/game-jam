@@ -18,4 +18,17 @@ public class MapState
 		attackState = new AttackState();
 	}
 	
+	public PlayerState getPlayerState(int id)
+	{
+		for(PlayerState state : players)
+		{
+			if(state.id == id)
+			{
+				return state;
+			}
+		}
+		
+		return null;
+	}
+
 }

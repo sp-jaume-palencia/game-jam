@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Spaceship extends Image {
 		
-	float _cooldown = 5.0f;
+	float _cooldown = 2.5f;
 	float _actCooldown;
-	float _speed = 1.5f;
+	float _speed = 3f;
 	int _damage = 1;
 	Vector2 _dir;
 	Planet _originPlanet;
