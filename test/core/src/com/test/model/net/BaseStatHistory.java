@@ -2,8 +2,10 @@ package com.test.model.net;
 
 import java.util.TreeMap;
 
-public class PlayerResourceHistory
+public class BaseStatHistory
 {
+	int statType;
+	
 	int initValue;
 	int initTime;
 	
@@ -12,7 +14,7 @@ public class PlayerResourceHistory
 	
 	TreeMap<Integer, Integer> varHistory;
 	
-	public PlayerResourceHistory(int initValue, int initTime, int minValue, int maxValue)
+	public BaseStatHistory(int statType, int initValue, int initTime, int minValue, int maxValue)
 	{
 		this.initTime = initTime;
 		this.initValue = initValue;
@@ -22,7 +24,10 @@ public class PlayerResourceHistory
 		varHistory = new TreeMap<Integer,Integer>();
 	}
 
-	
+	public void addVar(Integer time, Integer modifier)
+	{
+		varHistory.put(time, modifier);
+	}
 	
 	
 }

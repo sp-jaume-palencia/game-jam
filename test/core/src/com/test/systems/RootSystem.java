@@ -30,6 +30,7 @@ public class RootSystem
         
         net = new NetSystem();
         net.load();
+        
         constants = new ConstantsSystem();
         constants.load();
         

@@ -2,27 +2,35 @@ package com.test.model.net;
 
 import java.util.List;
 
+import com.test.network.Network.GameActionID;
+
 public class CommandAction
 {
-	public enum ActionId
+	public enum statType
 	{
-		ATTACK,
-		CONSTRUCT
+		HEALTH,
+		POWER,
+		DEFENSE
 	}
 	
 	public int actorId;
-	public List<Integer> affectedIds;	
-	public ActionId actionId;
+	public int targetId;
+	public GameActionID actionId;
 	public int time;
 	
-	public CommandAction(int actorId, ActionId actionId)
+	public List<Integer> statsAffected;
+	public List<Integer> statsModifier;
+	
+	public CommandAction(GameActionID baseatackbase, int actorId, int targetId)
 	{
+		this.actionId = baseatackbase;
 		this.actorId = actorId;
-		this.actionId = actionId;
+		this.targetId = targetId;
 	}
 	
-	public void addAffected(int affectedId)
+	public void addAffected(Integer statAffected, Integer statModifier)
 	{
-		affectedIds.add(affectedId);
+		statsAffected.add(statAffected);
+		statsModifier.add(statModifier);
 	}
 }

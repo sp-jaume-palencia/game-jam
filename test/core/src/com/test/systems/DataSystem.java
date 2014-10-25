@@ -12,6 +12,8 @@ public class DataSystem
 	public MapState mapState;
 	public TimeData timeData;
 
+	public long initTimestamp;
+	
 	public void load()
 	{
 		timeData = new TimeData();

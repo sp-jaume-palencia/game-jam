@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.network.Network.GameActionID;
@@ -19,8 +18,14 @@ public class GameScreen implements Screen
 {	
     Camera camera;
     Viewport viewport;    
+<<<<<<< HEAD
+    GameMapStage mapStage;
+    public int gameTime;
+    
+=======
     public GameMapStage mapStage;
     Stage hudLayer;
+>>>>>>> jaumes
 	
 	public GameScreen()
 	{
@@ -52,6 +57,7 @@ public class GameScreen implements Screen
 		
 		Gdx.gl.glClearColor(0f, 1f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//mapStage.logic(delta);
         mapStage.act(delta);
         mapStage.draw();
 		hudLayer.act(delta);

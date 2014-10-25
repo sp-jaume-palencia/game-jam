@@ -7,6 +7,8 @@ public class ConstantsSystem {
 	public int alive;
 	public int dead;
 	
+	public int serverTic;
+	
 	public void load()
 	{
 		//Time
@@ -16,5 +18,9 @@ public class ConstantsSystem {
 		//GameObjects
 		alive = 1;
 		dead = 0;
+		
+		serverTic = 100;
+		
+		
 	}
 }

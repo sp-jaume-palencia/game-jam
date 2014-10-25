@@ -1,10 +1,15 @@
 package com.test.network.model;
 
+import com.badlogic.gdx.utils.TimeUtils;
+import com.test.systems.RootSystem;
+
 public class NetRoom
 {
 	int id;
 	int players[];
 	int numPlayers;
+	long initTimestamp;
+	long tics;
 
 	public NetRoom(int i)
 	{
@@ -19,8 +24,23 @@ public class NetRoom
 	
 	public void addPlayer(int playerId)
 	{
-		players[numPlayers] = playerId;
-		numPlayers++;
+		if(numPlayers < players.length)
+		{
+			players[numPlayers] = playerId;
+			numPlayers++;
+		}
+	}
+
+	public void startGame()
+	{
+		initTimestamp = TimeUtils.millis();
+		RootSystem.data.initTimestamp = initTimestamp;
+	}
+	
+	public long updateTics()
+	{
+		tics = (TimeUtils.millis() - initTimestamp)/RootSystem.constants.serverTic;
+		return tics;
 	}
 
 }
