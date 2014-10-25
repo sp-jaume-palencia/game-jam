@@ -115,7 +115,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	        Vector2 basePos = baseData.position;
 	        int[] annexedBases = baseData.annexedBases;
 	        
-	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, annexedBases, basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
+	        Planet planet = new Planet(baseData.baseId, baseData.owner, annexedBases, basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
 			_planets.add(planet);
 			addActor(planet);
 	    }

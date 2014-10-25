@@ -69,7 +69,7 @@ public class Planet extends Group {
 	{
 		// Update base status
 		BaseData data = RootSystem.data.map.getBase(_baseId);		
-		setPlayerId(data.ownerId);
+		setPlayerId(data.owner);
 		
 		// Update attacks
 		Integer attackId = RootSystem.data.mapState.attackState.getAttackingBaseId(_baseId);
