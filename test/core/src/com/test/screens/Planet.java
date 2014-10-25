@@ -1,25 +1,13 @@
 package com.test.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.test.data.AttackState;
-import com.test.data.BaseData;
-import com.test.network.Network.GameActionID;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.test.game.BaseState;
 import com.test.systems.RootSystem;
 
 public class Planet extends Group {
@@ -33,6 +21,7 @@ public class Planet extends Group {
 	Image _sprite;
 	Image _cursor;
 	Image _spaceship;
+	Label _troopsLabel;
 	
 	
 	public Planet(int id, Vector2 position)
@@ -54,15 +43,44 @@ public class Planet extends Group {
 		_spaceship.setVisible(false);
 		addActor(_spaceship);
 		
+		_troopsLabel = new Label("0", RootSystem.assets.UISkin);
+		_troopsLabel.setColor(1f, 0f, 1f, 1f);
+		_troopsLabel.setSize(RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
+		_troopsLabel.setPosition(x, y);
+		addActor(_troopsLabel);
+		
 		_selected = false;
 	}
 	
-	public void setSprite(Texture t)
+	public void setSprite(int ownerId)
 	{		
+		// TODO IÑAKI
+		Texture t = null;
+		
+		switch(ownerId)
+		{
+			 case 1:
+				 t = RootSystem.assets.planet1;
+				 break;
+			 case 2:
+				 t = RootSystem.assets.planet2;
+				 break;
+			 case 3:
+				 t = RootSystem.assets.planet3;
+				 break;
+			 case 4:
+				 t = RootSystem.assets.planet4;
+				 break;
+			 default:
+			 {
+				 t = RootSystem.assets.neutralPlanet;
+				 break;
+			 }
+		}		
+		
 		_sprite = new Image(t);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
-
 	}
 		
 	public boolean isInside(float x, float y)
@@ -113,12 +131,24 @@ public class Planet extends Group {
 		Vector2 actPos = new Vector2(getX(), getY());
 		Vector2 midPos = attackPos.sub(actPos);
 		
+		_spaceship.setRotation((float) Math.atan2(midPos.y, midPos.y));		
 		midPos.set(actPos.x + midPos.x/2, actPos.y + midPos.y/2);
+		
 		_spaceship.addAction(Actions.moveTo(midPos.x, midPos.y, 1.5f));		
 		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 1.5f), Actions.scaleTo(1.0f, 1.0f))));
 		_spaceship.setVisible(true);
 	}
 			
+	@Override
+	public void act(float dt)
+	{
+		super.act(dt);
+		
+		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);
+		_troopsLabel.setText(String.valueOf(baseData.numTroops));
+		setSprite(baseData.ownerId);
+	}
+	
 	@Override
     public void draw(Batch batch, float alpha)
     {

@@ -3,7 +3,7 @@ package com.test.data;
 public class PlayerState
 {
 	public int id;
-	public int gold;
+	public int totalTroops;
 	public int points;
 	
 	public PlayerState()
@@ -11,10 +11,10 @@ public class PlayerState
 		
 	}
 	
-	public PlayerState(int id, int gold, int points)
+	public PlayerState(int id, int totalTroops, int points)
 	{
 		this.id = id;
-		this.gold = gold;
+		this.totalTroops = totalTroops;
 		this.points = points;
 	}
 }

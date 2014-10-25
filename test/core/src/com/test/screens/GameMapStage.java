@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
+import com.test.data.PlayerState;
 import com.test.hud.HUD;
 import com.test.systems.RootSystem;
 
@@ -79,41 +80,11 @@ public class GameMapStage extends Stage implements GestureListener {
 			BaseData baseData = timeBases.get(i);
 			
 	        Planet planet = new Planet(baseData.baseId, baseData.position);
-	        setPlanetTexture(planet);
 			_planets.add(planet);
 			addActor(planet);
 		}		
 		
 		_selectedPlanet = null;
-	}
-	
-	public void setPlanetTexture(Planet planet)
-	{
-		int ownerId = RootSystem.data.mapState.getBaseState(planet.getId()).ownerId;
-		Texture t = null;
-		
-		switch(ownerId)
-		{
-			 case 1:
-				 t = RootSystem.assets.planet1;
-				 break;
-			 case 2:
-				 t = RootSystem.assets.planet2;
-				 break;
-			 case 3:
-				 t = RootSystem.assets.planet3;
-				 break;
-			 case 4:
-				 t = RootSystem.assets.planet4;
-				 break;
-			 default:
-			 {
-				 t = RootSystem.assets.neutralPlanet;
-				 break;
-			 }
-		}
-						
-		planet.setSprite(t);
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
@@ -125,6 +96,16 @@ public class GameMapStage extends Stage implements GestureListener {
         Intersector.intersectRayPlane(pickRay, xyPlane, intersection);
               
         return new Vector2(intersection.x, intersection.y);
+	}
+	
+	@Override
+	public void act(float dt)
+	{
+		super.act(dt);
+		
+		PlayerState playerState = RootSystem.data.playerState;
+		_hud.setPoints(playerState.points);
+		_hud.setTroops(playerState.totalTroops);
 	}
 	
 	@Override
