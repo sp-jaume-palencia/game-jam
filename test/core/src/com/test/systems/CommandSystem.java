@@ -33,14 +33,8 @@ public class CommandSystem
 	{
 		GameCommand cmd = new GameCommand();
 		cmd.actionID = actionId.getValue();
-		cmd.gametime = scrollTime + getTimestamp();
+		cmd.gametime = scrollTime;
 		cmd.objectID = originId;
 		cmd.value1 = targetId;
-	}
-
-	private long getTimestamp()
-	{
-		java.util.Date date = new java.util.Date();
-		return date.getTime();
 	}
 }

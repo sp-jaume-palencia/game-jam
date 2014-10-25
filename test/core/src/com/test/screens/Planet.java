@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
-import com.test.model.net.CommandAction.ActionId;
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
@@ -71,7 +70,7 @@ public class Planet extends Group implements GestureListener{
 	{
 		// Update base status
 		BaseData data = RootSystem.data.map.getBase(_baseId);		
-		setPlayerId(data.ownerId);
+		setPlayerId(data.owner);
 		
 		// Update attacks
 		Integer attackId = RootSystem.data.mapState.attackState.getAttackingBaseId(_baseId);

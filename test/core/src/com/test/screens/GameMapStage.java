@@ -84,29 +84,12 @@ public class GameMapStage extends Stage implements GestureListener {
 		_background.setSize(RootSystem.coords.mapSize.x, RootSystem.coords.mapSize.y);
 		addActor(_background);
 		
-		_planets = new Array<Planet>();
-		_planets.add(new Planet(RootSystem.assets.planet1, 100.0f, 100.0f, _playerId));
-		_planets.add(new Planet(RootSystem.assets.planet1, 500.0f, 100.0f, _playerId + 1));
-		
-		InputMultiplexer multiplexer = new InputMultiplexer();
-		
-		for(Planet planet : _planets)
-		{
-			planet.setTouchable(Touchable.enabled);
-			addActor(planet);
-			multiplexer.addProcessor(new GestureDetector(planet));
-		}
+		createPlanets();
 		
 		_selectedPlanet = null;
 		
-		// Input
-		multiplexer.addProcessor(new GestureDetector(this));
-        
-        
-        Gdx.input.setInputProcessor(multiplexer);
 		
-		
-		//Gdx.input.setInputProcessor(new GestureDetector(this));
+		Gdx.input.setInputProcessor(new GestureDetector(this));
 	}
 	
 	public void logic(float dt)
@@ -166,12 +149,8 @@ public class GameMapStage extends Stage implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) 
 	{	
-<<<<<<< HEAD
-        /*Vector2 touchPos = getTouchPos(x, y);
-=======
         Vector2 touchPos = getTouchPos(x, y);
         boolean selectedPlanet = false;
->>>>>>> origin/master
         
         for(Planet planet : _planets)
         {
@@ -206,16 +185,12 @@ public class GameMapStage extends Stage implements GestureListener {
         {
         	// Has selected a planet        	
         	return true;
-<<<<<<< HEAD
-        }*/
-=======
         }
         else if(_selectedPlanet != null)
         {
         	_selectedPlanet.unselect();
         	_selectedPlanet = null;
         }
->>>>>>> origin/master
         
 		return false;
 	}
