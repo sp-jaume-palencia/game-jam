@@ -1,6 +1,7 @@
 package com.test.screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -10,7 +11,7 @@ public class Spaceship extends Image {
 		
 	float _cooldown = 5.0f;
 	float _actCooldown;
-	float _speed = 50.0f;
+	float _speed = 1.5f;
 	int _damage = 1;
 	Vector2 _dir;
 	Planet _originPlanet;
@@ -34,10 +35,18 @@ public class Spaceship extends Image {
 		
 		_targetPlanet = planet;
 		
-		float difX = _targetPlanet.getX() - _originPlanet.getX();
-		float difY = _targetPlanet.getY() - _originPlanet.getY();
+		float destX = _targetPlanet.getX() + _targetPlanet.getWidth()/2;
+		float destY = _targetPlanet.getY() + _targetPlanet.getHeight()/2;
+		float origX = _originPlanet.getX() + _originPlanet.getWidth()/2;
+		float origY = _originPlanet.getY() + _originPlanet.getHeight()/2;
+		
+		float difX = destX - origX;
+		float difY = destY - origY;
 		float mod = (float) Math.sqrt(difX*difX + difY*difY);
 		_dir.set(difX/mod, difY/mod);
+		
+		setX(_originPlanet.getX() + _originPlanet.getWidth() - getWidth()/2);
+		setY(_originPlanet.getY() + _originPlanet.getHeight()/2 - getHeight()/2);
 	}
 	
 	public int getDamage()
@@ -50,19 +59,24 @@ public class Spaceship extends Image {
 		return _originPlanet.getPlayerOwnerId();
 	}
 	
+	public boolean isAttacking()
+	{
+		return (_targetPlanet != null && _actCooldown <= 0.0f);
+	}
+	
 	@Override
 	public void act(float dt)
 	{
 		_actCooldown -= dt;
 		
-		if(_targetPlanet == null || _actCooldown > 0.0f)
+		if(!isAttacking())
 		{
 			return;
 		}
 		
 		setPosition(getX() + _dir.x*_speed, getY() + _dir.y*_speed);
 		
-		if(_targetPlanet.isInside(getX() + getWidth()/2, getY() + getHeight()/2))
+		if(_targetPlanet.isInside(getX(), getY()))
 		{
 			_targetPlanet.receiveDamage(this);
 			resetAttack();
@@ -72,6 +86,17 @@ public class Spaceship extends Image {
 	private void resetAttack()
 	{
 		_actCooldown = _cooldown;
-		_targetPlanet = null;
+		
+		setX(_originPlanet.getX() + _originPlanet.getWidth() - getWidth()/2);
+		setY(_originPlanet.getY() + _originPlanet.getHeight()/2 - getHeight()/2);
 	}
+	
+	@Override
+	public void draw(Batch batch, float alpha)
+	{
+		if(isAttacking())
+		{
+			super.draw(batch, alpha);
+		}
+	}	
 }

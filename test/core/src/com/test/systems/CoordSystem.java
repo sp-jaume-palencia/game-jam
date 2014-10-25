@@ -32,11 +32,14 @@ public class CoordSystem
     public Coord playButtonSize;
     public Coord playButtonPos;
     
+    // Gameplay
+    public Coord mapSize;
+    
     public void load()
     {
         //Common
-        width = 1000;
-        height = 500;
+        width = 500;
+        height = 1000;
         
         //Menuscreen
         button1Size = new Coord(100, 50);
@@ -60,5 +63,8 @@ public class CoordSystem
         
         playButtonSize = new Coord(200, 100);
         playButtonPos = new Coord(lobbyWaitingPos.x, lobbyWaitingPos.y - lobbyWaitingSize.y - 50);
+        
+        // Gameplay
+        mapSize = new Coord(3000, 3000);
     }
 }

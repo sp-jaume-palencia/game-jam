@@ -23,15 +23,18 @@ public class Planet extends Group {
 	
 	// Status
 	int _playerOwnerId;
-	int _hitPoints = 5;
+	int _baseId;
+	int START_HP = 5;	
+	int _hitPoints = START_HP;
 	
 	// Textures
 	Image _sprite;
 	Image _cursor;
 	boolean _selected;
 	
-	public Planet(Texture planetTexture, float x, float y, int playerId)
+	public Planet(int baseId, int playerId, Texture planetTexture, float x, float y)
 	{
+		_baseId = baseId;
 		_playerOwnerId = playerId;
 		
 		setPosition(x, y);
@@ -88,6 +91,7 @@ public class Planet extends Group {
 		if(_hitPoints < 0)
 		{
 			_playerOwnerId = enemySpaceship.getPlayerOwnerId();
+			_hitPoints = START_HP;
 		}
 	}
 	
@@ -104,7 +108,8 @@ public class Planet extends Group {
 	@Override
     public void draw(Batch batch, float alpha)
     {
-		_sprite.draw(batch, alpha);
+		_spaceship.draw(batch, alpha);
+		_sprite.draw(batch, alpha);		
 		
 		if(_selected)
 		{

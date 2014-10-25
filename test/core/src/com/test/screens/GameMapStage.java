@@ -1,5 +1,9 @@
 package com.test.screens;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
@@ -23,6 +27,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.data.BaseData;
 import com.test.systems.RootSystem;
 
 
@@ -42,8 +47,8 @@ public class GameMapStage extends Stage implements GestureListener {
     // Zoom
     float ZOOM_SPEED = 0.0225f;
     float INITIAL_ZOOM = 500.0f;
-    float ZOOM_MAX = 1.5f;
-    float ZOOM_MIN = 0.5f;
+    float ZOOM_MAX = 1.3f;
+    float ZOOM_MIN = 0.7f;
     float lastDistance;
 	
 	GameMapStage()
@@ -52,10 +57,10 @@ public class GameMapStage extends Stage implements GestureListener {
 		_playerId = 1;
 		
 		// Camera
-		float centerX = RootSystem.coords.width/2;
-        float centerY = RootSystem.coords.height/2;        
+		float centerX = RootSystem.coords.mapSize.x/2;
+        float centerY = RootSystem.coords.mapSize.y/2;        
         _camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
-        _camera.position.set(centerX, 0.0f, INITIAL_ZOOM);
+        _camera.position.set(centerX, centerY, INITIAL_ZOOM);
         
         _camera.lookAt(centerX, centerY, 0);     
         _camera.near = 1f;
@@ -68,7 +73,7 @@ public class GameMapStage extends Stage implements GestureListener {
         
         // Actors        
 		_background = new Image(RootSystem.assets.gameplayBackground1);
-		_background.setSize(RootSystem.coords.width, RootSystem.coords.height);
+		_background.setSize(RootSystem.coords.mapSize.x, RootSystem.coords.mapSize.y);
 		addActor(_background);
 		
 		createPlanets();
@@ -91,13 +96,18 @@ public class GameMapStage extends Stage implements GestureListener {
 	private void createPlanets()
 	{
 		_planets = new Array<Planet>();
-		_planets.add(new Planet(RootSystem.assets.planet1, 100.0f, 100.0f, _playerId));
-		_planets.add(new Planet(RootSystem.assets.planet1, 500.0f, 100.0f, _playerId + 1));
+		Iterator<Entry<Integer, BaseData>> it = RootSystem.data.map.bases.entrySet().iterator();
 		
-		for(Planet planet : _planets)
-		{
+	    while (it.hasNext()) 
+	    {
+	        Map.Entry<Integer, BaseData> pairs = (Map.Entry<Integer, BaseData>)it.next();
+	        BaseData baseData = pairs.getValue();
+	        Vector2 basePos = baseData.position;
+	        
+	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, RootSystem.assets.planet1, basePos.x, basePos.y);	        
+			_planets.add(planet);
 			addActor(planet);
-		}
+	    }
 		
 		_selectedPlanet = null;
 	}
@@ -109,8 +119,7 @@ public class GameMapStage extends Stage implements GestureListener {
 
         Ray pickRay = _camera.getPickRay(x, y);
         Intersector.intersectRayPlane(pickRay, xyPlane, intersection);
-        
-        System.out.println("x= " + intersection.x + " y=" + intersection.y);        
+              
         return new Vector2(intersection.x, intersection.y);
 	}
 	
@@ -124,6 +133,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	public boolean tap(float x, float y, int count, int button) 
 	{	
         Vector2 touchPos = getTouchPos(x, y);
+        boolean selectedPlanet = false;
         
         for(Planet planet : _planets)
         {
@@ -148,13 +158,20 @@ public class GameMapStage extends Stage implements GestureListener {
 						_selectedPlanet.attackTo(planet);
 					}
 				}
+				
+				selectedPlanet = true;
+	    		break;
 			}
         }
-        
-        if(_selectedPlanet != null)
+                
+        if(selectedPlanet)
         {
-        	// Has selected a planet
+        	// Has selected a planet        	
         	return true;
+        }
+        else if(_selectedPlanet != null)
+        {
+        	_selectedPlanet.unselect();
         }
         
 		return false;
@@ -179,6 +196,8 @@ public class GameMapStage extends Stage implements GestureListener {
 		float moveY = deltaY*_camera.zoom;
 
 		_camera.translate(moveX, moveY, 0);
+		
+		System.out.println("cameraX= " + _camera.position.x + " cameraY= " + _camera.position.y);
 
 		return true;
 	}
