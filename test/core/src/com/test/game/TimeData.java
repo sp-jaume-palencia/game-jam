@@ -18,4 +18,8 @@ public class TimeData {
 			timeData.get(entry.getKey()).update(entry.getValue());
 		}
 	}
+	
+	public TimeActor get(int id) {
+		return timeData.get(id);
+	}
 }

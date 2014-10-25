@@ -9,10 +9,10 @@ import com.test.utils.TimeVariations;
 import com.test.utils.Update;
 
 public class TimeBase extends TimeActor{
-	StepVariations upgrade;
-	InterpolatedVariations resourceProduction;
-	InterpolatedVariations unitsProduction;
-	InterpolatedVariations life;
+	public StepVariations upgrade;
+	public InterpolatedVariations resourceProduction;
+	public InterpolatedVariations unitsProduction;
+	public InterpolatedVariations life;
 
 	public TimeBase() {};
 	

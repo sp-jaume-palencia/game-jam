@@ -2,19 +2,17 @@ package com.test.game;
 
 import java.util.Map;
 
-import com.test.systems.RootSystem;
 import com.test.utils.InterpolatedVariations;
 import com.test.utils.StepVariations;
-import com.test.utils.TimeVariations;
 import com.test.utils.Update;
 
 public class TimeSquad extends TimeActor {
-	StepVariations upgrade;
-	InterpolatedVariations attack;
-	InterpolatedVariations life;
-	StepVariations base;
-	InterpolatedVariations posX;
-	InterpolatedVariations posY;
+	public StepVariations upgrade;
+	public InterpolatedVariations attack;
+	public InterpolatedVariations life;
+	public StepVariations base;
+	public InterpolatedVariations posX;
+	public InterpolatedVariations posY;
 
 	public TimeSquad() {};
 	
