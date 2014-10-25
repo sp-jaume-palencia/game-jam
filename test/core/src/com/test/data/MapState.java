@@ -55,7 +55,7 @@ public class MapState
 		return planet.baseId == playerState.id;
 	}
 	
-	public void attackTo(int planetId)
+	public void attackTo(int originId, int targetId)
 	{
 		
 	}

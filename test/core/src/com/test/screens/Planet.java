@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.test.game.BaseState;
+import com.test.data.BaseState;
 import com.test.systems.RootSystem;
 
 public class Planet extends Group {
@@ -54,6 +54,11 @@ public class Planet extends Group {
 	
 	public void setSprite(int ownerId)
 	{		
+		if(_sprite != null)
+		{
+			return;
+		}
+		
 		// TODO IÑAKI
 		Texture t = null;
 		
