@@ -6,22 +6,27 @@ import com.test.model.time.InterpolatedVariations;
 import com.test.model.time.StepVariations;
 import com.test.utils.Update;
 
-public class TimeBase extends TimeActor{
+public class TimeBase extends TimeActor {
 	public StepVariations attack;
 	public InterpolatedVariations life;
 	public StepVariations upgrade;
 	public InterpolatedVariations resourceProduction;
 	public InterpolatedVariations unitsProduction;
+	public StepVariations isAlive;
 	
 	public TimeBase() {};
 	
 	public void update(Map<String,Update> map) {
-		super.update(map);
+		isAlive.update(map.get("isAlive"));
 		upgrade.update(map.get("upgrade"));
 		attack.update(map.get("attack"));
 		resourceProduction.update(map.get("resourceProduction"));
 		unitsProduction.update(map.get("unitsProduction"));
 		life.update(map.get("life"));
+	}
+	
+	public int getIsAlive(int time) {
+		return isAlive.getValue(time);
 	}
 	
 	public int getAttack(int time) {

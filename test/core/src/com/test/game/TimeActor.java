@@ -5,10 +5,6 @@ import java.util.Map;
 import com.test.model.time.StepVariations;
 import com.test.utils.Update;
 
-public class TimeActor {
-	public StepVariations isAlive;
-	
-	public void update(Map<String,Update> map) {
-		isAlive.update(map.get("isAlive"));
-	}
+public abstract class TimeActor {
+	public abstract void update(Map<String,Update> map);
 }
