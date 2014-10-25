@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -21,18 +19,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
 import com.test.game.TimeBase;
-import com.test.model.net.CommandAction.ActionId;
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
-public class Planet extends Group implements GestureListener{
+public class Planet extends Group {
 	
 	Spaceship _spaceship;
 	
 	// Status
-	int _playerOwnerId = -1;
-	int _baseId;
-	int[] _annexedBasesIds;
+	BaseData _baseData;
 	
 	int START_HP = 5;	
 	int _hitPoints = START_HP;
@@ -44,10 +39,9 @@ public class Planet extends Group implements GestureListener{
 	
 	public Planet(BaseData baseData)//int baseId, int playerId, int[] annexedBases, float dataX, float dataY)
 	{
-		_annexedBasesIds = annexedBases;
-		
-		float x = dataX - RootSystem.coords.planetSize.x/2;
-		float y = dataY - RootSystem.coords.planetSize.y/2;
+		_baseData = baseData;
+		float x = _baseData.position.x - RootSystem.coords.planetSize.x/2;
+		float y = (RootSystem.coords.mapSize.y - _baseData.position.y) - RootSystem.coords.planetSize.y/2;
 		
 		setPosition(x, y);
 		setBounds(getX(),getY(), RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
@@ -62,41 +56,33 @@ public class Planet extends Group implements GestureListener{
 		addActor(_spaceship);
 		
 		_selected = false;
-		
-		_baseId = baseId;
-		setPlayerId(playerId);
+		updatePlayerId();
 	}
 	
 	@Override
 	public void act(float dt)
 	{
-		// Update base status
-		BaseData data = RootSystem.data.map.getBase(_baseId);		
-		setPlayerId(data.owner);
-		
-		// Update attacks
-		Integer attackId = RootSystem.data.mapState.attackState.getAttackingBaseId(_baseId);
-		
-		if(attackId != null)
-		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(attackId - 1);
-			_spaceship.attack(targetPlanet);
-		}
-		
+		syncData();
 		super.act(dt);
 	}
 	
-	public void setPlayerId(int playerId)
+	private void syncData()
 	{
-		if(_playerOwnerId == playerId)
-		{
-			return;
-		}
+		// Update base
+		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
 		
-		_playerOwnerId = playerId;
+		if(_baseData.target != 0)
+		{
+			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target);
+			_spaceship.attack(targetPlanet);
+		}
+	}
+	
+	public void updatePlayerId()
+	{
 		Texture t = null;
 		
-		switch(_playerOwnerId)
+		switch(_baseData.owner)
 		{
 			 case 1:
 				 t = RootSystem.assets.planet1;
@@ -157,14 +143,15 @@ public class Planet extends Group implements GestureListener{
 		
 		if(_hitPoints < 0)
 		{
-			_hitPoints = START_HP;			
-			setPlayerId(enemySpaceship.getPlayerOwnerId());
+			_hitPoints = START_HP;
+			_baseData.owner = enemySpaceship.getPlayerOwnerId();
+			updatePlayerId();
 		}
 	}
 	
 	public int getPlayerOwnerId()
 	{
-		return _playerOwnerId;
+		return _baseData.owner;
 	}
 	
 	public void attackTo(Planet targetPlanet)
@@ -173,14 +160,14 @@ public class Planet extends Group implements GestureListener{
 		{		
 			// Attack!!!!
 			_spaceship.attack(targetPlanet);
-			RootSystem.commands.sendAttack(_baseId, targetPlanet.getPlayerOwnerId(), 9898, GameActionID.BASEATACKBASE);
+			RootSystem.commands.sendAttack(_baseData.owner, targetPlanet.getPlayerOwnerId(), GameScreen.getTick(), GameActionID.BASEATACKBASE);
 		}
 	}
 	
 	public boolean isPlanetAnnexed(int id)
 	{
 		System.out.println("Planet actual: " + id + " attackando a: ");
-		for(int annexedId : _annexedBasesIds)
+		for(int annexedId : _baseData.annexedBases)
 		{
 			System.out.println(annexedId);
 			if(annexedId == id)
@@ -203,54 +190,4 @@ public class Planet extends Group implements GestureListener{
 			_cursor.draw(batch, alpha);
 		}
     }
-
-	@Override
-	public boolean touchDown(float x, float y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean tap(float x, float y, int count, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean longPress(float x, float y) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean fling(float velocityX, float velocityY, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean pan(float x, float y, float deltaX, float deltaY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean panStop(float x, float y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean zoom(float initialDistance, float distance) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
-			Vector2 pointer1, Vector2 pointer2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 }

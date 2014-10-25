@@ -21,6 +21,7 @@ public class GameScreen implements Screen
     Viewport viewport;    
     public GameMapStage mapStage;
     Stage hudLayer;
+    long gameTime;
 	
 	public GameScreen()
 	{
@@ -90,6 +91,6 @@ public class GameScreen implements Screen
 	
 	static public int getTick()
 	{
-		return RootSystem.screens.gameplay.gameTime + 696969; // TODO coger scroll
+		return (int) (RootSystem.screens.gameplay.gameTime + 696969); // TODO coger scroll
 	}
 }
