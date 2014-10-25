@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.utils.Update;
 
 public class TimeData {
-	HashMap<Integer, TimeBase> timeBases;
+	public HashMap<Integer, TimeBase> timeBases;
 	
 	public TimeData() {
 		timeBases = new HashMap<Integer, TimeBase>();
