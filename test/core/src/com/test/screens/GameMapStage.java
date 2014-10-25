@@ -3,7 +3,6 @@ package com.test.screens;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
