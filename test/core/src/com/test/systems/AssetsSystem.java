@@ -12,6 +12,8 @@ public class AssetsSystem
 	public Texture planet1;
 	public Texture cursor;
 	public Texture spaceShip;
+	public Texture gold;
+	public Texture crono;
 	
 	public void load()
 	{
@@ -21,6 +23,8 @@ public class AssetsSystem
 		planet1 = new Texture(Gdx.files.internal("textures/planet1.png"));
 		cursor = new Texture(Gdx.files.internal("textures/cursor.png"));
 		spaceShip = new Texture(Gdx.files.internal("textures/spaceship.png"));
+		gold = new Texture(Gdx.files.internal("textures/gold.png"));
+		crono = new Texture(Gdx.files.internal("textures/crono.png"));
 	}
 
 }

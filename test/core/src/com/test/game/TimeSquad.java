@@ -2,8 +2,8 @@ package com.test.game;
 
 import java.util.Map;
 
-import com.test.utils.InterpolatedVariations;
-import com.test.utils.StepVariations;
+import com.test.model.time.InterpolatedVariations;
+import com.test.model.time.StepVariations;
 import com.test.utils.Update;
 
 public class TimeSquad extends TimeActor {

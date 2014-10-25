@@ -35,6 +35,17 @@ public class CoordSystem
     // Gameplay
     public Coord mapSize;
     
+    //HUD
+    public Coord hudScrollSize;
+    public Coord hudScrollPos;
+    
+    public final int kNumButtons = 2;
+    public Coord hudActionButtonSize;
+    public Coord hudActionButtonOrigPos;
+    
+    public Coord hudResourceSize;
+    public Coord hudResourceOrigPos;
+    
     public void load()
     {
         //Common
@@ -66,5 +77,15 @@ public class CoordSystem
         
         // Gameplay
         mapSize = new Coord(3000, 3000);
+        
+        //HUD
+        hudScrollSize = new Coord(width, 250);
+        hudScrollPos = new Coord(0, 0);
+        
+        hudActionButtonSize = new Coord(50, 50);
+        hudActionButtonOrigPos = new Coord((width - hudActionButtonSize.x * kNumButtons)/2, hudScrollSize.y);
+        
+        hudResourceSize = new Coord(width/5, 100);
+        hudResourceOrigPos = new Coord(0, height - hudResourceSize.y);
     }
 }
