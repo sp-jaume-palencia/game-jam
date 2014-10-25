@@ -2,9 +2,9 @@ package com.test.data;
 
 public class PlayerState
 {
-	int id;
-	int gold;
-	int points;
+	public int id;
+	public int gold;
+	public int points;
 	
 	public PlayerState(int id, int gold, int points)
 	{

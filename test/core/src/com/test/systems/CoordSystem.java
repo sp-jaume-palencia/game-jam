@@ -34,6 +34,7 @@ public class CoordSystem
     
     // Gameplay
     public Coord mapSize;
+    public Coord planetSize;
     
     public void load()
     {
@@ -66,5 +67,6 @@ public class CoordSystem
         
         // Gameplay
         mapSize = new Coord(3000, 3000);
+        planetSize = new Coord(100, 100);
     }
 }

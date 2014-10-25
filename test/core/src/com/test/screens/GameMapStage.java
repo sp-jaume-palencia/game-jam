@@ -30,6 +30,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
+import com.test.data.PlayerState;
 import com.test.systems.RootSystem;
 
 
@@ -40,10 +41,11 @@ public class GameMapStage extends Stage implements GestureListener {
     
     // GameStatus
     int _playerId;
+    PlayerState _playerState;
     
     // Actors
     Image _background;
-    Array<Planet> _planets;
+    public Array<Planet> _planets;
     Planet _selectedPlanet;
 	
     // Zoom
@@ -55,9 +57,12 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	GameMapStage()
 	{		
+		RootSystem.mapStage = this;
+		
 		// Status
 		_playerId = 1;
-		
+		_playerState = new PlayerState(_playerId, 0, 0);
+				
 		// Camera
 		float centerX = RootSystem.coords.mapSize.x/2;
         float centerY = RootSystem.coords.mapSize.y/2;        
@@ -89,6 +94,9 @@ public class GameMapStage extends Stage implements GestureListener {
 		super.act();
 		super.draw();
 		
+		// Update player state
+		_playerState = RootSystem.data.mapState.getPlayerState(_playerId);
+		
 		for(Planet planet : _planets)
 		{
 			planet.act(dt);
@@ -107,7 +115,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	        Vector2 basePos = baseData.position;
 	        int[] annexedBases = baseData.annexedBases;
 	        
-	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, annexedBases, getRandomPlanet(), basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
+	        Planet planet = new Planet(baseData.baseId, baseData.ownerId, annexedBases, basePos.x, RootSystem.coords.mapSize.y - basePos.y);	        
 			_planets.add(planet);
 			addActor(planet);
 	    }
@@ -115,24 +123,7 @@ public class GameMapStage extends Stage implements GestureListener {
 		_selectedPlanet = null;
 	}
 	
-	private Texture getRandomPlanet()
-	{
-		int random = MathUtils.random(1, 4);
-		
-		switch (random)
-		{
-			case 1:
-				return RootSystem.assets.planet1;
-			case 2:
-				return RootSystem.assets.planet2;
-			case 3:
-				return RootSystem.assets.planet3;
-			case 4:
-				return RootSystem.assets.planet4;
-		}
-		
-		return null;
-	}
+
 	
 	private Vector2 getTouchPos(float x, float y)
 	{
@@ -194,6 +185,7 @@ public class GameMapStage extends Stage implements GestureListener {
         else if(_selectedPlanet != null)
         {
         	_selectedPlanet.unselect();
+        	_selectedPlanet = null;
         }
         
 		return false;
