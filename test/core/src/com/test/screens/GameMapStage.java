@@ -3,7 +3,6 @@ package com.test.screens;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
@@ -202,6 +201,7 @@ public class GameMapStage extends Stage implements GestureListener {
 			RootSystem.data.mapState.attackTo(originPlanetId, targetPlanedId);
 			_selectedPlanet.attackTo(RootSystem.data.map.getBase(targetPlanedId).position);
 			_attackingPlanets.add(_selectedPlanet);
+			planet.showTarget();
 		}
 	}
 	

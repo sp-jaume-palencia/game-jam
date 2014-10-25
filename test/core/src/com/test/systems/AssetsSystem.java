@@ -13,8 +13,11 @@ public class AssetsSystem
 	public Texture planet0, planet1, planet2, planet3, planet4, planet5, planet6, planet7, planet8, planet9;
 	public Texture cursor;
 	public Texture spaceShip;
-	public Texture gold;
-	public Texture crono;
+	public Texture units;
+	public Texture bases;
+	public Texture target;
+	public Texture menuBackground;
+	public Texture lobbyBackground;
 	public Texture player1, player2, player3, player4;
 	
 	public void load()
@@ -36,8 +39,13 @@ public class AssetsSystem
 		planet8 = new Texture(Gdx.files.internal("textures/planeta8.png"));
 		planet9 = new Texture(Gdx.files.internal("textures/planeta9.png"));
 		//neutralPlanet = new Texture(Gdx.files.internal("textures/neutralPlanet.png"));
-		gold = new Texture(Gdx.files.internal("textures/gold.png"));
-		crono = new Texture(Gdx.files.internal("textures/crono.png"));
+
+		units = new Texture(Gdx.files.internal("textures/units.png"));
+		bases = new Texture(Gdx.files.internal("textures/bases.png"));
+		target = new Texture(Gdx.files.internal("textures/target.png"));
+		menuBackground = new Texture(Gdx.files.internal("textures/bg-menu.jpg"));
+		lobbyBackground = new Texture(Gdx.files.internal("textures/bg-lobby.jpg"));
+
 		player1 = new Texture(Gdx.files.internal("textures/player1.png"));
 		player2 = new Texture(Gdx.files.internal("textures/player2.png"));
 		player3 = new Texture(Gdx.files.internal("textures/player3.png"));

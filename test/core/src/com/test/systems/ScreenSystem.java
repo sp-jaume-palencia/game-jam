@@ -21,8 +21,8 @@ public class ScreenSystem {
 	public Screen currentScreen;
 	public Screen nextScreen;
 	
-	float fadeOutTime = 0.25f;
-    float fadeInTime = 0.25f;
+	float fadeOutTime = 0.33f;
+    float fadeInTime = 0.33f;
 
 	public void load()
 	{
