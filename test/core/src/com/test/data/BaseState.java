@@ -1,5 +1,6 @@
 package com.test.data;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class BaseState {
@@ -12,8 +13,8 @@ public class BaseState {
 	public BaseState(BaseData data)		
 	{
 		this.data = data;
-		this.baseId = 0;
-		this.ownerId = 0;
-		this.numTroops = 0;
+		this.baseId = data.baseId;
+		this.ownerId = MathUtils.random(1, 4);
+		this.numTroops = MathUtils.random(0, 99);
 	}
 }
