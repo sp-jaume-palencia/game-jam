@@ -210,8 +210,6 @@ public class GameMapStage extends Stage implements GestureListener {
 		float moveY = deltaY*_camera.zoom;
 
 		_camera.translate(moveX, moveY, 0);
-		
-		System.out.println("cameraX= " + _camera.position.x + " cameraY= " + _camera.position.y);
 
 		return true;
 	}

@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
+import com.test.model.net.CommandAction.ActionId;
+import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
 public class Planet extends Group {
@@ -164,16 +166,20 @@ public class Planet extends Group {
 	
 	public void attackTo(Planet targetPlanet)
 	{
-		//if(isPlanetAnnexed(targetPlanet.getPlayerOwnerId()))
-		//{		
+		if(isPlanetAnnexed(targetPlanet.getPlayerOwnerId()))
+		{		
+			// Attack!!!!
 			_spaceship.attack(targetPlanet);
-		//}
+			RootSystem.commands.sendAttack(_baseId, targetPlanet.getPlayerOwnerId(), 9898, GameActionID.BASEATACKBASE);
+		}
 	}
 	
 	public boolean isPlanetAnnexed(int id)
 	{
+		System.out.println("Planet actual: " + id + " attackando a: ");
 		for(int annexedId : _annexedBasesIds)
 		{
+			System.out.println(annexedId);
 			if(annexedId == id)
 			{
 				return true;
