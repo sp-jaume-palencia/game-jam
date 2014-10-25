@@ -9,7 +9,10 @@ public class TimePlayer {
 	public InterpolatedVariations resource;
 	public InterpolatedVariations score;
 	
-	public TimePlayer() {};
+	public TimePlayer() {
+		resource = new InterpolatedVariations();
+		score = new InterpolatedVariations();
+	};
 	
 	public void update(Map<String,Update> map) {
 		resource.update(map.get("resource"));

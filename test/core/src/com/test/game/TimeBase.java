@@ -24,6 +24,13 @@ public class TimeBase {
 		this.baseId = baseId;
 		this.position = position;
 		this.annexedBases = annexedBases;
+		owner = new StepVariations();
+		attack = new StepVariations();
+		target = new StepVariations();
+		life = new InterpolatedVariations();
+		upgrade = new StepVariations();
+		resourceProduction = new InterpolatedVariations();
+		unitsProduction = new InterpolatedVariations();
 	};
 	
 	public void update(Map<String,Update> map) {
