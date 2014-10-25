@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BaseData
 {
+	public int time;
 	public int baseId;
 	public Vector2 position;
 	public int[] annexedBases;
@@ -16,6 +17,7 @@ public class BaseData
 	public int unitsProduction;
 	
 	public BaseData(
+			int time, 
 			int baseId, 
 			Vector2 position,
 			int[] annexedBases, 
@@ -27,6 +29,7 @@ public class BaseData
 			int resourceProduction,
 			int unitsProduction
 			) {
+			this.time = time;
 			this.baseId = baseId;
 			this.position = position;
 			this.annexedBases = annexedBases;
@@ -40,6 +43,7 @@ public class BaseData
 	}
 	
 	public void update(
+			int time, 
 			int baseId, 
 			Vector2 position,
 			int[] annexedBases, 
@@ -51,6 +55,7 @@ public class BaseData
 			int resourceProduction,
 			int unitsProduction
 			) {
+			this.time = time;
 			this.baseId = baseId;
 			this.position = position;
 			this.annexedBases = annexedBases;

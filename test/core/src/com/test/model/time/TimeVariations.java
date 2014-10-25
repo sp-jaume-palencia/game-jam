@@ -12,8 +12,8 @@ public abstract class TimeVariations
 
 	public TimeVariations() {
 		timeMap = new TreeMap<Integer,Integer>();
-		timeMap.put(RootSystem.constants.beginTime,0);
-		timeMap.put(RootSystem.constants.endTime, 0);
+		timeMap.put(new Integer(RootSystem.constants.beginTime), new Integer(0));
+		timeMap.put(new Integer(RootSystem.constants.endTime), new Integer(0));
 	}
 	
 	public void put(int time, int value) {

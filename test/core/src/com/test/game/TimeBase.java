@@ -33,6 +33,7 @@ public class TimeBase {
 		resourceProduction = new InterpolatedVariations();
 		unitsProduction = new InterpolatedVariations();
 		updatedData = new BaseData(
+				0,
 				baseId, 
 				position,
 				annexedBases, 
@@ -58,16 +59,17 @@ public class TimeBase {
 	
 	public void updateState(int time) {
 		updatedData.update(
+				time,
 				baseId, 
 				position,
 				annexedBases, 
 				owner.getValue(time), 
 				attack.getValue(time), 
 				target.getValue(time),
-				0,//life.getValue(time), 
+				life.getValue(time), 
 				upgrade.getValue(time), 
-				0,//resourceProduction.getValue(time),
-				0//unitsProduction.getValue(time)
+				resourceProduction.getValue(time),
+				unitsProduction.getValue(time)
 			);
 	}
 	

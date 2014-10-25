@@ -76,6 +76,6 @@ public class GameScreen implements Screen
 	
 	static public int getTick()
 	{
-		return RootSystem.screens.gameplay.gameTime + 696969; // TODO coger scroll
+		return RootSystem.screens.gameplay.gameTime + 300; // TODO coger scroll
 	}
 }

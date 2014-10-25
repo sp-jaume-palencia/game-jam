@@ -113,7 +113,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	    {
 	        Map.Entry<Integer, TimeBase> pairs = (Map.Entry<Integer, TimeBase>)it.next();
 	        BaseData baseData = pairs.getValue().getBaseData(GameScreen.getTick());
-	        
+	        System.out.println("Adding with id: " + baseData.baseId);   
 	        Planet planet = new Planet(baseData);	        
 			_planets.add(planet);
 			addActor(planet);

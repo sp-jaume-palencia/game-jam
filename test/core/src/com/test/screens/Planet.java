@@ -28,6 +28,7 @@ public class Planet extends Group {
 	Spaceship _spaceship;
 	
 	// Status
+	int _previousOwnerId = -1;
 	BaseData _baseData;
 	
 	int START_HP = 5;	
@@ -38,9 +39,10 @@ public class Planet extends Group {
 	Image _cursor;
 	boolean _selected;
 	
-	public Planet(BaseData baseData)//int baseId, int playerId, int[] annexedBases, float dataX, float dataY)
+	public Planet(BaseData baseData)
 	{
 		_baseData = baseData;
+		
 		float x = _baseData.position.x - RootSystem.coords.planetSize.x/2;
 		float y = (RootSystem.coords.mapSize.y - _baseData.position.y) - RootSystem.coords.planetSize.y/2;
 		
@@ -71,16 +73,24 @@ public class Planet extends Group {
 	{
 		// Update base
 		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
-		
+
 		if(_baseData.target != 0)
 		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target);
+			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target - 1);
 			_spaceship.attack(targetPlanet);
 		}
+		
+		updatePlayerId();
 	}
 	
 	public void updatePlayerId()
 	{
+		if(_baseData.owner == _previousOwnerId)
+		{
+			return;
+		}
+		
+		_previousOwnerId = _baseData.owner;		
 		Texture t = null;
 		
 		switch(_baseData.owner)
