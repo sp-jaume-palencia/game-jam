@@ -183,7 +183,7 @@ public class Planet extends Group {
 			_spaceship.draw(batch, alpha);
 		}
 		
-//		if(_target.isVisible())
+		if(_target.isVisible())
 		{
 			_target.draw(batch, alpha);
 		}
