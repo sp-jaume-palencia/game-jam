@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,20 +17,16 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
+import com.test.hud.HUD;
 import com.test.systems.RootSystem;
 
 
@@ -48,6 +43,8 @@ public class GameMapStage extends Stage implements GestureListener {
     Image _background;
     public Array<Planet> _planets;
     Planet _selectedPlanet;
+    
+    HUD _hud;
 	
     // Zoom
     float ZOOM_SPEED = 0.0225f;
@@ -56,7 +53,7 @@ public class GameMapStage extends Stage implements GestureListener {
     float ZOOM_MIN = 0.5f;
     float lastDistance;
 	
-	GameMapStage()
+	GameMapStage(HUD hud)
 	{		
 		RootSystem.mapStage = this;
 		
@@ -90,6 +87,8 @@ public class GameMapStage extends Stage implements GestureListener {
 		
 		
 		Gdx.input.setInputProcessor(new GestureDetector(this));
+		_hud = hud;
+		_hud.setActionsVisible(false);
 	}
 	
 	public void logic(float dt)
@@ -127,9 +126,7 @@ public class GameMapStage extends Stage implements GestureListener {
 		_selectedPlanet = null;
 	}
 	
-
-	
-	private Vector2 getTouchPos(float x, float y)
+	public Vector2 getTouchPos(float x, float y)
 	{
 		final Plane xyPlane = new Plane(new Vector3(0, 0, 1), 0);
         final Vector3 intersection = new Vector3();
@@ -166,6 +163,8 @@ public class GameMapStage extends Stage implements GestureListener {
 					
 					_selectedPlanet = planet;
 					_selectedPlanet.onSelect();
+					
+					_hud.setActionsVisible(true);
 				}
 				else
 				{
@@ -191,6 +190,8 @@ public class GameMapStage extends Stage implements GestureListener {
         	_selectedPlanet.unselect();
         	_selectedPlanet = null;
         }
+        
+        _hud.setActionsVisible(false);
         
 		return false;
 	}
