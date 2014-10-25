@@ -40,7 +40,6 @@ public class NetClient {
 			{
 				if (object instanceof RoomCommand)
 				{
-					RoomCommand rc = (RoomCommand)object;
 					startGame();
 					return;
 				}
@@ -71,6 +70,14 @@ public class NetClient {
 					return;
 				}
 				
+				if (object instanceof GameAttack)
+				{
+					GameAttack attack = (GameAttack)object;
+					updateAttack(attack);
+					return;
+				}
+				
+				
 			}
 
 			public void disconnected (Connection connection) {
@@ -98,6 +105,11 @@ public class NetClient {
 				}
 			}
 		}.start();
+	}
+
+	protected void updateAttack(GameAttack attack)
+	{
+		RootSystem.data.mapState.addAttack(attack);
 	}
 
 	protected void updateState(GameStateOfGame state)
@@ -138,7 +150,7 @@ public class NetClient {
 	protected void startGame()
 	{
 		RootSystem.screens.lobby.onForcePlay();
-		RootSystem.data.initTimestamp = TimeUtils.millis();
+		RootSystem.data.gameState.startGame(TimeUtils.millis());
 	}
 	
 	public static void main (String[] args) {

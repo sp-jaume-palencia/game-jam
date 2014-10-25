@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.test.data.AttackState;
 import com.test.data.BaseData;
-import com.test.game.TimeBase;
 import com.test.network.Network.GameActionID;
 import com.test.systems.RootSystem;
 
@@ -27,6 +26,7 @@ public class Planet extends Group {
 	Spaceship _spaceship;
 	
 	// Status
+	int _previousOwnerId = -1;
 	BaseData _baseData;
 	
 	int START_HP = 5;	
@@ -37,9 +37,10 @@ public class Planet extends Group {
 	Image _cursor;
 	boolean _selected;
 	
-	public Planet(BaseData baseData)//int baseId, int playerId, int[] annexedBases, float dataX, float dataY)
+	public Planet(BaseData baseData)
 	{
 		_baseData = baseData;
+		
 		float x = _baseData.position.x - RootSystem.coords.planetSize.x/2;
 		float y = (RootSystem.coords.mapSize.y - _baseData.position.y) - RootSystem.coords.planetSize.y/2;
 		
@@ -68,19 +69,25 @@ public class Planet extends Group {
 	
 	private void syncData()
 	{
-		// Update base
-		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
-		
-		if(_baseData.target != 0)
+		// Update base		
+
+		/*if(_baseData.target != 0)
 		{
-			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target-1);
+			Planet targetPlanet = RootSystem.mapStage._planets.get(_baseData.target);
 			_spaceship.attack(targetPlanet);
-		}
-//		updatePlayerId();
+		}*/
+		
+		updatePlayerId();
 	}
 	
 	public void updatePlayerId()
 	{
+		/*if(_baseData.owner == _previousOwnerId)
+		{
+			return;
+		}*/
+		
+		_previousOwnerId = _baseData.owner;		
 		Texture t = null;
 		
 		switch(_baseData.owner)
@@ -105,7 +112,9 @@ public class Planet extends Group {
 		}
 						
 		_sprite = new Image(t);
-		_sprite.setPosition(getX(), getY());
+		
+		float xMargin = _baseData.owner == 0? -20.0f : 0.0f;
+		_sprite.setPosition(getX() + xMargin, getY());
 		addActor(_sprite);
 	}
 	
@@ -155,9 +164,14 @@ public class Planet extends Group {
 		return _baseData.owner;
 	}
 	
+	public BaseData getBaseData()
+	{
+		return _baseData;
+	}
+	
 	public void attackTo(Planet targetPlanet)
 	{
-		if(isPlanetAnnexed(targetPlanet.getPlayerOwnerId()))
+		if(isPlanetAnnexed(targetPlanet.getBaseData().baseId))
 		{		
 			// Attack!!!!
 			_spaceship.attack(targetPlanet);

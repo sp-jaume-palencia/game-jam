@@ -48,4 +48,10 @@ public class MapState
 		
 	}
 
+	public void addAttack(GameAttack attack)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

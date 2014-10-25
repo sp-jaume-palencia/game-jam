@@ -1,5 +1,6 @@
 package com.test.screens;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,42 +33,31 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
-import com.test.game.TimeBase;
 import com.test.hud.HUD;
 import com.test.systems.RootSystem;
 
 
 public class GameMapStage extends Stage implements GestureListener {
 	
-	OrthographicCamera _camera;
-    Viewport _viewport;    
-    
-    // GameStatus
-    int _playerId;
-    PlayerState _playerState;
-    
-    // Actors
-    Image _background;
-    public Array<Planet> _planets;
-    Planet _selectedPlanet;
-    
-    HUD _hud;
-	
-    // Zoom
+	// Camera
+    OrthographicCamera _camera;
+    Viewport _viewport;
     float ZOOM_SPEED = 0.0225f;
     float INITIAL_ZOOM = 500.0f;
     float ZOOM_MAX = 1.5f;
     float ZOOM_MIN = 0.5f;
     float lastDistance;
 	
+    // Actors
+    Image _background;
+    public Array<Planet> _planets;
+    Planet _selectedPlanet;    
+    HUD _hud;
+	
+    
+	
 	GameMapStage(HUD hud)
-	{		
-		RootSystem.mapStage = this;
-		
-		// Status
-		_playerId = 1;
-		_playerState = new PlayerState(_playerId, 0, 0);
-				
+	{
 		// Camera
 		float centerX = RootSystem.coords.mapSize.x/2;
         float centerY = RootSystem.coords.mapSize.y/2;        
@@ -83,7 +73,7 @@ public class GameMapStage extends Stage implements GestureListener {
         _viewport.setScreenSize(RootSystem.coords.width, RootSystem.coords.height);
         setViewport(_viewport);
         
-        // Actors        
+        // Actors
 		_background = new Image(RootSystem.assets.gameplayBackground1);
 		_background.setSize(RootSystem.coords.mapSize.x, RootSystem.coords.mapSize.y);
 		addActor(_background);
@@ -93,27 +83,21 @@ public class GameMapStage extends Stage implements GestureListener {
 		_hud = hud;
 		_hud.setActionsVisible(false);
 	}
-	
-	public void logic(float dt)
-	{
-		// Update player state
-		_playerState = RootSystem.data.mapState.getPlayerState(_playerId);
-	}
 		
 	private void createPlanets()
 	{
 		_planets = new Array<Planet>();
-		Iterator<Entry<Integer, TimeBase>> it = RootSystem.data.timeData.timeBases.entrySet().iterator();
+		HashMap<Integer, BaseData> timeBases = RootSystem.data.map.bases;
 		
-	    while (it.hasNext()) 
-	    {
-	        Map.Entry<Integer, TimeBase> pairs = (Map.Entry<Integer, TimeBase>)it.next();
-	        BaseData baseData = pairs.getValue().getBaseData(GameScreen.getTick());
-	        
-	        Planet planet = new Planet(baseData);	        
+		for(int i = 1; i <= timeBases.size(); ++i)
+		{
+			BaseData baseData = timeBases.get(i);
+			
+	        Planet planet = new Planet(baseData);
+	        planet.setPosition(baseData.position.x, baseData.position.y);
 			_planets.add(planet);
 			addActor(planet);
-	    }
+		}		
 		
 		_selectedPlanet = null;
 	}
@@ -145,7 +129,7 @@ public class GameMapStage extends Stage implements GestureListener {
         {
     		if(planet.isInside(touchPos.x, touchPos.y))
 			{
-				if(_selectedPlanet != planet && planet.getPlayerOwnerId() == _playerId)
+				if(_selectedPlanet != planet && planet.getPlayerOwnerId() == 0)
 				{
 					// Select another owned planet
 					if(_selectedPlanet != null)

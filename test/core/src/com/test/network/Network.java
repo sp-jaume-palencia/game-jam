@@ -51,11 +51,13 @@ public class Network
 	static public class GameYourTurn
 	{
 		public int turn;
+		public int player;
 	}
 	
 	static public class GameEndOfTurn
 	{
 		public int turn;
+		public int player;
 	}
 	
 	static public class GameStateOfGame

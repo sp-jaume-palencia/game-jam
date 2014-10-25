@@ -30,7 +30,7 @@ public class CommandSystem
 	public void nextPlayer()
 	{
 		//update model
-		RootSystem.data.mapState.process(attacks);
+		//RootSystem.data.mapState.process(attacks);
 		//parse mapState
 		RootSystem.net.server.sendNewState();
 		attacks.clear();

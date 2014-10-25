@@ -10,6 +10,8 @@ import com.test.model.net.CommandAction;
 import com.test.network.Network;
 import com.test.network.Network.GameActionID;
 import com.test.network.Network.GameAttack;
+import com.test.network.Network.GameEndOfTurn;
+import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomActionID;
 import com.test.network.Network.RoomCommand;
 import com.test.network.Network.RoomInfo;
@@ -72,6 +74,7 @@ public class NetServer
 				{
 					GameAttack rc =((GameAttack)object);
 					addAttack(rc);
+					server.sendToAllExceptTCP(connection.getID(), rc);
 					return;
 				}
 			}
@@ -102,7 +105,7 @@ public class NetServer
 	protected void joinRoom(int connId, int roomId)
 	{
 		worldServer.playerJoinRoom(roomId, connId);
-		//if(worldServer.roomIsReady(roomId))
+		if(worldServer.roomIsReady(roomId))
 		{
 			worldServer.startGame(roomId);
 			RoomCommand rc = new RoomCommand();
@@ -139,6 +142,30 @@ public class NetServer
 	public static void main (String[] args) throws IOException {
 		Log.set(Log.LEVEL_DEBUG);
 		new NetServer();
+	}
+
+	public void update(float delta)
+	{
+		for(NetRoom room : worldServer.rooms)
+		{
+			room.update(delta);
+		}
+	}
+
+	public void sendEndTurn(int newTurn, int newPlayer)
+	{
+		GameYourTurn turn = new GameYourTurn();
+		turn.turn = newTurn;
+		turn.player = newPlayer;
+		server.sendToAllTCP(turn);
+	}
+
+	public void sendNewPlayer(int newTurn, int newPlayer)
+	{
+		GameEndOfTurn turn = new GameEndOfTurn();
+		turn.turn = newTurn;
+		turn.player = newPlayer;
+		server.sendToAllTCP(turn);
 	}
 
 	
