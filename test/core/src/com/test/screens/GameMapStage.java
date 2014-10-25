@@ -1,38 +1,21 @@
 package com.test.screens;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
-import com.test.data.PlayerState;
 import com.test.hud.HUD;
 import com.test.systems.RootSystem;
 
@@ -50,10 +33,10 @@ public class GameMapStage extends Stage implements GestureListener {
 	
     // Actors
     Image _background;
-    public Array<Planet> _planets;
+    Array<Planet> _planets;
+    Array<Planet> _attackingPlanets;
     Planet _selectedPlanet;    
     HUD _hud;
-	
     
 	
 	GameMapStage(HUD hud)
@@ -87,19 +70,50 @@ public class GameMapStage extends Stage implements GestureListener {
 	private void createPlanets()
 	{
 		_planets = new Array<Planet>();
+		_attackingPlanets = new Array<Planet>();
+		
 		HashMap<Integer, BaseData> timeBases = RootSystem.data.map.bases;
 		
 		for(int i = 1; i <= timeBases.size(); ++i)
 		{
 			BaseData baseData = timeBases.get(i);
 			
-	        Planet planet = new Planet(baseData.baseId);
-	        planet.setPosition(baseData.position.x, baseData.position.y);
+	        Planet planet = new Planet(baseData.baseId, baseData.position);
+	        setPlanetTexture(planet);
 			_planets.add(planet);
 			addActor(planet);
 		}		
 		
 		_selectedPlanet = null;
+	}
+	
+	public void setPlanetTexture(Planet planet)
+	{
+		int ownerId = RootSystem.data.mapState.getBaseState(planet.getId()).ownerId;
+		Texture t = null;
+		
+		switch(ownerId)
+		{
+			 case 1:
+				 t = RootSystem.assets.planet1;
+				 break;
+			 case 2:
+				 t = RootSystem.assets.planet2;
+				 break;
+			 case 3:
+				 t = RootSystem.assets.planet3;
+				 break;
+			 case 4:
+				 t = RootSystem.assets.planet4;
+				 break;
+			 default:
+			 {
+				 t = RootSystem.assets.neutralPlanet;
+				 break;
+			 }
+		}
+						
+		planet.setSprite(t);
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
@@ -118,7 +132,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	{
 		return false;
 	}
-
+	
 	@Override
 	public boolean tap(float x, float y, int count, int button) 
 	{	
@@ -129,26 +143,13 @@ public class GameMapStage extends Stage implements GestureListener {
         {
     		if(planet.isInside(touchPos.x, touchPos.y))
 			{
-				if(_selectedPlanet != planet && planet.getPlayerOwnerId() == _playerId)
+				if(_selectedPlanet != planet && RootSystem.data.mapState.isOwnPlanet(planet.getId()))
 				{
-					// Select another owned planet
-					if(_selectedPlanet != null)
-					{
-						_selectedPlanet.unselect();
-					}
-					
-					_selectedPlanet = planet;
-					_selectedPlanet.onSelect();
-					
-					_hud.setActionsVisible(true);
+					selectNewPlanet(planet);					
 				}
 				else
 				{
-					// Enemy planet
-					if(_selectedPlanet != null)
-					{
-						_selectedPlanet.attackTo(planet);
-					}
+					tryToAttackPlanet(planet);					
 				}
 				
 				selectedPlanet = true;
@@ -172,6 +173,52 @@ public class GameMapStage extends Stage implements GestureListener {
 		return false;
 	}
 
+	private void selectNewPlanet(Planet planet)
+	{
+		// Select another owned planet
+		if(_selectedPlanet != null)
+		{
+			_selectedPlanet.unselect();
+		}
+		
+		_selectedPlanet = planet;
+		_selectedPlanet.onSelect();
+		
+		_hud.setActionsVisible(true);
+	}
+	
+	private boolean isAttacking(int id)
+	{
+		for(Planet planet : _attackingPlanets)
+		{
+			if(planet.getId() == id)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private void tryToAttackPlanet(Planet planet)
+	{
+		// Enemy planet
+		if(_selectedPlanet == null && !isAttacking(planet.getId()))
+		{
+			return;
+		}
+		
+		int originPlanetId = _selectedPlanet.getId();
+		int targetPlanedId = planet.getId();		
+		
+		if(RootSystem.data.map.areConnected(originPlanetId, targetPlanedId))
+		{
+			RootSystem.data.mapState.attackTo(targetPlanedId);
+			_selectedPlanet.attackTo(RootSystem.data.map.getBase(targetPlanedId).position);
+			_attackingPlanets.add(_selectedPlanet);
+		}
+	}
+	
 	@Override
 	public boolean longPress(float x, float y) {
 		// TODO Auto-generated method stub

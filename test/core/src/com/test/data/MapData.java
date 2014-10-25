@@ -74,4 +74,19 @@ public class MapData
 	{
 		return bases.get(baseId);
 	}
+	
+	public boolean areConnected(int originBaseId, int base2Id)
+	{
+		BaseData destinationBase = bases.get(base2Id);
+		
+		for(int annexedBaseId : destinationBase.annexedBases)
+		{
+			if(annexedBaseId == originBaseId)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
