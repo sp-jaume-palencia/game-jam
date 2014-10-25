@@ -16,7 +16,7 @@ public class HUD extends Group {
 	Button attackButton;
 	Button upgradeButton;
 	
-	Label goldLabel;
+	Label troopsLabel;
 	Label pointsLabel;
 	Label timeLabel;
 	Image goldIcon;
@@ -44,11 +44,11 @@ public class HUD extends Group {
 		goldIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(goldIcon);
 		
-		goldLabel = new Label("gld", RootSystem.assets.UISkin);
-		goldLabel.setColor(1f, 1f, 0f, 1f);
-		goldLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		goldLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(goldLabel);
+		troopsLabel = new Label("gld", RootSystem.assets.UISkin);
+		troopsLabel.setColor(1f, 1f, 0f, 1f);
+		troopsLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(troopsLabel);
 		
 		pointsIcon = new Image(RootSystem.assets.bases);
 		pointsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
@@ -107,8 +107,17 @@ public class HUD extends Group {
 	@Override
 	public void act(float delta)
 	{
-		long tics = (TimeUtils.millis() - RootSystem.data.initTimestamp)/RootSystem.constants.serverTic;
-		
-		timeLabel.setText(new Integer((int) tics).toString());
+		String str = new String(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
+		timeLabel.setText(str);
+	}
+	
+	public void setTroops(int troops)
+	{
+		troopsLabel.setText(String.valueOf(troops));
+	}
+	
+	public void setPoints(int points)
+	{
+		pointsLabel.setText(String.valueOf(points));
 	}
 }
