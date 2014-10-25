@@ -19,6 +19,7 @@ public class TimeBase {
 	public StepVariations upgrade;
 	public InterpolatedVariations resourceProduction;
 	public InterpolatedVariations unitsProduction;
+	public BaseData updatedData;
 	
 	public TimeBase(int baseId, Vector2 position, int[] annexedBases) {
 		this.baseId = baseId;
@@ -31,6 +32,18 @@ public class TimeBase {
 		upgrade = new StepVariations();
 		resourceProduction = new InterpolatedVariations();
 		unitsProduction = new InterpolatedVariations();
+		updatedData = new BaseData(
+				baseId, 
+				position,
+				annexedBases, 
+				owner.getValue(0), 
+				attack.getValue(0), 
+				target.getValue(0),
+				life.getValue(0), 
+				upgrade.getValue(0), 
+				resourceProduction.getValue(0),
+				unitsProduction.getValue(0)
+			);
 	};
 	
 	public void update(Map<String,Update> map) {
@@ -43,18 +56,22 @@ public class TimeBase {
 		unitsProduction.update(map.get("unitsProduction"));
 	}
 	
+	public void updateState(int time) {
+		updatedData.update(
+				baseId, 
+				position,
+				annexedBases, 
+				owner.getValue(time), 
+				attack.getValue(time), 
+				target.getValue(time),
+				life.getValue(time), 
+				upgrade.getValue(time), 
+				resourceProduction.getValue(time),
+				unitsProduction.getValue(time)
+			);
+	}
+	
 	public BaseData getBaseData(int time) {
-		return new BaseData(
-			baseId, 
-			position,
-			annexedBases, 
-			owner.getValue(time), 
-			attack.getValue(time), 
-			target.getValue(time),
-			life.getValue(time), 
-			upgrade.getValue(time), 
-			resourceProduction.getValue(time),
-			unitsProduction.getValue(time)
-		);
+		return updatedData;
 	}
 }
