@@ -20,18 +20,12 @@ public class CommandSystem
 		history.addCommandAction(cmd);
 	}
 	
-	public void sendAttack(int originId, int targetId, int scrollTime, GameActionID actionId)
+	public void sendAttack(int originId, int targetId, int tickTime, GameActionID actionId)
 	{
 		GameCommand cmd = new GameCommand();
 		cmd.actionID = actionId.getValue();
-		cmd.gametime = scrollTime + getTimestamp();
+		cmd.gametime = tickTime;
 		cmd.objectID = originId;
 		cmd.value1 = targetId;
-	}
-
-	private long getTimestamp()
-	{
-		java.util.Date date = new java.util.Date();
-		return date.getTime();
 	}
 }

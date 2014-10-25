@@ -17,10 +17,12 @@ public class GameScreen implements Screen
     Camera camera;
     Viewport viewport;    
     GameMapStage mapStage;
+    public int gameTime;
     
 	
 	public GameScreen()
 	{
+		gameTime = 0;
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
         viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
@@ -35,6 +37,8 @@ public class GameScreen implements Screen
 	@Override
 	public void render(float delta) 
 	{
+		gameTime += delta;
+		
 		Gdx.gl.glClearColor(0f, 1f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mapStage.logic(delta);
@@ -69,5 +73,9 @@ public class GameScreen implements Screen
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	static public int getTick()
+	{
+		return RootSystem.screens.gameplay.gameTime + 696969; // TODO coger scroll
+	}
 }

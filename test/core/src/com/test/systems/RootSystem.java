@@ -39,5 +39,4 @@ public class RootSystem
         commands = new CommandSystem();
         commands.load();
     }
-
 }

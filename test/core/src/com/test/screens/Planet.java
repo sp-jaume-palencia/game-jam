@@ -68,7 +68,7 @@ public class Planet extends Group {
 	public void act(float dt)
 	{
 		// Update base status
-		BaseData data = RootSystem.data.map.getBase(_baseId);		
+		BaseData data = RootSystem.data.timeData.getBase(_baseId).getBaseData(GameScreen.getTick());		
 		setPlayerId(data.owner);
 		
 		// Update attacks
@@ -170,7 +170,7 @@ public class Planet extends Group {
 		{		
 			// Attack!!!!
 			_spaceship.attack(targetPlanet);
-			RootSystem.commands.sendAttack(_baseId, targetPlanet.getPlayerOwnerId(), 9898, GameActionID.BASEATACKBASE);
+			RootSystem.commands.sendAttack(_baseId, targetPlanet.getPlayerOwnerId(), GameScreen.getTick(), GameActionID.BASEATACKBASE);
 		}
 	}
 	
