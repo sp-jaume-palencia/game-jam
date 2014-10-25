@@ -22,7 +22,7 @@ public class Network
 	//CLIENT TO SERVER
 	static public class GameCommand
 	{
-		public int gametime;
+		public long gametime;
 		public int objectID;
 		public int objectType;
 		public int actionID;

@@ -1,9 +1,21 @@
 package com.test.data;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class BaseData
 {
-	int baseId;
-	int ownerId;
+	public int baseId;
+	public int ownerId;
+	public Vector2 position;
+	public int[] annexedBases;
+	
+	public BaseData(int baseId, int playerId, Vector2 pos, int[] annexedBases)
+	{
+		this.baseId = baseId;
+		this.ownerId = playerId;
+		this.position = pos;
+		this.annexedBases = annexedBases;
+	}
 	
 	public BaseData(int baseId)
 	{

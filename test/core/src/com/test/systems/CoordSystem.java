@@ -32,6 +32,10 @@ public class CoordSystem
     public Coord playButtonSize;
     public Coord playButtonPos;
     
+    // Gameplay
+    public Coord mapSize;
+    public Coord planetSize;
+    
     public void load()
     {
         //Common
@@ -60,5 +64,9 @@ public class CoordSystem
         
         playButtonSize = new Coord(200, 100);
         playButtonPos = new Coord(lobbyWaitingPos.x, lobbyWaitingPos.y - lobbyWaitingSize.y - 50);
+        
+        // Gameplay
+        mapSize = new Coord(3000, 3000);
+        planetSize = new Coord(100, 100);
     }
 }

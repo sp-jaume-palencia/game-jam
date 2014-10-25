@@ -15,4 +15,9 @@ public class MapData
 	{
 		bases.put(baseId, base);
 	}
+	
+	public BaseData getBase(Integer baseId)
+	{
+		return bases.get(baseId);
+	}
 }
