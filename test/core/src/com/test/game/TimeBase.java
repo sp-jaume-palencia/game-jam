@@ -64,14 +64,15 @@ public class TimeBase {
 				owner.getValue(time), 
 				attack.getValue(time), 
 				target.getValue(time),
-				life.getValue(time), 
+				0,//life.getValue(time), 
 				upgrade.getValue(time), 
-				resourceProduction.getValue(time),
-				unitsProduction.getValue(time)
+				0,//resourceProduction.getValue(time),
+				0//unitsProduction.getValue(time)
 			);
 	}
 	
 	public BaseData getBaseData(int time) {
+		//updateState(time);
 		return updatedData;
 	}
 }

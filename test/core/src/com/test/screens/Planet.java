@@ -70,8 +70,7 @@ public class Planet extends Group {
 	private void syncData()
 	{
 		// Update base
-		TimeBase timeBase = RootSystem.data.timeData.getBase(_baseData.baseId);
-		_baseData = timeBase.getBaseData(GameScreen.getTick());		
+		_baseData = RootSystem.data.timeData.getBase(_baseData.baseId).getBaseData(GameScreen.getTick());		
 		
 		if(_baseData.target != 0)
 		{
@@ -81,7 +80,7 @@ public class Planet extends Group {
 	}
 	
 	public void updatePlayerId()
-	{		
+	{
 		Texture t = null;
 		
 		switch(_baseData.owner)

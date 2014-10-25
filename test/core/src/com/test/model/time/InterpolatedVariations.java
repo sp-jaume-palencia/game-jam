@@ -9,6 +9,7 @@ public class InterpolatedVariations extends TimeVariations {
         Map.Entry<Integer,Integer> after = timeMap.floorEntry(time);
         if (before == null) return after.getValue();
         if (after == null) return before.getValue();
+        if(after.getKey() == before.getKey()) return after.getValue(); 
         int variationPerTimeUnit = (after.getValue() - before.getValue()) / (after.getKey() - before.getKey());
         int interpolation = before.getValue() + (time-before.getKey())*variationPerTimeUnit;
         return interpolation;
