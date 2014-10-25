@@ -69,8 +69,9 @@ public class Planet extends Group {
 	
 	private void syncData()
 	{
-		// Update base 
-		_baseData = RootSystem.data.timeData.getBase(_baseData.owner).getBaseData(GameScreen.getTick());		
+		// Update base
+		TimeBase timeBase = RootSystem.data.timeData.getBase(_baseData.baseId);
+		_baseData = timeBase.getBaseData(GameScreen.getTick());		
 		
 		if(_baseData.target != 0)
 		{
