@@ -10,15 +10,15 @@ public class MapState {
 	
 	public MapState() 
 	{
-		baseStates = new HashMap<Integer, BaseData>();
+		baseStates = new HashMap<Integer, BaseState>();
 	}
 	
 	public void addBaseState(int baseId, BaseData baseData) 
 	{
-		baseStates.put(baseId, baseData);
+		//TODO JAUME
 	}
 		
-	public BaseData getBaseState(int id) 
+	public BaseState getBaseState(int id) 
 	{
 		return baseStates.get(id);
 	}
