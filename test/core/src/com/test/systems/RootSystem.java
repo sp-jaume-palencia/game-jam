@@ -25,9 +25,6 @@ public class RootSystem
         assets = new AssetsSystem();
         assets.load();
         
-        screens = new ScreenSystem();
-        screens.load();
-        
         net = new NetSystem();
         net.load();
         
@@ -39,5 +36,8 @@ public class RootSystem
         
         commands = new CommandSystem();
         commands.load();
+        
+        screens = new ScreenSystem();
+        screens.load();
     }
 }

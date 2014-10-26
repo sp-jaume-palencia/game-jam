@@ -27,6 +27,17 @@ public class GameScreen implements Screen
         camera = new OrthographicCamera(RootSystem.coords.width, RootSystem.coords.height);
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
         viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
+        
+        hudLayer = new Stage();
+		hudLayer.setViewport(viewport);
+		HUD hud = new HUD();
+		hudLayer.addActor(hud);
+		mapStage = new GameMapStage(hud);
+		
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(hudLayer);
+		multiplexer.addProcessor(new GestureDetector(mapStage));
+		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
 	public void startTurn(int playerId)
@@ -47,16 +58,6 @@ public class GameScreen implements Screen
 	@Override
 	public void show() 
 	{
-		hudLayer = new Stage();
-		hudLayer.setViewport(viewport);
-		HUD hud = new HUD();
-		hudLayer.addActor(hud);
-		mapStage = new GameMapStage(hud);
-		
-		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(hudLayer);
-		multiplexer.addProcessor(new GestureDetector(mapStage));
-		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
 	@Override

@@ -152,7 +152,7 @@ public class Planet extends Group {
 		midPos.set(actPos.x + midPos.x/2, actPos.y + midPos.y/2);
 		
 		_spaceship.addAction(Actions.moveTo(midPos.x, midPos.y, 1.5f));		
-		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 1.5f), Actions.scaleTo(1.0f, 1.0f))));
+		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 3.0f), Actions.scaleTo(1.0f, 3.0f))));
 		_spaceship.setVisible(true);
 	}
 	
