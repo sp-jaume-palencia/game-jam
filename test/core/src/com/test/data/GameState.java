@@ -18,6 +18,7 @@ public class GameState
 		currentPlayer = 0;
 		
 		RootSystem.screens.lobby.onForcePlay();
+		RootSystem.screens.gameplay.startGame();
 	}
 
 	public void endOfTurn(GameEndOfTurn endOfTurn)

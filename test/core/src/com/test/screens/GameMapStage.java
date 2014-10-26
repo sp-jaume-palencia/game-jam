@@ -93,6 +93,11 @@ public class GameMapStage extends Stage implements GestureListener {
 		_selectedPlanet = null;
 	}
 	
+	public void startGame()
+	{
+		_hud.setPlayerColor();
+	}
+	
 	public void startTurn(int playerId)
 	{
 		_hud.startTurn(playerId);

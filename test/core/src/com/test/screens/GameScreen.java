@@ -40,6 +40,11 @@ public class GameScreen implements Screen
 		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
+	public void startGame()
+	{
+		mapStage.startGame();
+	}
+	
 	public void startTurn(int playerId)
 	{
 		mapStage.startTurn(playerId);

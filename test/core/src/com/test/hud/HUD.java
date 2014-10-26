@@ -45,8 +45,7 @@ public class HUD extends Group {
 //		});
 //		addActor(timeScroll);
 		
-		userBackground = new Image(RootSystem.assets.gradient);
-		userBackground.setColor(PlayerState.getPlayerColor(RootSystem.data.playerState.id));
+		userBackground = new Image(RootSystem.assets.gradient);		
 		userBackground.setSize(RootSystem.coords.width, RootSystem.coords.hudResourceSize.y);
 		userBackground.setPosition(0, RootSystem.coords.height - RootSystem.coords.hudResourceSize.y);
 	 	addActor(userBackground);
@@ -118,6 +117,11 @@ public class HUD extends Group {
 	 	turnBar.setSize(1, RootSystem.coords.hudTurnBarSize.y);
 	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudTurnBarSize.y);
 	 	addActor(turnBar);
+	}
+	
+	public void setPlayerColor()
+	{
+		userBackground.setColor(PlayerState.getPlayerColor(RootSystem.data.playerState.id));
 	}
 	
 	public void startTurnBar(Color color)
