@@ -46,6 +46,7 @@ public class Planet extends Group {
 		addActor(_cursor);
 		
 		_spaceship = new Image(RootSystem.assets.spaceShip);
+		_spaceship.setSize(64, 64);
 		_spaceship.setVisible(false);
 		addActor(_spaceship);
 
@@ -57,6 +58,7 @@ public class Planet extends Group {
 		_selected = false;
 
 		_sprite = new Image(texture);
+		_sprite.setOrigin(_sprite.getWidth()/2, _sprite.getHeight()/2);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 
@@ -69,12 +71,17 @@ public class Planet extends Group {
 		}
 		
 		_target = new Image(RootSystem.assets.target);
-		marginX = (getWidth() - _target.getWidth())/2;
-		_target.setPosition(getX() + marginX, getY() - (getWidth() - _target.getHeight())/2);
-//		_target.setVisible(false);
+		float tarMarginX = (getWidth() - _target.getWidth())/2;
+		float tarMarginY = (getHeight() - _target.getHeight())/2;
+		_target.setPosition(getX() + tarMarginX, getY() + tarMarginY);
+		_target.setOrigin(_target.getWidth()/2, _target.getHeight()/2);
 		_target.addAction(Actions.fadeOut(0f));
-//		_target.setPosition(getX(), getY());
 		addActor(_target);
+	}
+	
+	public Vector2 getPosition()
+	{
+		return new Vector2(getX(), getY());
 	}
 	
 	public void setPlayerSprite(int ownerId)
@@ -131,7 +138,7 @@ public class Planet extends Group {
 	
 	public void showTarget()
 	{
-		_target.addAction(Actions.sequence(Actions.fadeIn(0.2f), Actions.scaleTo(2.5f, 2.5f, 2.0f), Actions.scaleTo(1.0f, 1.0f, 2.0f), Actions.fadeOut(0.2f)));
+		_target.addAction(Actions.sequence(Actions.parallel(Actions.fadeIn(0.25f), Actions.scaleTo(1.5f, 1.5f, 0.25f)), Actions.parallel(Actions.scaleTo(1.0f, 1.0f, 0.25f), Actions.fadeOut(0.25f))));
 	}
 		
 	public void attackTo(Vector2 attackPos)
@@ -141,24 +148,46 @@ public class Planet extends Group {
 			return;
 		}
 		
+		// Center to planet
+		float marginX = getWidth()/2 - _spaceship.getWidth()/2;
+		float marginY = getHeight()/2 - _spaceship.getHeight()/2;
+		
+		float origX = getX() + marginX;
+		float origY = getY() + marginY;
+		
+		attackPos.x = attackPos.x + marginX;
+		attackPos.y = attackPos.y + marginY;
+		
 		_attacking = true;
 		_targetPos = attackPos;		
 		_spaceship.clearActions();
 		
-		Vector2 actPos = new Vector2(getX(), getY());
-		Vector2 midPos = attackPos.sub(actPos);
+		float midX = (attackPos.x + origX)/2;
+		float midY = (attackPos.y + origY)/2;
 		
-		_spaceship.setRotation((float) Math.atan2(midPos.y, midPos.y));		
-		midPos.set(actPos.x + midPos.x/2, actPos.y + midPos.y/2);
+		float angle = (float) Math.toDegrees(Math.atan2(attackPos.y - origY, attackPos.x - origX));
+		_spaceship.setOrigin(_spaceship.getWidth()/2, _spaceship.getHeight()/2);
+		_spaceship.setRotation(angle);
+		_spaceship.setPosition(origX, origY);
 		
-		_spaceship.addAction(Actions.moveTo(midPos.x, midPos.y, 1.5f));		
-		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 3.0f), Actions.scaleTo(1.0f, 3.0f))));
+		_spaceship.addAction(Actions.moveTo(midX, midY, 1.5f));		
+		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.25f, 1.25f, 0.5f), Actions.scaleTo(1.0f, 1.0f, 0.5f))));
 		_spaceship.setVisible(true);
 	}
 	
 	public void finishAttack()
 	{
-		
+		_attacking = false;
+		_spaceship.clearActions();
+		_spaceship.addAction(Actions.sequence(Actions.parallel(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.fadeOut(0.5f)), Actions.run(new Runnable() {
+
+			@Override
+			public void run() 
+			{
+				_spaceship.setVisible(false);
+			}
+			
+		})));
 	}
 			
 	@Override
@@ -166,10 +195,10 @@ public class Planet extends Group {
 	{
 		super.act(dt);
 		
-		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);		
-		setPlayerSprite(baseData.ownerId);
+		BaseState baseState = RootSystem.data.mapState.getBaseState(_id);		
+		setPlayerSprite(baseState.ownerId);
 		
-		_troopsLabel.setText(String.valueOf(baseData.numTroops));
+		_troopsLabel.setText(String.valueOf(baseState.numTroops));
 		TextBounds bounds = _troopsLabel.getTextBounds();
 		_troopsLabel.setPosition(getX() + getWidth()/2 - bounds.width/2, getY() + getHeight()/3);
 	}

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
@@ -55,7 +56,7 @@ public class GameMapStage extends Stage implements GestureListener {
         _camera.far = 3000f;
         _camera.update();
         
-        _viewport = new ScreenViewport(_camera);
+        _viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, _camera);
         _viewport.setScreenSize(RootSystem.coords.width, RootSystem.coords.height);
         setViewport(_viewport);
         
@@ -118,17 +119,16 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	public void gameOver(int playerWinner)
 	{
-		_hud.showGameOver(playerWinner);
-		
-		addAction(Actions.sequence(Actions.delay(3.0f), Actions.run(new Runnable(){
-
+		Runnable exit = new Runnable()
+		{
 			@Override
 			public void run() 
 			{
 				RootSystem.game.setScreen(RootSystem.screens.splash);
 			}
-			
-		})));
+		};
+		
+		_hud.showGameOver(playerWinner, exit);
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
@@ -164,7 +164,7 @@ public class GameMapStage extends Stage implements GestureListener {
 			Planet originPlanet = _planets.get(attack.originId - 1);
 			Planet destinationPlanet = _planets.get(attack.targetId - 1);
 			
-			originPlanet.attackTo(RootSystem.data.map.getBase(attack.targetId).position);
+			originPlanet.attackTo(destinationPlanet.getPosition());
 			_attackingPlanets.add(originPlanet);
 			destinationPlanet.showTarget();
 		}
@@ -192,7 +192,7 @@ public class GameMapStage extends Stage implements GestureListener {
         for(Planet planet : _planets)
         {
     		if(planet.isInside(touchPos.x, touchPos.y))
-			{
+			{	
 				if(_selectedPlanet != planet && RootSystem.data.mapState.isOwnPlanet(planet.getId()))
 				{
 					selectNewPlanet(planet);					
@@ -264,7 +264,7 @@ public class GameMapStage extends Stage implements GestureListener {
 		if(RootSystem.data.map.areConnected(originPlanetId, targetPlanedId))
 		{
 			RootSystem.data.mapState.attackTo(originPlanetId, targetPlanedId);
-			_selectedPlanet.attackTo(RootSystem.data.map.getBase(targetPlanedId).position);
+			_selectedPlanet.attackTo(planet.getPosition());
 			_attackingPlanets.add(_selectedPlanet);
 			planet.showTarget();
 		}
