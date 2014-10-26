@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.test.data.PlayerState;
 import com.test.systems.RootSystem;
 
 public class HUD extends Group {
@@ -23,8 +23,10 @@ public class HUD extends Group {
 	Label troopsLabel;
 	Label pointsLabel;
 	Label timeLabel;
-	Image goldIcon;
-	Image pointsIcon;
+	Image unitsIcon;
+	Image basesIcon;
+	Image turnBar;
+	Image userBackground;
 	
 	public HUD()
 	{
@@ -43,10 +45,16 @@ public class HUD extends Group {
 //		});
 //		addActor(timeScroll);
 		
-		goldIcon = new Image(RootSystem.assets.units);
-		goldIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		goldIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(goldIcon);
+		userBackground = new Image(RootSystem.assets.gradient);
+		userBackground.setColor(PlayerState.getPlayerColor(RootSystem.data.playerState.id));
+		userBackground.setSize(RootSystem.coords.width, RootSystem.coords.hudResourceSize.y);
+		userBackground.setPosition(0, RootSystem.coords.height - RootSystem.coords.hudResourceSize.y);
+	 	addActor(userBackground);
+		
+		unitsIcon = new Image(RootSystem.assets.units);
+		unitsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		unitsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(unitsIcon);
 		
 		troopsLabel = new Label("gld", RootSystem.assets.UISkin);
 		troopsLabel.setColor(1f, 1f, 0f, 1f);
@@ -54,10 +62,10 @@ public class HUD extends Group {
 		troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(troopsLabel);
 		
-		pointsIcon = new Image(RootSystem.assets.bases);
-		pointsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		pointsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(pointsIcon);
+		basesIcon = new Image(RootSystem.assets.bases);
+		basesIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		basesIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(basesIcon);
 		
 		pointsLabel = new Label("xp", RootSystem.assets.UISkin);
 		pointsLabel.setColor(0f, 0.5f, 1f, 1f);
@@ -105,6 +113,17 @@ public class HUD extends Group {
 		turnLabel.setFontScale(3.5f);
 		turnLabel.setVisible(false);
 		addActor(turnLabel);
+
+	 	turnBar = new Image(RootSystem.assets.whitePixel);
+	 	turnBar.setSize(1, RootSystem.coords.hudTurnBarSize.y);
+	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudTurnBarSize.y);
+	 	addActor(turnBar);
+	}
+	
+	public void startTurnBar(Color color)
+	{
+		turnBar.setColor(color);
+		turnBar.addAction(Actions.scaleTo(RootSystem.coords.width, 1.0f, RootSystem.constants.turnTime/1000f));
 	}
 	
 	public void setActionsVisible(Boolean visible)
@@ -113,10 +132,10 @@ public class HUD extends Group {
 		upgradeButton.setVisible(visible);
 	}
 	
-	public void showStartTurn(int playerId)
+	public void startTurn(int playerId)
 	{
 		String text = RootSystem.data.gameState.isPlayerTurn()? "YOUR TURN!" : "ENEMY " + playerId + " TURN";
-		Color playerColor = RootSystem.data.playerState.getPlayerColor(playerId);		
+		Color playerColor = PlayerState.getPlayerColor(playerId);		
 		playerColor.a = 0.0f;
 		
 		turnLabel.setText(text);
@@ -127,6 +146,8 @@ public class HUD extends Group {
 		turnLabel.setColor(playerColor);
 		
 		turnLabel.addAction(Actions.sequence(Actions.fadeIn(0.25f), Actions.delay(0.5f), Actions.fadeOut(1.0f)));
+		
+		startTurnBar(playerColor);
 	}
 	
 	public void showGameOver(int playerWinner)

@@ -19,14 +19,14 @@ public class PlayerState
 		this.points = points;
 	}
 	
-	public Color getPlayerColor(int playerId)
+	static public Color getPlayerColor(int playerId)
 	{
 		switch(playerId)
 		{
-			case 1: return Color.BLUE;
-			case 2: return Color.RED;
-			case 3: return Color.GREEN;
-			case 4: return Color.YELLOW;
+			case 1: return new Color(0/255f, 76/255f, 152/255f, 1f);
+			case 2: return new Color(224/255f, 1/255f, 9/255f, 1f);
+			case 3: return new Color(0/255f, 107/255f, 51/255f, 1f);
+			case 4: return new Color(254/255f, 238/255f, 0/255f, 1f);
 		}
 		
 		return null;
