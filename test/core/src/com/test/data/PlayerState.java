@@ -20,7 +20,7 @@ public class PlayerState
 		this.points = points;
 	}
 	
-	public Color getPlayerColor(int playerId)
+	static public Color getPlayerColor(int playerId)
 	{
 		switch(playerId)
 		{

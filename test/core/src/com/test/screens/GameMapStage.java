@@ -93,7 +93,7 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	void startTurn(int playerId)
 	{
-		_hud.showStartTurn(playerId);
+		_hud.startTurn(playerId);
 		
 		// Center camera on random planet of the player
 	}

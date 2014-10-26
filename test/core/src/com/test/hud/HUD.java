@@ -1,5 +1,7 @@
 package com.test.hud;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.test.data.PlayerState;
 import com.test.systems.RootSystem;
 
 public class HUD extends Group {
@@ -23,6 +26,7 @@ public class HUD extends Group {
 	Image unitsIcon;
 	Image basesIcon;
 	Image turnBar;
+	Image userBackground;
 	
 	public HUD()
 	{
@@ -40,6 +44,12 @@ public class HUD extends Group {
 //			}
 //		});
 //		addActor(timeScroll);
+		
+		userBackground = new Image(RootSystem.assets.whitePixel);
+		userBackground.setColor(PlayerState.getPlayerColor(RootSystem.data.playerState.id));
+		userBackground.setSize(RootSystem.coords.width, RootSystem.coords.hudResourceSize.y);
+		userBackground.setPosition(0, RootSystem.coords.height - RootSystem.coords.hudResourceSize.y);
+	 	addActor(userBackground);
 		
 		unitsIcon = new Image(RootSystem.assets.units);
 		unitsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
@@ -106,13 +116,11 @@ public class HUD extends Group {
 
 	 	turnBar = new Image(RootSystem.assets.whitePixel);
 	 	turnBar.setSize(1, RootSystem.coords.hudTurnBarSize.y);
-	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudResourceSize.y);
+	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudTurnBarSize.y);
 	 	addActor(turnBar);
-	 	
-	 	startTurn(new Color(1, 0, 0, 1));
 	}
 	
-	public void startTurn(Color color)
+	public void startTurnBar(Color color)
 	{
 		turnBar.setColor(color);
 		turnBar.addAction(Actions.scaleTo(RootSystem.coords.width, 1.0f, RootSystem.constants.turnTime/1000f));
@@ -124,10 +132,10 @@ public class HUD extends Group {
 		upgradeButton.setVisible(visible);
 	}
 	
-	public void showStartTurn(int playerId)
+	public void startTurn(int playerId)
 	{
 		String text = RootSystem.data.gameState.isPlayerTurn()? "YOUR TURN!" : "ENEMY " + playerId + " TURN";
-		Color playerColor = RootSystem.data.playerState.getPlayerColor(playerId);		
+		Color playerColor = PlayerState.getPlayerColor(playerId);		
 		playerColor.a = 0.0f;
 		
 		turnLabel.setText(text);
@@ -138,6 +146,8 @@ public class HUD extends Group {
 		turnLabel.setColor(playerColor);
 		
 		turnLabel.addAction(Actions.sequence(Actions.fadeIn(0.25f), Actions.delay(0.5f), Actions.fadeOut(1.0f)));
+		
+		startTurnBar(playerColor);
 	}
 	
 	@Override
