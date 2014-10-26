@@ -108,10 +108,10 @@ public class NetClient {
 				try {
 					client.connect(5000, host, Network.port);
 					// Server communication after connection can go here, or in Listener#connected().
-				} catch (IOException ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 					System.exit(1);
-				}
+				} 
 			}
 		}.start();
 	}
