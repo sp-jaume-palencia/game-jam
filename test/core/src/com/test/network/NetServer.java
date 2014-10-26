@@ -123,23 +123,27 @@ public class NetServer
 		if(worldServer.roomIsReady(roomId))
 		{
 			worldServer.startGame(roomId);
-			RoomCommand rc = new RoomCommand();
-			rc.roomId = roomId;
-			rc.actionId = Network.RoomActionID.STARTGAME.getValue();
+			RoomCommand rc1 = new RoomCommand();
+			RoomCommand rc2 = new RoomCommand();
+			RoomCommand rc3 = new RoomCommand();
+			RoomCommand rc4 = new RoomCommand();
+			rc1.roomId = roomId;
+			rc1.actionId = Network.RoomActionID.STARTGAME.getValue();
+			rc2.roomId = roomId;
+			rc2.actionId = Network.RoomActionID.STARTGAME.getValue();
+			rc3.roomId = roomId;
+			rc3.actionId = Network.RoomActionID.STARTGAME.getValue();
+			rc4.roomId = roomId;
+			rc4.actionId = Network.RoomActionID.STARTGAME.getValue();
 			
-			if(RootSystem.net.server.worldServer.rooms[roomId].players[0] == connId)
-				rc.player = 1;
-			else if(RootSystem.net.server.worldServer.rooms[roomId].players[1] == connId)
-				rc.player = 2;
-			else if(RootSystem.net.server.worldServer.rooms[roomId].players[2] == connId)
-				rc.player = 3;
-			else if(RootSystem.net.server.worldServer.rooms[roomId].players[3] == connId)
-				rc.player = 4;
-
-			server.sendToTCP(worldServer.rooms[roomId].players[0], rc);
-			server.sendToTCP(worldServer.rooms[roomId].players[1], rc);
-			server.sendToTCP(worldServer.rooms[roomId].players[2], rc);
-			server.sendToTCP(worldServer.rooms[roomId].players[3], rc);
+			rc1.player = 1;
+			server.sendToTCP(worldServer.rooms[roomId].players[0], rc1);
+			rc2.player = 2;
+			server.sendToTCP(worldServer.rooms[roomId].players[1], rc2);
+			rc3.player = 3;
+			server.sendToTCP(worldServer.rooms[roomId].players[2], rc3);
+			rc4.player = 4;
+			server.sendToTCP(worldServer.rooms[roomId].players[3], rc4);
 			
 			sendNewState(roomId);
 
@@ -210,6 +214,8 @@ public class NetServer
 		server.sendToTCP(worldServer.rooms[roomId].players[1], turn);
 		server.sendToTCP(worldServer.rooms[roomId].players[2], turn);
 		server.sendToTCP(worldServer.rooms[roomId].players[3], turn);
+		
+		RootSystem.commands.processAttacks(roomId);
 		
 		sendNewState(roomId);
 	}

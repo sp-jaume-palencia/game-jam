@@ -38,30 +38,36 @@ public class CommandSystem
 	
 	public void processAttacks(int roomId)
 	{
-		List<GameAttack> attcks = attacks.get(roomId);
-		for(GameAttack attack : attcks)
+		if(attacks.size() > 0)
 		{
-			BaseState orig = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.originId);
-			BaseState targ = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.targetId);
-			
-			if(orig.numTroops - 1 > targ.numTroops)
+			if(attacks.get(roomId) != null)
 			{
-				targ.ownerId = orig.ownerId;
-				targ.numTroops = orig.numTroops - 1 - targ.numTroops;
+				List<GameAttack> attcks = attacks.get(roomId);
+				for(GameAttack attack : attcks)
+				{
+					BaseState orig = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.originId);
+					BaseState targ = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.targetId);
+					
+					if(orig.numTroops - 1 > targ.numTroops)
+					{
+						targ.ownerId = orig.ownerId;
+						targ.numTroops = orig.numTroops - 1 - targ.numTroops;
+					}
+					else if(orig.numTroops - 1 == targ.numTroops)
+					{
+						targ.numTroops = 1;
+					}
+					else
+					{
+						targ.numTroops = targ.numTroops - (targ.numTroops - 1);
+					}
+					
+					orig.numTroops = 1;
+				}
 			}
-			else if(orig.numTroops - 1 == targ.numTroops)
-			{
-				targ.numTroops = 1;
-			}
-			else
-			{
-				targ.numTroops = targ.numTroops - (targ.numTroops - 1);
-			}
-			
-			orig.numTroops = 1;
 		}
 		
-		attacks.clear();
+		attacks.get(roomId).clear();
 	}
 	
 	
