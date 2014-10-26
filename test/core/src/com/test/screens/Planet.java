@@ -147,16 +147,24 @@ public class Planet extends Group {
 			return;
 		}
 		
+		// Center to planet
+		float marginX = getWidth()/2 - _spaceship.getWidth()/2;
+		float marginY = getHeight()/2 - _spaceship.getHeight()/2;
+		
+		float origX = getX() + marginX;
+		float origY = getY() + marginY;
+		
+		attackPos.x = attackPos.x + marginX;
+		attackPos.y = attackPos.y + marginY;
+		
 		_attacking = true;
 		_targetPos = attackPos;		
 		_spaceship.clearActions();
 		
-		float midX = (attackPos.x + getX())/2;
-		float midY = (attackPos.y + getY())/2;
+		float midX = (attackPos.x + origX)/2;
+		float midY = (attackPos.y + origY)/2;
 		
-		float angle = (float) Math.toDegrees(Math.atan2(midX, midY));
-		_spaceship.setRotation(angle);
-		_spaceship.setPosition(getX() + getWidth()/2 - _spaceship.getWidth()/2, getY() + getHeight()/2 - _spaceship.getHeight()/2);
+		_spaceship.setPosition(origX, origY);
 		
 		_spaceship.addAction(Actions.moveTo(midX, midY, 1.5f));		
 		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.25f, 1.25f, 0.5f), Actions.scaleTo(1.0f, 1.0f, 0.5f))));
@@ -167,7 +175,7 @@ public class Planet extends Group {
 	{
 		_attacking = false;
 		_spaceship.clearActions();
-		_spaceship.addAction(Actions.sequence(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.run(new Runnable() {
+		_spaceship.addAction(Actions.sequence(Actions.parallel(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.fadeOut(0.5f)), Actions.run(new Runnable() {
 
 			@Override
 			public void run() 
