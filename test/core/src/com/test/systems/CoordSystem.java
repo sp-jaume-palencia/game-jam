@@ -53,7 +53,7 @@ public class CoordSystem
     {
         //Common
         width = 500;
-        height = 1000;
+        height = 888;
         
         //Menuscreen
         button1Size = new Coord(200, 100);
