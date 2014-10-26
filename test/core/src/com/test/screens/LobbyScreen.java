@@ -122,7 +122,7 @@ public class LobbyScreen implements Screen
     {
     	if(currentRoom != -1)
     	{
-//    		RootSystem.net.client.quitRoom(idx);
+    		RootSystem.net.client.quitRoom(idx);
     	}
     	for(TextButton butt : roomButtons)
     	{

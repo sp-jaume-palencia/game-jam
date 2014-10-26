@@ -117,6 +117,8 @@ public class HUD extends Group {
 	 	turnBar.setSize(1, RootSystem.coords.hudTurnBarSize.y);
 	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudTurnBarSize.y);
 	 	addActor(turnBar);
+	 	
+	 	setActionsVisible(false);
 	}
 	
 	public void setPlayerColor()
@@ -127,6 +129,8 @@ public class HUD extends Group {
 	public void startTurnBar(Color color)
 	{
 		turnBar.setColor(color);
+		turnBar.clearActions();
+		turnBar.setScale(1.0f);
 		turnBar.addAction(Actions.scaleTo(RootSystem.coords.width, 1.0f, RootSystem.constants.turnTime/1000f));
 	}
 	
@@ -140,7 +144,6 @@ public class HUD extends Group {
 	{
 		String text = RootSystem.data.gameState.isPlayerTurn()? "YOUR TURN!" : "ENEMY " + playerId + " TURN";
 		Color playerColor = PlayerState.getPlayerColor(playerId);		
-		playerColor.a = 0.0f;
 		
 		turnLabel.setText(text);
 		turnLabel.setVisible(true);

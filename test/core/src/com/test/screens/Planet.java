@@ -57,6 +57,7 @@ public class Planet extends Group {
 		_selected = false;
 
 		_sprite = new Image(texture);
+		_sprite.setOrigin(_sprite.getWidth()/2, _sprite.getHeight()/2);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 
@@ -69,11 +70,11 @@ public class Planet extends Group {
 		}
 		
 		_target = new Image(RootSystem.assets.target);
-		marginX = (getWidth() - _target.getWidth())/2;
-		_target.setPosition(getX() + marginX, getY() - (getWidth() - _target.getHeight())/2);
-//		_target.setVisible(false);
+		float tarMarginX = (getWidth() - _target.getWidth())/2;
+		float tarMarginY = (getHeight() - _target.getHeight())/2;
+		_target.setPosition(getX() + tarMarginX, getY() + tarMarginY);
+		_target.setOrigin(_target.getWidth()/2, _target.getHeight()/2);
 		_target.addAction(Actions.fadeOut(0f));
-//		_target.setPosition(getX(), getY());
 		addActor(_target);
 	}
 	
@@ -131,7 +132,7 @@ public class Planet extends Group {
 	
 	public void showTarget()
 	{
-		_target.addAction(Actions.sequence(Actions.fadeIn(0.2f), Actions.scaleTo(2.5f, 2.5f, 2.0f), Actions.scaleTo(1.0f, 1.0f, 2.0f), Actions.fadeOut(0.2f)));
+		_target.addAction(Actions.sequence(Actions.parallel(Actions.fadeIn(0.25f), Actions.scaleTo(1.5f, 1.5f, 0.25f)), Actions.parallel(Actions.scaleTo(1.0f, 1.0f, 0.25f), Actions.fadeOut(0.25f))));
 	}
 		
 	public void attackTo(Vector2 attackPos)
