@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.test.data.PlayerState;
 import com.test.systems.RootSystem;
 
@@ -73,7 +74,7 @@ public class HUD extends Group {
 		addActor(pointsLabel);
 		
 		timeLabel = new Label("00:00", RootSystem.assets.UISkin);
-		timeLabel.setColor(1f, 0f, 1f, 1f);
+		timeLabel.setColor(1f, 1f, 1f, 1f);
 		timeLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
 		timeLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 4, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(timeLabel);
@@ -179,7 +180,11 @@ public class HUD extends Group {
 	public void act(float delta)
 	{
 		super.act(delta);
-		timeLabel.setText(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
+		
+		long time = (RootSystem.constants.gameTime - (TimeUtils.millis() - RootSystem.data.gameState.initTimestamp))/1000; 
+		
+		String timeString = String.format("%02d:%02d", time/60, time%60);
+		timeLabel.setText(timeString);
 	}
 	
 	public void setTroops(int troops)

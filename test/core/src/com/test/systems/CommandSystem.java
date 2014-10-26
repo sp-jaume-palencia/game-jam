@@ -48,21 +48,34 @@ public class CommandSystem
 					BaseState orig = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.originId);
 					BaseState targ = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.targetId);
 					
-					if(orig.numTroops - 1 > targ.numTroops)
+					if(orig.ownerId != targ.ownerId)
 					{
-						targ.ownerId = orig.ownerId;
-						targ.numTroops = orig.numTroops - 1 - targ.numTroops;
-					}
-					else if(orig.numTroops - 1 == targ.numTroops)
-					{
-						targ.numTroops = 1;
+					
+						if(orig.numTroops - 1 > targ.numTroops)
+						{
+							targ.ownerId = orig.ownerId;
+							targ.numTroops = orig.numTroops - 1 - targ.numTroops;
+						}
+						else if(orig.numTroops - 1 == targ.numTroops)
+						{
+							targ.numTroops = 1;
+						}
+						else
+						{
+							targ.numTroops = targ.numTroops - (targ.numTroops - 1);
+						}
+						
+						orig.numTroops = 1;
 					}
 					else
 					{
-						targ.numTroops = targ.numTroops - (targ.numTroops - 1);
+						targ.numTroops = targ.numTroops + orig.numTroops - 1;
+						orig.numTroops = 1;
 					}
 					
-					orig.numTroops = 1;
+					RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.put(attack.originId, orig);
+					RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.put(attack.targetId, targ);
+					
 				}
 			}
 		}

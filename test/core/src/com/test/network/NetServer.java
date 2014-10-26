@@ -162,7 +162,8 @@ public class NetServer
 		sog.bases = new GameBaseState[RootSystem.constants.numBases]; 
 				
 		int i=0;
-		for(Entry<Integer, BaseState> base : RootSystem.data.mapState.baseStates.entrySet())
+		
+		for(Entry<Integer, BaseState> base : RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.entrySet())
 		{
 			sog.bases[i] = new GameBaseState();
 			sog.bases[i].baseId = base.getValue().baseId;
@@ -177,6 +178,29 @@ public class NetServer
 		server.sendToTCP(worldServer.rooms[roomId].players[2], sog);
 		server.sendToTCP(worldServer.rooms[roomId].players[3], sog);
 
+	}
+	
+	private void updateBasePlayer(int roomId, int newPlayer)
+	{
+		for(Entry<Integer, BaseState> base : RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.entrySet())
+		{
+			if(base.getValue().ownerId == (newPlayer%4)+1)
+			{
+				int rnd = (int) (Math.random() * 10); 
+				if(rnd < 2)
+				{
+					base.getValue().numTroops+=1;	
+				}
+				else if(rnd < 8)
+				{
+					base.getValue().numTroops+=2;
+				}
+				else
+				{
+					base.getValue().numTroops+=3;
+				}
+			}
+		}
 	}
 	
 	void stopServer()
@@ -207,7 +231,7 @@ public class NetServer
 	{
 		Log.info("ENDTURN newTurn: "+newTurn+" newPlayer: "+newPlayer);
 		
-		GameYourTurn turn = new GameYourTurn();
+		GameEndOfTurn turn = new GameEndOfTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
 		server.sendToTCP(worldServer.rooms[roomId].players[0], turn);
@@ -217,6 +241,8 @@ public class NetServer
 		
 		RootSystem.commands.processAttacks(roomId);
 		
+		updateBasePlayer(roomId, newPlayer);
+		
 		sendNewState(roomId);
 	}
 
@@ -224,7 +250,7 @@ public class NetServer
 	{
 		Log.info("NEWPLAYER newTurn: "+newTurn+" newPlayer: "+newPlayer);
 		
-		GameEndOfTurn turn = new GameEndOfTurn();
+		GameYourTurn turn = new GameYourTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
 		server.sendToTCP(worldServer.rooms[roomId].players[0], turn);
