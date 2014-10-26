@@ -118,17 +118,16 @@ public class GameMapStage extends Stage implements GestureListener {
 	
 	public void gameOver(int playerWinner)
 	{
-		_hud.showGameOver(playerWinner);
-		
-		addAction(Actions.sequence(Actions.delay(3.0f), Actions.run(new Runnable(){
-
+		Runnable exit = new Runnable()
+		{
 			@Override
 			public void run() 
 			{
 				RootSystem.game.setScreen(RootSystem.screens.splash);
 			}
-			
-		})));
+		};
+		
+		_hud.showGameOver(playerWinner, exit);
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
