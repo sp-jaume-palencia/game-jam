@@ -137,8 +137,8 @@ public class HUD extends Group {
 	public void setActionsVisible(Boolean visible)
 	{
 		//disabled
-//		attackButton.setVisible(visible);
-//		upgradeButton.setVisible(visible);
+		attackButton.setVisible(false);
+		upgradeButton.setVisible(false);
 	}
 	
 	public void startTurn(int playerId)
