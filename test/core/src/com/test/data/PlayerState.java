@@ -10,7 +10,6 @@ public class PlayerState
 	
 	public PlayerState()
 	{
-		id = 1;
 	}
 	
 	public PlayerState(int id, int totalTroops, int points)

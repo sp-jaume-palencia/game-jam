@@ -13,7 +13,7 @@ public class BaseState {
 	{
 		this.data = data;
 		this.baseId = data.baseId;
-		this.ownerId = MathUtils.random(0, 4);
-		this.numTroops = MathUtils.random(0, 99);
+		this.ownerId = 0;
+		this.numTroops = 0;
 	}
 }
