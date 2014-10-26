@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -115,7 +116,15 @@ public class LobbyScreen implements Screen
     		roomButtons.add(butt);
     	}
     	
-        RootSystem.net.client.askRoom();
+    	Runnable runnable = new Runnable()
+    	{
+			@Override
+			public void run() {
+				RootSystem.net.client.askRoom();
+			}
+    	};
+    	
+    	stage.addAction(Actions.forever(Actions.sequence(Actions.run(runnable), Actions.delay(5.0f))));        
     }
     
     public void onJoinRoom(int idx)
@@ -133,6 +142,7 @@ public class LobbyScreen implements Screen
     	labelWaiting.setText("Waiting for the Room to be filled...");
     	
     	RootSystem.net.client.joinRoom(idx);
+    	RootSystem.net.client.askRoom();
     }
     
     public void onForcePlay()
