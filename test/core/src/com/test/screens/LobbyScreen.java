@@ -183,7 +183,8 @@ public class LobbyScreen implements Screen
 	{
 		for(RoomInfo room : rooms)
 		{
-			roomButtons.get(room.id).setText(new Integer(room.numPlayer).toString());
+			String msg = new String("Room "+room.id+":      "+room.numPlayer+" / 4");
+			roomButtons.get(room.id).setText(msg);
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.test.data;
 
 import com.test.network.Network.GameEndOfTurn;
 import com.test.network.Network.GameYourTurn;
+import com.test.systems.RootSystem;
 
 public class GameState
 {
@@ -15,11 +16,13 @@ public class GameState
 		initTimestamp = millis;
 		currentTurn = 0;
 		currentPlayer = 0;
+		
+		RootSystem.screens.lobby.onForcePlay();
 	}
 
 	public void endOfTurn(GameEndOfTurn endOfTurn)
 	{
-	//Finish turn
+		//Finish turn
 		
 	}
 
@@ -31,7 +34,6 @@ public class GameState
 
 	public void finishGame(int player)
 	{
-		//finish game
 	}
 		
 }

@@ -26,6 +26,7 @@ public class Network
 	//CLIENT TO SERVER
 	static public class GameAttack
 	{
+		public int roomId;
 		public long player;
 		public long gameTurn;
 		public int originId;

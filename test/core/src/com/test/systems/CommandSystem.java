@@ -1,8 +1,10 @@
 package com.test.systems;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.sun.jmx.snmp.Timestamp;
+import com.test.data.BaseState;
 import com.test.model.net.CommandAction;
 import com.test.model.net.CommandHistory;
 import com.test.network.Network.GameActionID;
@@ -10,36 +12,47 @@ import com.test.network.Network.GameAttack;
 
 public class CommandSystem
 {
-	CommandHistory history;
-	
 	int currentTurn;
 	int playerTurn;
 	
-	List<GameAttack> attacks;
+	HashMap<Integer,List<GameAttack>> attacks;
 	
 	public void load()
 	{
-		history = new CommandHistory();
-	}
-	
-	public void nextTurn()
-	{
-		currentTurn++;
-	}
-	
-	public void nextPlayer()
-	{
-		//update model
-		//RootSystem.data.mapState.process(attacks);
-		//parse mapState
-		RootSystem.net.server.sendNewState();
-		attacks.clear();
-		playerTurn++;
+		attacks = new HashMap<Integer,List<GameAttack>>();
 	}
 	
 	public void addAttack(GameAttack ga)
 	{
-		attacks.add(ga);
+		attacks.get(ga.roomId).add(ga);
+	}
+	
+	public void processAttacks(int roomId)
+	{
+		List<GameAttack> attcks = attacks.get(roomId);
+		for(GameAttack attack : attcks)
+		{
+			BaseState orig = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.originId);
+			BaseState targ = RootSystem.net.server.worldServer.rooms[roomId].mapState.baseStates.get(attack.targetId);
+			
+			if(orig.numTroops - 1 > targ.numTroops)
+			{
+				targ.ownerId = orig.ownerId;
+				targ.numTroops = orig.numTroops - 1 - targ.numTroops;
+			}
+			else if(orig.numTroops - 1 == targ.numTroops)
+			{
+				targ.numTroops = 1;
+			}
+			else
+			{
+				targ.numTroops = targ.numTroops - (targ.numTroops - 1);
+			}
+			
+			orig.numTroops = 1;
+		}
+		
+		attacks.clear();
 	}
 	
 	

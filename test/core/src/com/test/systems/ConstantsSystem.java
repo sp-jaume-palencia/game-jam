@@ -10,6 +10,8 @@ public class ConstantsSystem {
 	public int turnTime;
 	public int gameTime;
 	
+	public int numBases;
+	
 	public void load()
 	{
 		//Time
@@ -21,7 +23,9 @@ public class ConstantsSystem {
 		dead = 0;
 		
 		turnTime = 5000;
-		gameTime = 300000;
+		gameTime = 50000;
+		
+		numBases = 28;
 		
 	}
 }

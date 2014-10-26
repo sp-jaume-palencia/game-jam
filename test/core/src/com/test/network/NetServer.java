@@ -2,16 +2,22 @@ package com.test.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.test.data.BaseData;
+import com.test.data.BaseState;
 import com.test.model.net.CommandAction;
 import com.test.network.Network;
 import com.test.network.Network.GameActionID;
 import com.test.network.Network.GameAttack;
 import com.test.network.Network.GameEndOfTurn;
 import com.test.network.Network.GameFinish;
+import com.test.network.Network.GameStateOfGame;
+import com.test.network.Network.GameBaseState;
 import com.test.network.Network.GameYourTurn;
 import com.test.network.Network.RoomActionID;
 import com.test.network.Network.RoomCommand;
@@ -24,7 +30,7 @@ import com.esotericsoftware.minlog.Log;
 public class NetServer
 {
 	Server server;
-	NetWorld worldServer;
+	public NetWorld worldServer;
 
 	public NetServer () throws IOException
 	{
@@ -97,6 +103,11 @@ public class NetServer
 	{
 		Log.info("ATTACK player: "+rc.player+" turn: "+rc.gameTurn+" origin: "+rc.originId+" target: "+rc.targetId);
 		RootSystem.commands.addAttack(rc);
+		
+		server.sendToTCP(worldServer.rooms[rc.roomId].players[0], rc);
+		server.sendToTCP(worldServer.rooms[rc.roomId].players[1], rc);
+		server.sendToTCP(worldServer.rooms[rc.roomId].players[2], rc);
+		server.sendToTCP(worldServer.rooms[rc.roomId].players[3], rc);
 	}
 
 	protected void quitRoom(int id, int roomID)
@@ -109,14 +120,18 @@ public class NetServer
 		Log.info("JOINROOM room"+roomId+"++");
 		
 		worldServer.playerJoinRoom(roomId, connId);
-		//if(worldServer.roomIsReady(roomId))
+		if(worldServer.roomIsReady(roomId))
 		{
 			worldServer.startGame(roomId);
 			RoomCommand rc = new RoomCommand();
 			rc.roomId = roomId;
 			rc.actionId = Network.RoomActionID.STARTGAME.getValue();
 			
-			server.sendToAllTCP(rc);
+			server.sendToTCP(worldServer.rooms[roomId].players[0], rc);
+			server.sendToTCP(worldServer.rooms[roomId].players[1], rc);
+			server.sendToTCP(worldServer.rooms[roomId].players[2], rc);
+			server.sendToTCP(worldServer.rooms[roomId].players[3], rc);
+
 		}
 	}
 
@@ -126,10 +141,27 @@ public class NetServer
 		server.sendToTCP(connId, rooms);
 	}
 	
-	public void sendNewState()
+	public void sendNewState(int roomId)
 	{
-		// TODO Auto-generated method stub
-		
+		GameStateOfGame sog = new GameStateOfGame();
+		sog.bases = new GameBaseState[RootSystem.constants.numBases]; 
+				
+		int i=0;
+		for(Entry<Integer, BaseState> base : RootSystem.data.mapState.baseStates.entrySet())
+		{
+			sog.bases[i] = new GameBaseState();
+			sog.bases[i].baseId = base.getValue().baseId;
+			sog.bases[i].numTroops = base.getValue().numTroops; 
+			sog.bases[i].ownerId = base.getValue().ownerId;
+			
+			i++;
+		}
+
+		server.sendToTCP(worldServer.rooms[roomId].players[0], sog);
+		server.sendToTCP(worldServer.rooms[roomId].players[1], sog);
+		server.sendToTCP(worldServer.rooms[roomId].players[2], sog);
+		server.sendToTCP(worldServer.rooms[roomId].players[3], sog);
+
 	}
 	
 	void stopServer()
@@ -156,33 +188,44 @@ public class NetServer
 		}
 	}
 
-	public void sendEndTurn(int newTurn, int newPlayer)
+	public void sendEndTurn(int roomId, int newTurn, int newPlayer)
 	{
 		Log.info("ENDTURN newTurn: "+newTurn+" newPlayer: "+newPlayer);
 		
 		GameYourTurn turn = new GameYourTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
-		server.sendToAllTCP(turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[0], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[1], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[2], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[3], turn);
+		
+		sendNewState(roomId);
 	}
 
-	public void sendNewPlayer(int newTurn, int newPlayer)
+	public void sendNewPlayer(int roomId, int newTurn, int newPlayer)
 	{
 		Log.info("NEWPLAYER newTurn: "+newTurn+" newPlayer: "+newPlayer);
 		
 		GameEndOfTurn turn = new GameEndOfTurn();
 		turn.turn = newTurn;
 		turn.player = newPlayer;
-		server.sendToAllTCP(turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[0], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[1], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[2], turn);
+		server.sendToTCP(worldServer.rooms[roomId].players[3], turn);
 	}
 
-	public void sendFinishGame()
+	public void sendFinishGame(int roomId)
 	{
 		Log.info("FINIH GAME winner: 000");
 		
 		GameFinish end = new GameFinish();
 		end.player = 0;
-		server.sendToAllTCP(end);
+		server.sendToTCP(worldServer.rooms[roomId].players[0], end);
+		server.sendToTCP(worldServer.rooms[roomId].players[1], end);
+		server.sendToTCP(worldServer.rooms[roomId].players[2], end);
+		server.sendToTCP(worldServer.rooms[roomId].players[3], end);
 		
 	}
 

@@ -41,7 +41,8 @@ public class NetClient {
 			{
 				if (object instanceof RoomCommand)
 				{
-					startGame();
+					RoomCommand rc = (RoomCommand)object;
+					startGame(rc.roomId, connection.getID());
 					return;
 				}
 
@@ -158,11 +159,20 @@ public class NetClient {
 		RoomCommand rc = new RoomCommand();
 		rc.roomId = roomId;
 		rc.actionId = Network.RoomActionID.JOINROOM.getValue();
-		client.sendTCP(rc);		
+		client.sendTCP(rc);
 	}
 
-	protected void startGame()
+	public void quitRoom(int roomId)
 	{
+		RoomCommand rc = new RoomCommand();
+		rc.roomId = roomId;
+		rc.actionId = Network.RoomActionID.QUITROOM.getValue();
+		client.sendTCP(rc);
+	}
+	
+	protected void startGame(int roomId, int playerId)
+	{
+		//find playerId on roomId
 		RootSystem.data.gameState.startGame(TimeUtils.millis());
 	}
 	
@@ -174,7 +184,6 @@ public class NetClient {
 		ga.originId = originId;
 		ga.targetId = targetId;
 		client.sendTCP(ga);
-		
 	}
 	
 	public static void main (String[] args) {
