@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
 import com.test.hud.HUD;
+import com.test.network.Network.GameAttack;
 import com.test.network.Network.GameYourTurn;
 import com.test.systems.RootSystem;
 
@@ -91,11 +93,37 @@ public class GameMapStage extends Stage implements GestureListener {
 		_selectedPlanet = null;
 	}
 	
-	void startTurn(int playerId)
+	public void startTurn(int playerId)
 	{
 		_hud.startTurn(playerId);
 		
 		// Center camera on random planet of the player
+	}
+	
+	public void endTurn()
+	{
+		// End attacks
+		for(Planet planet : _attackingPlanets)
+		{
+			planet.finishAttack();
+		}
+		
+		_attackingPlanets.clear();
+	}
+	
+	public void gameOver(int playerWinner)
+	{
+		_hud.showGameOver(playerWinner);
+		
+		addAction(Actions.sequence(Actions.delay(3.0f), Actions.run(new Runnable(){
+
+			@Override
+			public void run() 
+			{
+				RootSystem.game.setScreen(RootSystem.screens.splash);
+			}
+			
+		})));
 	}
 	
 	public Vector2 getTouchPos(float x, float y)
@@ -117,6 +145,26 @@ public class GameMapStage extends Stage implements GestureListener {
 		PlayerState playerState = RootSystem.data.playerState;
 		_hud.setPoints(playerState.points);
 		_hud.setTroops(playerState.totalTroops);
+		
+		updatePendingAttacks();
+	}
+
+	private void updatePendingAttacks()
+	{
+		// Pending attacks
+		Array<GameAttack> pendingAttacks = RootSystem.data.mapState.attackState.attacks;
+		
+		for(GameAttack attack : pendingAttacks)
+		{
+			Planet originPlanet = _planets.get(attack.originId - 1);
+			Planet destinationPlanet = _planets.get(attack.targetId - 1);
+			
+			originPlanet.attackTo(RootSystem.data.map.getBase(attack.targetId).position);
+			_attackingPlanets.add(originPlanet);
+			destinationPlanet.showTarget();
+		}
+		
+		pendingAttacks.clear();
 	}
 	
 	@Override

@@ -33,6 +33,16 @@ public class GameScreen implements Screen
 	{
 		mapStage.startTurn(playerId);
 	}
+	
+	public void endTurn()
+	{
+		mapStage.endTurn();
+	}
+	
+	public void gameOver(int playerWinner)
+	{
+		mapStage.gameOver(playerWinner);
+	}
 
 	@Override
 	public void show() 
