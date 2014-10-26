@@ -23,7 +23,7 @@ public class ConstantsSystem {
 		dead = 0;
 		
 		turnTime = 5000;
-		gameTime = 50000;
+		gameTime = 500000;
 		
 		numBases = 28;
 		
