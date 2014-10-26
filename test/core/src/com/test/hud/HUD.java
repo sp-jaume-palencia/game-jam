@@ -63,6 +63,7 @@ public class HUD extends Group {
 		for(int i = 0; i < 4; i++)
 		{
 			Label troopsLabel = new Label("troops" + i, RootSystem.assets.UISkin);
+			Label troopsLabel = new Label("3", RootSystem.assets.UISkin);
 			troopsLabel.setColor(PlayerState.getPlayerColor(i + 1));
 			troopsLabel.setSize(RootSystem.coords.hudLabelSize.x, RootSystem.coords.hudLabelSize.y);
 			troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x + 10, RootSystem.coords.height - 10 - RootSystem.coords.hudLabelSize.y * (i+1)/2);
@@ -75,6 +76,7 @@ public class HUD extends Group {
 		for(int i = 0; i < 4; i++)
 		{
 			Label pointsLabel = new Label("points" + i, RootSystem.assets.UISkin);
+			Label pointsLabel = new Label("1", RootSystem.assets.UISkin);
 			pointsLabel.setColor(PlayerState.getPlayerColor(i + 1));
 			pointsLabel.setSize(RootSystem.coords.hudLabelSize.x, RootSystem.coords.hudLabelSize.y);
 			pointsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 3 + 10, RootSystem.coords.height - 10 - RootSystem.coords.hudLabelSize.y * (i+1)/2);
