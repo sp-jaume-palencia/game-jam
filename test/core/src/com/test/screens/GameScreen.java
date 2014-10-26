@@ -33,11 +33,6 @@ public class GameScreen implements Screen
 		HUD hud = new HUD();
 		hudLayer.addActor(hud);
 		mapStage = new GameMapStage(hud);
-		
-		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(hudLayer);
-		multiplexer.addProcessor(new GestureDetector(mapStage));
-		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
 	public void startGame()
@@ -63,6 +58,10 @@ public class GameScreen implements Screen
 	@Override
 	public void show() 
 	{
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(hudLayer);
+		multiplexer.addProcessor(new GestureDetector(mapStage));
+		Gdx.input.setInputProcessor(multiplexer);
 	}
 	
 	@Override
