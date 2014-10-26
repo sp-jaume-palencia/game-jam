@@ -46,6 +46,7 @@ public class Planet extends Group {
 		addActor(_cursor);
 		
 		_spaceship = new Image(RootSystem.assets.spaceShip);
+		_spaceship.setSize(64, 64);
 		_spaceship.setVisible(false);
 		addActor(_spaceship);
 
@@ -164,6 +165,9 @@ public class Planet extends Group {
 		float midX = (attackPos.x + origX)/2;
 		float midY = (attackPos.y + origY)/2;
 		
+		float angle = (float) Math.toDegrees(Math.atan2(attackPos.y - origY, attackPos.x - origX));
+		_spaceship.setOrigin(_spaceship.getWidth()/2, _spaceship.getHeight()/2);
+		_spaceship.setRotation(angle);
 		_spaceship.setPosition(origX, origY);
 		
 		_spaceship.addAction(Actions.moveTo(midX, midY, 1.5f));		
