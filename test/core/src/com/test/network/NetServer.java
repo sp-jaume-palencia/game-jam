@@ -127,10 +127,21 @@ public class NetServer
 			rc.roomId = roomId;
 			rc.actionId = Network.RoomActionID.STARTGAME.getValue();
 			
+			if(RootSystem.net.server.worldServer.rooms[roomId].players[0] == connId)
+				rc.player = 1;
+			else if(RootSystem.net.server.worldServer.rooms[roomId].players[1] == connId)
+				rc.player = 2;
+			else if(RootSystem.net.server.worldServer.rooms[roomId].players[2] == connId)
+				rc.player = 3;
+			else if(RootSystem.net.server.worldServer.rooms[roomId].players[3] == connId)
+				rc.player = 4;
+
 			server.sendToTCP(worldServer.rooms[roomId].players[0], rc);
 			server.sendToTCP(worldServer.rooms[roomId].players[1], rc);
 			server.sendToTCP(worldServer.rooms[roomId].players[2], rc);
 			server.sendToTCP(worldServer.rooms[roomId].players[3], rc);
+			
+			sendNewState(roomId);
 
 		}
 	}

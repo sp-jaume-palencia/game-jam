@@ -42,7 +42,7 @@ public class NetClient {
 				if (object instanceof RoomCommand)
 				{
 					RoomCommand rc = (RoomCommand)object;
-					startGame(rc.roomId, connection.getID());
+					startGame(rc.roomId, rc.player);
 					return;
 				}
 
@@ -170,9 +170,9 @@ public class NetClient {
 		client.sendTCP(rc);
 	}
 	
-	protected void startGame(int roomId, int playerId)
-	{
-		RootSystem.data.playerState.id = playerId;
+	protected void startGame(int roomId, long player)
+	{		
+		RootSystem.data.playerState.id = (int) player;
 		//find playerId on roomId
 		RootSystem.data.gameState.startGame(TimeUtils.millis());
 	}

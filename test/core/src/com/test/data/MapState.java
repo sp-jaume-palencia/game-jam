@@ -38,9 +38,13 @@ public class MapState
 		}
 		
 		baseStates.get(1).ownerId = 1;
+		baseStates.get(1).numTroops = 3;
 		baseStates.get(8).ownerId = 2;
+		baseStates.get(8).numTroops = 3;
 		baseStates.get(25).ownerId = 3;
+		baseStates.get(25).numTroops = 3;
 		baseStates.get(23).ownerId = 4;
+		baseStates.get(23).numTroops = 3;
 	}
 	
 	public void addBaseState(int baseId, BaseData baseData) 
@@ -94,7 +98,7 @@ public class MapState
 			BaseState bs = baseStates.get(baseState.baseId);
 			bs.numTroops = baseState.numTroops;
 			bs.ownerId = baseState.ownerId;
-			
+			º
 			baseStates.put(baseState.baseId, bs);
 		}
 	}

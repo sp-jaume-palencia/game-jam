@@ -1,5 +1,6 @@
 package com.test.systems;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,14 @@ public class CommandSystem
 	public void load()
 	{
 		attacks = new HashMap<Integer,List<GameAttack>>();
+		attacks.put(0, new ArrayList<GameAttack>());
+		attacks.put(1, new ArrayList<GameAttack>());
+		attacks.put(2, new ArrayList<GameAttack>());
+		attacks.put(3, new ArrayList<GameAttack>());
+		attacks.put(4, new ArrayList<GameAttack>());
+		attacks.put(5, new ArrayList<GameAttack>());
+		attacks.put(6, new ArrayList<GameAttack>());
+		attacks.put(7, new ArrayList<GameAttack>());
 	}
 	
 	public void addAttack(GameAttack ga)
