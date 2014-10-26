@@ -161,6 +161,7 @@ public class Planet extends Group {
 		_attacking = true;
 		_targetPos = attackPos;		
 		_spaceship.clearActions();
+		_spaceship.setVisible(true);
 		
 		float midX = (attackPos.x + origX)/2;
 		float midY = (attackPos.y + origY)/2;
