@@ -98,7 +98,6 @@ public class MapState
 			BaseState bs = baseStates.get(baseState.baseId);
 			bs.numTroops = baseState.numTroops;
 			bs.ownerId = baseState.ownerId;
-			º
 			baseStates.put(baseState.baseId, bs);
 		}
 	}
