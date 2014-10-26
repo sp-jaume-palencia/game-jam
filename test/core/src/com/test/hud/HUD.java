@@ -45,7 +45,7 @@ public class HUD extends Group {
 //		});
 //		addActor(timeScroll);
 		
-		userBackground = new Image(RootSystem.assets.whitePixel);
+		userBackground = new Image(RootSystem.assets.gradient);
 		userBackground.setColor(PlayerState.getPlayerColor(RootSystem.data.playerState.id));
 		userBackground.setSize(RootSystem.coords.width, RootSystem.coords.hudResourceSize.y);
 		userBackground.setPosition(0, RootSystem.coords.height - RootSystem.coords.hudResourceSize.y);

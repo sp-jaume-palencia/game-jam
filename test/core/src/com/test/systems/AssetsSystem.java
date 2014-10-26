@@ -2,7 +2,6 @@ package com.test.systems;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetsSystem
@@ -20,6 +19,7 @@ public class AssetsSystem
 	public Texture lobbyBackground;
 	public Texture player1, player2, player3, player4;
 	public Texture whitePixel;
+	public Texture gradient;
 	
 	public void load()
 	{
@@ -53,5 +53,6 @@ public class AssetsSystem
 		player4 = new Texture(Gdx.files.internal("textures/player4.png"));
 		
 		whitePixel = new Texture(Gdx.files.internal("textures/white-pixel.png"));
+		gradient = new Texture(Gdx.files.internal("textures/gradient.png"));
 	}
 }

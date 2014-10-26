@@ -91,7 +91,7 @@ public class CoordSystem
         hudActionButtonSize = new Coord(50, 50);
         hudActionButtonOrigPos = new Coord((width - hudActionButtonSize.x * kNumButtons)/2, hudScrollSize.y + 20);
         
-        hudResourceSize = new Coord(100, 100);
+        hudResourceSize = new Coord(50, 50);
         hudResourceOrigPos = new Coord(0, height - hudResourceSize.y);
         
         hudTurnBarSize = new Coord(1, 10);
