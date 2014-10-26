@@ -104,7 +104,7 @@ public class MapState
 
 	public void addAttack(GameAttack attack)
 	{
-		if(attack.player != RootSystem.data.playerState.id)
+		//if(attack.player != RootSystem.data.playerState.id)
 		{
 			// Dont add the players attack
 			attackState.addAttack(attack);

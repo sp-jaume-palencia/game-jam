@@ -25,9 +25,6 @@ public class RootSystem
         assets = new AssetsSystem();
         assets.load();
         
-        net = new NetSystem();
-        net.load();
-        
         constants = new ConstantsSystem();
         constants.load();
         
@@ -39,5 +36,9 @@ public class RootSystem
         
         screens = new ScreenSystem();
         screens.load();
+        
+        net = new NetSystem();
+        net.load();
+        
     }
 }

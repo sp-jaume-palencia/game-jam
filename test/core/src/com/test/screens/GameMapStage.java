@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
 import com.test.data.PlayerState;
@@ -55,7 +56,7 @@ public class GameMapStage extends Stage implements GestureListener {
         _camera.far = 3000f;
         _camera.update();
         
-        _viewport = new ScreenViewport(_camera);
+        _viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, _camera);
         _viewport.setScreenSize(RootSystem.coords.width, RootSystem.coords.height);
         setViewport(_viewport);
         
@@ -114,6 +115,8 @@ public class GameMapStage extends Stage implements GestureListener {
 		}
 		
 		_attackingPlanets.clear();
+    	_selectedPlanet.unselect();
+    	_selectedPlanet = null;		
 	}
 	
 	public void gameOver(int playerWinner)
