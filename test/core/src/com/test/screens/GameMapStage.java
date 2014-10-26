@@ -240,7 +240,7 @@ public class GameMapStage extends Stage implements GestureListener {
         {
     		if(planet.isInside(touchPos.x, touchPos.y))
 			{	
-    			if(_selectedPlanet == null)
+    			if(_selectedPlanet == null && RootSystem.data.mapState.isOwnPlanet(planet.getId()))
     			{
     				selectNewPlanet(planet);
     			}
@@ -248,17 +248,6 @@ public class GameMapStage extends Stage implements GestureListener {
     			{
     				tryToAttackPlanet(planet);
     			}
-    			
-    			/*
-				if(_selectedPlanet != planet && RootSystem.data.mapState.isOwnPlanet(planet.getId()))
-				{
-					selectNewPlanet(planet);					
-				}
-				else
-				{
-					tryToAttackPlanet(planet);					
-				}
-				*/
 				
 				selectedPlanet = true;
 	    		break;
