@@ -161,7 +161,6 @@ public class Planet extends Group {
 		_attacking = true;
 		_targetPos = attackPos;		
 		_spaceship.clearActions();
-		_spaceship.setVisible(true);
 		
 		float midX = (attackPos.x + origX)/2;
 		float midY = (attackPos.y + origY)/2;
@@ -180,15 +179,7 @@ public class Planet extends Group {
 	{
 		_attacking = false;
 		_spaceship.clearActions();
-		_spaceship.addAction(Actions.sequence(Actions.parallel(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.fadeOut(0.5f)), Actions.run(new Runnable() {
-
-			@Override
-			public void run() 
-			{
-				_spaceship.setVisible(false);
-			}
-			
-		})));
+		_spaceship.addAction(Actions.sequence(Actions.parallel(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.fadeOut(0.5f))));
 	}
 			
 	@Override
