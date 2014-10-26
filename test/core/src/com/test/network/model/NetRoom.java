@@ -66,13 +66,13 @@ public class NetRoom
 			if(newTurn > currentTurn)
 			{
 				currentTurn = newTurn;
-				RootSystem.net.server.sendEndTurn(id, newTurn, newPlayer);
+				RootSystem.net.server.sendEndTurn(id, newTurn, newPlayer+1);
 			}
 	
 			if(newPlayer > currentPlayer || (newPlayer == 0 && currentPlayer !=0))
 			{
 				currentPlayer = newPlayer;
-				RootSystem.net.server.sendNewPlayer(id, newTurn, newPlayer);
+				RootSystem.net.server.sendNewPlayer(id, newTurn, newPlayer+1);
 			}
 			
 			if(newTurn >= RootSystem.constants.gameTime/RootSystem.constants.turnTime)

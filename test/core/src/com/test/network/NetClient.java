@@ -172,6 +172,7 @@ public class NetClient {
 	
 	protected void startGame(int roomId, int playerId)
 	{
+		RootSystem.data.playerState.id = playerId;
 		//find playerId on roomId
 		RootSystem.data.gameState.startGame(TimeUtils.millis());
 	}

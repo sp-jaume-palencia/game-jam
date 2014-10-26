@@ -36,6 +36,11 @@ public class MapState
 		{
 			addBaseState(entry.getKey(), entry.getValue());
 		}
+		
+		baseStates.get(1).ownerId = 1;
+		baseStates.get(8).ownerId = 2;
+		baseStates.get(25).ownerId = 3;
+		baseStates.get(23).ownerId = 4;
 	}
 	
 	public void addBaseState(int baseId, BaseData baseData) 

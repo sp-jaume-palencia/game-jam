@@ -221,7 +221,7 @@ public class NetServer
 		Log.info("FINIH GAME winner: 000");
 		
 		GameFinish end = new GameFinish();
-		end.player = 0;
+		end.player = 1;
 		server.sendToTCP(worldServer.rooms[roomId].players[0], end);
 		server.sendToTCP(worldServer.rooms[roomId].players[1], end);
 		server.sendToTCP(worldServer.rooms[roomId].players[2], end);
