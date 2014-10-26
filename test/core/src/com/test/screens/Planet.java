@@ -78,6 +78,11 @@ public class Planet extends Group {
 		addActor(_target);
 	}
 	
+	public Vector2 getPosition()
+	{
+		return new Vector2(getX(), getY());
+	}
+	
 	public void setPlayerSprite(int ownerId)
 	{
 		if(ownerId > 0)
@@ -146,20 +151,31 @@ public class Planet extends Group {
 		_targetPos = attackPos;		
 		_spaceship.clearActions();
 		
-		Vector2 actPos = new Vector2(getX(), getY());
-		Vector2 midPos = attackPos.sub(actPos);
+		float midX = (attackPos.x + getX())/2;
+		float midY = (attackPos.y + getY())/2;
 		
-		_spaceship.setRotation((float) Math.atan2(midPos.y, midPos.y));		
-		midPos.set(actPos.x + midPos.x/2, actPos.y + midPos.y/2);
+		float angle = (float) Math.toDegrees(Math.atan2(midX, midY));
+		_spaceship.setRotation(angle);
+		_spaceship.setPosition(getX() + getWidth()/2 - _spaceship.getWidth()/2, getY() + getHeight()/2 - _spaceship.getHeight()/2);
 		
-		_spaceship.addAction(Actions.moveTo(midPos.x, midPos.y, 1.5f));		
-		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 3.0f), Actions.scaleTo(1.0f, 3.0f))));
+		_spaceship.addAction(Actions.moveTo(midX, midY, 1.5f));		
+		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.25f, 1.25f, 0.5f), Actions.scaleTo(1.0f, 1.0f, 0.5f))));
 		_spaceship.setVisible(true);
 	}
 	
 	public void finishAttack()
 	{
-		
+		_attacking = false;
+		_spaceship.clearActions();
+		_spaceship.addAction(Actions.sequence(Actions.moveTo(_targetPos.x, _targetPos.y, 0.5f), Actions.run(new Runnable() {
+
+			@Override
+			public void run() 
+			{
+				_spaceship.setVisible(false);
+			}
+			
+		})));
 	}
 			
 	@Override
@@ -167,10 +183,10 @@ public class Planet extends Group {
 	{
 		super.act(dt);
 		
-		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);		
-		setPlayerSprite(baseData.ownerId);
+		BaseState baseState = RootSystem.data.mapState.getBaseState(_id);		
+		setPlayerSprite(baseState.ownerId);
 		
-		_troopsLabel.setText(String.valueOf(baseData.numTroops));
+		_troopsLabel.setText(String.valueOf(baseState.numTroops));
 		TextBounds bounds = _troopsLabel.getTextBounds();
 		_troopsLabel.setPosition(getX() + getWidth()/2 - bounds.width/2, getY() + getHeight()/3);
 	}

@@ -157,12 +157,13 @@ public class HUD extends Group {
 		startTurnBar(playerColor);
 	}
 	
-	public void showGameOver(int playerWinner)
+	public void showGameOver(int playerWinner, Runnable exitCallback)
 	{
-		String text = RootSystem.data.gameState.isPlayerTurn()? "YOU WON!" : "ENEMY " + playerWinner + " WON!";
-		Color playerColor = RootSystem.data.playerState.getPlayerColor(playerWinner);		
+		String text = RootSystem.data.playerState.id == playerWinner? "YOU WON!" : "ENEMY " + playerWinner + " WON!";
+		Color playerColor = PlayerState.getPlayerColor(playerWinner);		
 		playerColor.a = 0.0f;
-		
+	
+		turnLabel.clearActions();
 		turnLabel.setText(text);
 		turnLabel.setVisible(true);
 		TextBounds bound = turnLabel.getTextBounds();
@@ -170,7 +171,7 @@ public class HUD extends Group {
 		turnLabel.setX((RootSystem.coords.width - bound.width)/2);
 		turnLabel.setColor(playerColor);
 		
-		turnLabel.addAction(Actions.sequence(Actions.fadeIn(0.25f), Actions.delay(2.5f), Actions.fadeOut(0.5f)));
+		turnLabel.addAction(Actions.sequence(Actions.fadeIn(0.25f), Actions.delay(2.5f), Actions.fadeOut(0.5f), Actions.run(exitCallback)));
 	}
 	
 	@Override
