@@ -170,7 +170,7 @@ public class Planet extends Group {
 		_spaceship.setRotation(angle);
 		_spaceship.setPosition(origX, origY);
 		
-		_spaceship.addAction(Actions.moveTo(midX, midY, 1.5f));		
+		_spaceship.addAction(Actions.parallel(Actions.fadeIn(0.2f), Actions.moveTo(midX, midY, 1.5f)));		
 		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.25f, 1.25f, 0.5f), Actions.scaleTo(1.0f, 1.0f, 0.5f))));
 		_spaceship.setVisible(true);
 	}
