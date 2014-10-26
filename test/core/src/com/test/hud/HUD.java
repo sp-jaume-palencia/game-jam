@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.utils.Array;
 import com.test.data.PlayerState;
 import com.test.systems.RootSystem;
 
@@ -20,8 +21,10 @@ public class HUD extends Group {
 	Button upgradeButton;
 	
 	Label turnLabel;
-	Label troopsLabel;
-	Label pointsLabel;
+	
+	Array<Label> arrTroopsLabels;
+	Array<Label> arrPointsLabels;
+	
 	Label timeLabel;
 	Image unitsIcon;
 	Image basesIcon;
@@ -55,22 +58,34 @@ public class HUD extends Group {
 		unitsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(unitsIcon);
 		
-		troopsLabel = new Label("gld", RootSystem.assets.UISkin);
-		troopsLabel.setColor(1f, 1f, 0f, 1f);
-		troopsLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(troopsLabel);
+		arrTroopsLabels = new Array<Label>();
+		for(int i = 0; i < 4; i++)
+		{
+			Label troopsLabel = new Label("troops" + i, RootSystem.assets.UISkin);
+			troopsLabel.setColor(PlayerState.getPlayerColor(i + 1));
+			troopsLabel.setSize(RootSystem.coords.hudLabelSize.x, RootSystem.coords.hudLabelSize.y);
+			troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x + 10, RootSystem.coords.height - 10 - RootSystem.coords.hudLabelSize.y * (i+1)/2);
+			addActor(troopsLabel);
+			
+			arrTroopsLabels.add(troopsLabel);
+		}
+		
+		arrPointsLabels = new Array<Label>();
+		for(int i = 0; i < 4; i++)
+		{
+			Label pointsLabel = new Label("points" + i, RootSystem.assets.UISkin);
+			pointsLabel.setColor(PlayerState.getPlayerColor(i + 1));
+			pointsLabel.setSize(RootSystem.coords.hudLabelSize.x, RootSystem.coords.hudLabelSize.y);
+			pointsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 3 + 10, RootSystem.coords.height - 10 - RootSystem.coords.hudLabelSize.y * (i+1)/2);
+			addActor(pointsLabel);
+			
+			arrPointsLabels.add(pointsLabel);
+		}
 		
 		basesIcon = new Image(RootSystem.assets.bases);
 		basesIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
 		basesIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(basesIcon);
-		
-		pointsLabel = new Label("xp", RootSystem.assets.UISkin);
-		pointsLabel.setColor(0f, 0.5f, 1f, 1f);
-		pointsLabel.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		pointsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 3, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(pointsLabel);
 		
 		timeLabel = new Label("00:00", RootSystem.assets.UISkin);
 		timeLabel.setColor(1f, 0f, 1f, 1f);
@@ -182,13 +197,13 @@ public class HUD extends Group {
 		timeLabel.setText(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
 	}
 	
-	public void setTroops(int troops)
+	public void setTroops(int player, int troops)
 	{
-		troopsLabel.setText(String.valueOf(troops));
+		arrTroopsLabels.get(player).setText(String.valueOf(troops));
 	}
 	
-	public void setPoints(int points)
+	public void setPoints(int player, int points)
 	{
-		pointsLabel.setText(String.valueOf(points));
+		arrPointsLabels.get(player).setText(String.valueOf(points));
 	}
 }

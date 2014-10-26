@@ -166,7 +166,15 @@ public class GameMapStage extends Stage implements GestureListener {
 			}
 		}
 		
-		// TODO UPDATE HUD
+		_hud.setTroops(0, player1Troops);
+		_hud.setTroops(1, player2Troops);
+		_hud.setTroops(2, player3Troops);
+		_hud.setTroops(3, player4Troops);
+		
+		_hud.setPoints(0, player1Points);
+		_hud.setPoints(1, player2Points);
+		_hud.setPoints(2, player3Points);
+		_hud.setPoints(3, player4Points);
 	}
 	
 	public void gameOver(int playerWinner)

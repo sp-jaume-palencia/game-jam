@@ -46,6 +46,7 @@ public class CoordSystem
     
     public Coord hudResourceSize;
     public Coord hudResourceOrigPos;
+    public Coord hudLabelSize;
     
     public Coord hudTurnBarSize;
     
@@ -93,6 +94,7 @@ public class CoordSystem
         
         hudResourceSize = new Coord(75, 75);
         hudResourceOrigPos = new Coord(0, height - hudResourceSize.y);
+        hudLabelSize = new Coord(33, 33);
         
         hudTurnBarSize = new Coord(1, 10);
     }
