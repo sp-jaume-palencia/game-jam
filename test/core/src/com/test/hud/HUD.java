@@ -1,13 +1,14 @@
 package com.test.hud;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.test.systems.RootSystem;
 
 public class HUD extends Group {
@@ -19,8 +20,9 @@ public class HUD extends Group {
 	Label troopsLabel;
 	Label pointsLabel;
 	Label timeLabel;
-	Image goldIcon;
-	Image pointsIcon;
+	Image unitsIcon;
+	Image basesIcon;
+	Image turnBar;
 	
 	public HUD()
 	{
@@ -39,10 +41,10 @@ public class HUD extends Group {
 //		});
 //		addActor(timeScroll);
 		
-		goldIcon = new Image(RootSystem.assets.units);
-		goldIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		goldIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(goldIcon);
+		unitsIcon = new Image(RootSystem.assets.units);
+		unitsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		unitsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(unitsIcon);
 		
 		troopsLabel = new Label("gld", RootSystem.assets.UISkin);
 		troopsLabel.setColor(1f, 1f, 0f, 1f);
@@ -50,10 +52,10 @@ public class HUD extends Group {
 		troopsLabel.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceOrigPos.y);
 		addActor(troopsLabel);
 		
-		pointsIcon = new Image(RootSystem.assets.bases);
-		pointsIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
-		pointsIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
-		addActor(pointsIcon);
+		basesIcon = new Image(RootSystem.assets.bases);
+		basesIcon.setSize(RootSystem.coords.hudResourceSize.x, RootSystem.coords.hudResourceSize.y);
+		basesIcon.setPosition(RootSystem.coords.hudResourceOrigPos.x + RootSystem.coords.hudResourceSize.x * 2, RootSystem.coords.hudResourceOrigPos.y);
+		addActor(basesIcon);
 		
 		pointsLabel = new Label("xp", RootSystem.assets.UISkin);
 		pointsLabel.setColor(0f, 0.5f, 1f, 1f);
@@ -96,6 +98,19 @@ public class HUD extends Group {
             }
         });
 	 	addActor(upgradeButton);
+	 	
+	 	turnBar = new Image(RootSystem.assets.whitePixel);
+	 	turnBar.setSize(1, RootSystem.coords.hudTurnBarSize.y);
+	 	turnBar.setPosition(0, RootSystem.coords.hudResourceOrigPos.y - RootSystem.coords.hudResourceSize.y);
+	 	addActor(turnBar);
+	 	
+	 	startTurn(new Color(1, 0, 0, 1));
+	}
+	
+	public void startTurn(Color color)
+	{
+		turnBar.setColor(color);
+		turnBar.addAction(Actions.scaleTo(RootSystem.coords.width, 1.0f, RootSystem.constants.turnTime/1000f));
 	}
 	
 	public void setActionsVisible(Boolean visible)
@@ -107,6 +122,7 @@ public class HUD extends Group {
 	@Override
 	public void act(float delta)
 	{
+		super.act(delta);
 		String str = new String(RootSystem.data.gameState.currentTurn+" - "+RootSystem.data.gameState.currentPlayer);
 		timeLabel.setText(str);
 	}

@@ -33,6 +33,8 @@ public class LobbyScreen implements Screen
     
     static final int kNumRooms = 8;
     
+    int currentRoom = -1;
+    
     ArrayList<TextButton> roomButtons;
     Color buttonDefaultColor;
 
@@ -118,6 +120,10 @@ public class LobbyScreen implements Screen
     
     public void onJoinRoom(int idx)
     {
+    	if(currentRoom != -1)
+    	{
+//    		RootSystem.net.client.quitRoom(idx);
+    	}
     	for(TextButton butt : roomButtons)
     	{
     		butt.setColor(buttonDefaultColor);
@@ -150,7 +156,6 @@ public class LobbyScreen implements Screen
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
         camera.update();
         viewport.update(width, height);
 	}

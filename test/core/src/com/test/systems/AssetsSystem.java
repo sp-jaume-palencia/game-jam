@@ -19,6 +19,7 @@ public class AssetsSystem
 	public Texture menuBackground;
 	public Texture lobbyBackground;
 	public Texture player1, player2, player3, player4;
+	public Texture whitePixel;
 	
 	public void load()
 	{
@@ -50,5 +51,7 @@ public class AssetsSystem
 		player2 = new Texture(Gdx.files.internal("textures/player2.png"));
 		player3 = new Texture(Gdx.files.internal("textures/player3.png"));
 		player4 = new Texture(Gdx.files.internal("textures/player4.png"));
+		
+		whitePixel = new Texture(Gdx.files.internal("textures/white-pixel.png"));
 	}
 }
