@@ -2,6 +2,7 @@ package com.test.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -50,22 +51,19 @@ public class Planet extends Group {
 
 		_troopsLabel = new Label("0", RootSystem.assets.UISkin);
 		_troopsLabel.setFontScale(3.0f);
-		_troopsLabel.setColor(1f, 0f, 1f, 1f);
-		_troopsLabel.setSize(RootSystem.coords.planetSize.x, RootSystem.coords.planetSize.y);
-		_troopsLabel.setPosition(x, y);
+		_troopsLabel.setColor(1f, 1f, 1f, 1f);
 		addActor(_troopsLabel);
 
 		_selected = false;
 
 		_sprite = new Image(texture);
-		_sprite.setScale(0.4f);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 
+		_actualPlayerId = -1;
 		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
 		for (int i=0; i<_playerSprites.length; i++) {
-			_playerSprites[i].setPosition(getX()-getWidth()*0.05f, getY()-getHeight()*0.05f);
-			_playerSprites[i].setScale(0.5f);
+			_playerSprites[i].setPosition(getX()+(_sprite.getWidth()-_playerSprites[i].getWidth())/2, getY()+(_sprite.getHeight()-_playerSprites[i].getHeight())/2);
 			addActor(_playerSprites[i]);
 			_playerSprites[i].setVisible(false);
 		}
@@ -157,16 +155,23 @@ public class Planet extends Group {
 		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 1.5f), Actions.scaleTo(1.0f, 1.0f))));
 		_spaceship.setVisible(true);
 	}
+	
+	public void finishAttack()
+	{
+		
+	}
 			
 	@Override
 	public void act(float dt)
 	{
 		super.act(dt);
 		
-		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);
+		BaseState baseData = RootSystem.data.mapState.getBaseState(_id);		
+		setPlayerSprite(baseData.ownerId);
 		
 		_troopsLabel.setText(String.valueOf(baseData.numTroops));
-		setPlayerSprite(baseData.ownerId);
+		TextBounds bounds = _troopsLabel.getTextBounds();
+		_troopsLabel.setPosition(getX() + getWidth()/2 - bounds.width/2, getY() + getHeight()/3);
 	}
 	
 	@Override
@@ -182,7 +187,7 @@ public class Planet extends Group {
 			_spaceship.draw(batch, alpha);
 		}
 		
-//		if(_target.isVisible())
+		if(_target.isVisible())
 		{
 			_target.draw(batch, alpha);
 		}

@@ -28,6 +28,21 @@ public class GameScreen implements Screen
         camera.position.set(RootSystem.coords.width/2, RootSystem.coords.height/2, 0);
         viewport = new StretchViewport(RootSystem.coords.width, RootSystem.coords.height, camera);
 	}
+	
+	public void startTurn(int playerId)
+	{
+		mapStage.startTurn(playerId);
+	}
+	
+	public void endTurn()
+	{
+		mapStage.endTurn();
+	}
+	
+	public void gameOver(int playerWinner)
+	{
+		mapStage.gameOver(playerWinner);
+	}
 
 	@Override
 	public void show() 

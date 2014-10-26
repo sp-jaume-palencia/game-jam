@@ -19,7 +19,7 @@ public class MapData
 		addBase( 4, new BaseData( 4, new Vector2( 539,  394), new int[]{2,3,5},       1, RootSystem.assets.planet2));
 		addBase( 5, new BaseData( 5, new Vector2( 628,  632), new int[]{4,7,14,16},   1, RootSystem.assets.planet4));
 		addBase( 6, new BaseData( 6, new Vector2( 815,  266), new int[]{3,7,8},       2, RootSystem.assets.planet6));
-		addBase( 7, new BaseData( 7, new Vector2( 859,  636), new int[]{5,6,9,10},    2, RootSystem.assets.planet3));
+		addBase( 7, new BaseData( 7, new Vector2( 859,  536), new int[]{5,6,9,10},    2, RootSystem.assets.planet3));
 		addBase( 8, new BaseData( 8, new Vector2(1066,  118), new int[]{6,9},         2, RootSystem.assets.planet1));
 		addBase( 9, new BaseData( 9, new Vector2(1113,  408), new int[]{7,8,10},      2, RootSystem.assets.planet5));
 		addBase(10, new BaseData(10, new Vector2(1066,  760), new int[]{7,9,18,21},   2, RootSystem.assets.planet4));

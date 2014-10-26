@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.test.network.Network.GameAttack;
+import com.test.network.Network.GameBaseState;
 import com.test.network.Network.GameStateOfGame;
 import com.test.systems.RootSystem;
 
@@ -52,7 +53,7 @@ public class MapState
 		BaseState planet = baseStates.get(id);
 		PlayerState playerState = RootSystem.data.playerState;
 		
-		return planet.baseId == playerState.id;
+		return planet.ownerId == playerState.id;
 	}
 	
 	public void attackTo(int originId, int targetId)
@@ -78,20 +79,28 @@ public class MapState
 
 	public void process(List<GameAttack> attacks)
 	{
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	public void process(GameStateOfGame state)
 	{
-		// TODO Auto-generated method stub
-		
+		for(GameBaseState baseState : state.bases)
+		{
+			BaseState bs = baseStates.get(baseState.baseId);
+			bs.numTroops = baseState.numTroops;
+			bs.ownerId = baseState.ownerId;
+			
+			baseStates.put(baseState.baseId, bs);
+		}
 	}
 
 	public void addAttack(GameAttack attack)
 	{
-		// TODO Auto-generated method stub
-		
+		if(attack.player != RootSystem.data.playerState.id)
+		{
+			// Dont add the players attack
+			attackState.addAttack(attack);
+		}
 	}
 
 

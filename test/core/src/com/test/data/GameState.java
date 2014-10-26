@@ -8,8 +8,8 @@ public class GameState
 {
 
 	public long initTimestamp;
-	public long currentTurn;
-	public long currentPlayer;
+	public int currentTurn;
+	public int currentPlayer;
 
 	public void startGame(long millis)
 	{
@@ -22,18 +22,24 @@ public class GameState
 
 	public void endOfTurn(GameEndOfTurn endOfTurn)
 	{
-		//Finish turn
-		
+		RootSystem.screens.gameplay.endTurn();
 	}
 
 	public void turnBegin(GameYourTurn yourTurn)
 	{
 		currentTurn = yourTurn.turn;
-		currentPlayer = yourTurn.player;		
+		currentPlayer = yourTurn.player;
+		
+		RootSystem.screens.gameplay.startTurn(currentPlayer);
 	}
 
 	public void finishGame(int player)
 	{
+		RootSystem.screens.gameplay.gameOver(player);
 	}
 		
+	public boolean isPlayerTurn()
+	{
+		return currentPlayer == RootSystem.data.playerState.id;
+	}
 }

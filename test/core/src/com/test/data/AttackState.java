@@ -2,22 +2,21 @@ package com.test.data;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.utils.Array;
+import com.test.network.Network.GameAttack;
+
 public class AttackState
 {
-	public HashMap<Integer, Integer> attacks;
+	public Array<GameAttack> attacks;
 	
 	public AttackState()
 	{
-		attacks = new HashMap<Integer, Integer>();
+		attacks = new Array<GameAttack>();
 	}
 	
-	public void addAttack(int originId, int targetId)
+	public void addAttack(GameAttack attack)
 	{
-		attacks.put(originId, targetId);
-	}	
-	
-	public Integer getAttackingBaseId(int id)
-	{
-		return attacks.containsKey(id)? attacks.get(id) : null;
+		attacks.add(attack);
 	}
+	
 }
