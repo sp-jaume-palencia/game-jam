@@ -43,7 +43,7 @@ public class ServerScreen implements Screen
         
     	Gdx.input.setInputProcessor(stage);
         
-        label1 = new Label("YOU ARE THE SERVER, FUCK YEAH!", RootSystem.assets.UISkin);
+        label1 = new Label("you are THE SERVER!!", RootSystem.assets.UISkin);
         label1.setPosition(RootSystem.coords.label1Pos.x, RootSystem.coords.label1Pos.y);
                 
         stage.addActor(label1);
