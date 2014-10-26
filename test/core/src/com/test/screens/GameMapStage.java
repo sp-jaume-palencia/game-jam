@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.data.BaseData;
+import com.test.data.BaseState;
 import com.test.data.PlayerState;
 import com.test.hud.HUD;
 import com.test.network.Network.GameAttack;
@@ -121,6 +122,51 @@ public class GameMapStage extends Stage implements GestureListener {
 	    	_selectedPlanet.unselect();
 	    	_selectedPlanet = null;		
 		}
+		
+		// Update points
+		int player1Points = 0, player1Troops = 0;
+		int player2Points = 0, player2Troops = 0;
+		int player3Points = 0, player3Troops = 0;
+		int player4Points = 0, player4Troops = 0;
+		
+		for(Planet planet: _planets)
+		{
+			BaseState baseState = RootSystem.data.mapState.baseStates.get(planet.getId());
+			
+			switch(baseState.ownerId)
+			{
+				case 0: break;
+				case 1:
+				{
+					player1Points++;
+					player1Troops += baseState.numTroops;
+					break;
+				}
+				
+				case 2:
+				{
+					player2Points++;
+					player2Troops += baseState.numTroops;
+					break;
+				}
+				
+				case 3:
+				{
+					player3Points++;
+					player3Troops += baseState.numTroops;
+					break;
+				}
+				
+				case 4:
+				{
+					player4Points++;
+					player4Troops += baseState.numTroops;
+					break;
+				}
+			}
+		}
+		
+		// TODO UPDATE HUD
 	}
 	
 	public void gameOver(int playerWinner)
@@ -152,11 +198,6 @@ public class GameMapStage extends Stage implements GestureListener {
 	public void act(float dt)
 	{
 		super.act(dt);
-		
-		PlayerState playerState = RootSystem.data.playerState;
-		_hud.setPoints(playerState.points);
-		_hud.setTroops(playerState.totalTroops);
-		
 		updatePendingAttacks();
 	}
 
@@ -284,6 +325,9 @@ public class GameMapStage extends Stage implements GestureListener {
 			_selectedPlanet.attackTo(planet.getPosition());
 			_attackingPlanets.add(_selectedPlanet);
 			planet.showTarget();
+			
+			_selectedPlanet.unselect();
+			_selectedPlanet = null;
 		}
 	}
 	
