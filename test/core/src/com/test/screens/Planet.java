@@ -57,15 +57,13 @@ public class Planet extends Group {
 		_selected = false;
 
 		_sprite = new Image(texture);
-		_sprite.setScale(0.4f);
 		_sprite.setPosition(getX(), getY());
 		addActor(_sprite);
 
 		_actualPlayerId = -1;
 		_playerSprites = new Image[]{new Image(RootSystem.assets.player1), new Image(RootSystem.assets.player2), new Image(RootSystem.assets.player3), new Image(RootSystem.assets.player4)};
 		for (int i=0; i<_playerSprites.length; i++) {
-			_playerSprites[i].setPosition(getX()-getWidth()*0.05f, getY()-getHeight()*0.05f);
-			_playerSprites[i].setScale(0.5f);
+			_playerSprites[i].setPosition(getX()+(_sprite.getWidth()-_playerSprites[i].getWidth())/2, getY()+(_sprite.getHeight()-_playerSprites[i].getHeight())/2);
 			addActor(_playerSprites[i]);
 			_playerSprites[i].setVisible(false);
 		}
