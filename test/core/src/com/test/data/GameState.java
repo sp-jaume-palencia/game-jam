@@ -20,8 +20,7 @@ public class GameState
 
 	public void endOfTurn(GameEndOfTurn endOfTurn)
 	{
-	//Finish turn
-		
+		RootSystem.screens.gameplay.endTurn();
 	}
 
 	public void turnBegin(GameYourTurn yourTurn)
@@ -35,6 +34,7 @@ public class GameState
 	public void finishGame(int player)
 	{
 		//finish game
+		RootSystem.screens.gameplay.gameOver(player);
 	}
 		
 	public boolean isPlayerTurn()

@@ -157,6 +157,11 @@ public class Planet extends Group {
 		_spaceship.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.5f, 1.5f), Actions.scaleTo(1.0f, 1.0f))));
 		_spaceship.setVisible(true);
 	}
+	
+	public void finishAttack()
+	{
+		
+	}
 			
 	@Override
 	public void act(float dt)
