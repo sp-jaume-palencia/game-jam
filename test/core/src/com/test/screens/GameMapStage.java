@@ -115,8 +115,12 @@ public class GameMapStage extends Stage implements GestureListener {
 		}
 		
 		_attackingPlanets.clear();
-    	_selectedPlanet.unselect();
-    	_selectedPlanet = null;		
+		
+		if(_selectedPlanet != null)
+		{
+	    	_selectedPlanet.unselect();
+	    	_selectedPlanet = null;		
+		}
 	}
 	
 	public void gameOver(int playerWinner)
